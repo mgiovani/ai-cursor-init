@@ -1,0 +1,39 @@
+name: Documentation Freshness Check
+
+on:
+  pull_request:
+    paths:
+      - '**/*.md'
+      - '.github/workflows/**'
+      - 'cli/**'
+      - 'docs/**'
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs/**'
+
+jobs:
+  check_docs_freshness:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          # Install the cursor-init CLI from source. When the project is published to PyPI,
+          # this can be changed to `pip install cursor-init`.
+          pip install .
+
+      - name: Run documentation freshness check
+        run: |
+          # Run the documentation freshness check. The command returns a non-zero exit code
+          # if stale documentation is detected, which will cause the workflow to fail.
+          cursor-init check-docs || python -m cli check-docs

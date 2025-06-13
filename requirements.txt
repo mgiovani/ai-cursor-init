@@ -1,0 +1,2 @@
+# cursor-init CLI Dependencies
+PyYAML>=6.0 
