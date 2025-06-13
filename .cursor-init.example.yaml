@@ -1,0 +1,80 @@
+# cursor-init Configuration Example
+# Copy this file to .cursor-init.yaml in your project root to customize behavior
+
+# Template preferences - choose your preferred style for each document type
+templates:
+  # ADR (Architecture Decision Record) templates
+  adr: "nygard_style" # Options: nygard_style, full, lightweight
+
+  # Architecture documentation templates
+  architecture: "google_style" # Options: google_style, enterprise, arc42
+
+  # Onboarding guide templates
+  onboarding: "general" # Options: general, python, frontend
+
+# Custom template paths - add your own templates
+custom_template_paths:
+  # Example: Add a custom security ADR template
+  # - name: "security_adr"
+  #   path: "templates/custom/security-adr.md"
+
+  # Example: Add a custom API documentation template
+  # - name: "api_docs"
+  #   path: "templates/custom/api-documentation.md"
+
+# Framework detection overrides (optional)
+# Uncomment to force specific framework detection
+# framework_overrides:
+#   python_framework: "fastapi"    # Options: fastapi, django, flask
+#   frontend_framework: "react"    # Options: react, nextjs, vue
+#   database_orm: "sqlalchemy"     # Options: sqlalchemy, django_orm
+
+# Documentation generation preferences
+generation:
+  # Include code examples in generated documentation
+  include_code_examples: true
+
+  # Generate table of contents for long documents
+  auto_generate_toc: true
+
+  # Include file modification timestamps
+  include_timestamps: false
+
+# Diagram preferences
+diagrams:
+  # ER diagram styling
+  er_diagram:
+    show_relationships: true
+    include_indexes: false
+    group_by_module: true
+
+  # Architecture diagram preferences
+  architecture_diagram:
+    show_dependencies: true
+    group_components: true
+    include_external_services: false
+
+# Validation rules for documentation quality
+validation:
+  # Maximum age in days before docs are considered stale
+  max_doc_age_days: 30
+
+  # Require specific sections in architecture docs
+  required_architecture_sections:
+    - "Overview"
+    - "Components"
+    - "Data Flow"
+
+  # Placeholder detection sensitivity
+  strict_placeholder_detection: true
+
+# CI/CD integration settings
+ci:
+  # Fail CI if documentation is stale
+  fail_on_stale_docs: false
+
+  # Auto-generate documentation in CI
+  auto_generate: false
+
+  # Commit generated docs back to repository
+  auto_commit: false
