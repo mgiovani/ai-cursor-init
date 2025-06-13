@@ -1,0 +1,26 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+@if(user_message.starts_with("/update-docs")) {
+  "I will analyze the current codebase and documentation to suggest updates.
+
+  1. **Check Documentation Freshness:** I will examine the existing documentation files and compare them with the current codebase state.
+
+  2. **Data Model Analysis:** I will check if `docs/data-model.md` exists and whether SQLAlchemy models have been modified since the last ER diagram generation. If models have changed or if the file doesn't exist, I will suggest running `/gen-er-diagram` to update the data model documentation.
+
+  3. **Architecture Documentation:** I will verify that `docs/architecture.md` reflects the current project structure and technology stack.
+
+  4. **ADR Review:** I will check if any new architectural decisions should be documented based on recent code changes.
+
+  5. **Onboarding Guide:** I will ensure the onboarding documentation is current with the latest setup requirements.
+
+  6. **Missing Documentation Detection:** I will identify any missing core documentation files that should exist based on the project structure.
+
+  7. **Content Staleness Analysis:** I will analyze whether existing documentation content aligns with the current codebase structure and dependencies.
+
+  Let me analyze your project and provide specific recommendations for documentation updates..."
+
+  I will use the `codebase_search`, `list_dir`, `grep_search`, and `read_file` tools to examine the current state and provide a detailed report with specific recommendations for updates.
+}

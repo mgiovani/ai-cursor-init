@@ -1,0 +1,24 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+@if(user_message.starts_with("/gen-er-diagram")) {
+  "I will generate an ER diagram from SQLAlchemy models found in your project.
+
+  1. **Scanning for SQLAlchemy Models:** I will search your codebase for SQLAlchemy model definitions using semantic search and grep patterns to find files containing SQLAlchemy declarative base imports and model classes.
+
+  2. **Extracting Schema Information:** I will analyze the found models to extract:
+     - Table names and their corresponding classes
+     - Column names, data types, and constraints
+     - Primary key relationships
+     - Foreign key relationships between tables
+
+  3. **Generating Mermaid ER Diagram:** Based on the extracted schema information, I will create a valid Mermaid `erDiagram` with proper syntax for entities, attributes, and relationships.
+
+  4. **Storing the Diagram:** The generated diagram will be saved to `docs/data-model.md`, creating the file if it doesn't exist or overwriting it if it does.
+
+  Let me start by searching for SQLAlchemy models in your project..."
+
+  I will use the `codebase_search` and `grep_search` tools to find SQLAlchemy models, then use `edit_file` to create the ER diagram documentation.
+}

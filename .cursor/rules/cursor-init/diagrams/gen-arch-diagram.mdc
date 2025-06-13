@@ -1,0 +1,27 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+@if(user_message.starts_with("/gen-arch-diagram")) {
+  "I will generate a system architecture diagram from your project's structure.
+
+  1. **Analyzing Project Structure:** I will examine your project's top-level directories to identify the main components and their roles (CLI, documentation, templates, source code, etc.).
+
+  2. **Component Classification:** I will classify each directory based on its name and contents:
+     - Documentation directories (docs, documentation)
+     - CLI/Command directories (cli, cmd, commands)
+     - Template directories (templates, template)
+     - Source code directories (src, source)
+     - Frontend/UI directories (frontend, ui, web)
+     - Backend directories (backend, server)
+     - Database/Model directories (database, db, models)
+
+  3. **Generating Mermaid Architecture Diagram:** Based on the identified components, I will create a Mermaid `graph TD` (Top-Down) flowchart showing the main architectural components and their relationships.
+
+  4. **Suggesting Integration:** If `docs/architecture.md` exists, I will suggest adding the diagram to that file for better documentation.
+
+  Let me start by analyzing your project structure..."
+
+  I will use the `list_dir` tool to examine the project structure, then use `edit_file` to create or suggest updates to architecture documentation.
+}

@@ -1,0 +1,31 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+When the user asks about ADRs, architecture decisions, or decision documentation, I should provide context about:
+
+**ADR Concept:**
+- Architecture Decision Records capture significant design decisions with context and consequences
+- Follow industry best practices from Michael Nygard, ThoughtWorks, and other sources
+- Stored as numbered Markdown files in `docs/adr/` directory
+- Version-controlled alongside code to maintain decision history
+
+**ADR Templates Available:**
+- **Nygard Style**: Classic template with Title, Status, Context, Decision, Consequences
+- **Comprehensive**: Detailed template with Assumptions, Options Considered, Pros/Cons
+- **MADR (Markdown ADR)**: Consistent structure with Decision statement and Alternatives
+
+**ADR Workflow:**
+- Use `/adr "Decision Title"` to create new ADRs from templates
+- Sequential numbering (0001, 0002, etc.)
+- Status tracking (Proposed, Accepted, Deprecated)
+- Context gathering from codebase when possible
+
+**Best Practices:**
+- Document decisions when they're made, not after
+- Include rationale and trade-offs considered
+- Reference related ADRs and external resources
+- Keep ADRs immutable - create new ones to supersede old decisions
+
+The `/adr` command streamlines creating properly formatted ADRs with relevant context.

@@ -1,0 +1,26 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+@if(user_message.starts_with("/add-template")) {
+  "I will add a custom documentation template to your local cursor-init configuration.
+
+  1. **Parse Template Information:** I will extract the template name and path from your message (format: `/add-template TemplateName path/to/template.md`).
+
+  2. **Validate Template Path:** I will check if the specified template file exists and is accessible.
+
+  3. **Read Configuration:** I will read the existing `.cursor-init.yaml` file to understand the current configuration.
+
+  4. **Update Configuration:** I will add the new template to the `custom_template_paths` section, creating the section if it doesn't exist.
+
+  5. **Prevent Duplicates:** I will check for existing entries to avoid duplicating template configurations.
+
+  6. **Save Changes:** I will write the updated configuration back to `.cursor-init.yaml` using proper YAML formatting.
+
+  Please provide the template name and path in the format: `/add-template TemplateName path/to/template.md`
+
+  Let me process your request..."
+
+  I will parse the user's message to extract the template name and path, validate the template file exists, read the current configuration, check for duplicates, and update the `.cursor-init.yaml` file with the new custom template entry using proper YAML formatting.
+}

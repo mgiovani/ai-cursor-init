@@ -1,0 +1,31 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+@if(user_message.starts_with("/rfc")) {
+  "I will create a new RFC (Request For Comments) document based on your input.
+
+  1. **Extracting and Sanitizing the Title:** I will extract the text after `/rfc`. If no text is provided, I will use `new-rfc` as the default title. I will then sanitize this title to be lowercase and kebab-case for the filename, and also refine it for clarity and conciseness for the document's main title.
+
+  2. **Creating the RFC Directory:** I will ensure the `docs/rfc/` directory exists, creating it if necessary.
+
+  3. **Generating the RFC Content:** I will populate the new file with the following RFC template. I will replace `[Title]` with the refined title from the user input.
+
+      ```
+      ### RFC: [Title]
+
+      **Problem Statement:**
+      [Describe the problem or opportunity that this RFC addresses.]
+
+      **Proposed Solution:**
+      [Describe the proposed solution or approach to address the problem.]
+
+      **Discussion:**
+      [Include any additional considerations, alternatives considered, implementation notes, or open questions.]
+      ```
+
+  4. **Creating the File:** Finally, I will create the new RFC file in the `docs/rfc/` directory using the `edit_file` tool. The filename will be constructed using the sanitized title (e.g., `docs/rfc/my-new-feature.md`).
+
+  Please provide a brief title for the RFC after `/rfc`. If you provide no title, I will use `new-rfc` as a default."
+}

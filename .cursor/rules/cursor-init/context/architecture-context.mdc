@@ -1,0 +1,20 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+description: "Includes architecture overview for context when discussing system design"
+alwaysApply: true
+
+When the user asks about architecture, system design, components, or how the system works, I should:
+
+1. Check if `docs/architecture.md` exists using the `read_file` tool
+2. If it exists, read and summarize the key architectural concepts
+3. Provide a concise overview focusing on:
+   - High-level system components
+   - Key architectural decisions
+   - Component interactions
+   - Technology stack overview
+4. If the file doesn't exist, suggest creating one using `/init-docs`
+
+I should provide context without overwhelming the user - focus on the most relevant sections that answer their specific question about the system architecture.

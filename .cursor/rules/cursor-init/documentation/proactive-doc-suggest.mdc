@@ -1,0 +1,27 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+@if(context.includes("@RecentChanges") || user_message.includes("done") || user_message.includes("finished") || user_message.includes("completed")) {
+  "I notice there have been recent changes to your codebase. Let me check if any documentation might need updating based on these changes.
+
+  **Analyzing Recent Changes for Documentation Impact:**
+
+  1. **Database Model Changes:** If I detect changes to files like `models.py`, `model.py`, `database.py`, or any files containing SQLAlchemy models, I will suggest updating the ER diagram by running `/gen-er-diagram`.
+
+  2. **API/Architecture Changes:** If I detect changes to core application files like `app.py`, `main.py`, `routes.py`, `api.py`, or new modules/services, I will suggest updating the architecture documentation by running `/update-docs`.
+
+  3. **Configuration Changes:** If I detect changes to configuration files, dependencies, or project structure, I will suggest reviewing and updating relevant documentation.
+
+  **Proactive Suggestions:**
+  
+  Based on the recent changes, I will provide specific, helpful suggestions such as:
+  - 'It looks like you've made changes to the database models. Would you like me to update the ER diagram using `/gen-er-diagram`?'
+  - 'I noticed changes in your API routes or core modules. Perhaps the architecture documentation needs an update? You can use `/update-docs`.'
+  - 'I see you've added new dependencies or changed the project structure. Consider updating the onboarding documentation.'
+
+  I will only make suggestions when relevant changes are detected and will phrase them as helpful reminders rather than intrusive notifications. If no documentation-relevant changes are detected, I will not make any suggestions."
+
+  I will use the `grep_search` and `codebase_search` tools to analyze recent changes and determine if documentation updates are needed, then provide specific, actionable suggestions.
+}

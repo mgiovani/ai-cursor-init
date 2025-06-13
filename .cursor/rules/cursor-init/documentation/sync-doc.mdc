@@ -1,0 +1,28 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+@if(user_message.starts_with("/sync-doc")) {
+  "I will sync a specific documentation file with the current codebase state.
+
+  1. **Parse Document Name:** I will extract the document name from your message (format: `/sync-doc [document_name]`).
+
+  2. **Locate File:** I will search for the specified file in the documentation directory structure.
+
+  3. **Analyze File State:** I will check if the file needs updating based on current project state.
+
+  4. **Apply Updates:** I will update the specific file using the appropriate template and current project information.
+
+  5. **Provide Feedback:** I will report the outcome of the synchronization for the specific file.
+
+  Please provide the document name in the format: `/sync-doc [document_name]`
+  Examples:
+  - `/sync-doc architecture.md`
+  - `/sync-doc onboarding.md`
+  - `/sync-doc 0001-record-architecture-decisions.md`
+
+  Let me process your request..."
+
+  I will parse the users message to extract the document name, then use the `codebase_search`, `read_file`, and `edit_file` tools to locate the specific file, analyze its current state, and apply necessary updates using the appropriate templates to keep it synchronized with the codebase.
+}

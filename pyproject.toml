@@ -44,10 +44,10 @@ sqlalchemy = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/cursor-init/cursor-init"
-Repository = "https://github.com/cursor-init/cursor-init"
-Issues = "https://github.com/cursor-init/cursor-init/issues"
-Documentation = "https://github.com/cursor-init/cursor-init/blob/main/README.md"
+Homepage = "https://github.com/mgiovani/ai-cursor-init"
+Repository = "https://github.com/mgiovani/ai-cursor-init"
+Issues = "https://github.com/mgiovani/ai-cursor-init/issues"
+Documentation = "https://github.com/mgiovani/ai-cursor-init/blob/main/README.md"
 
 [project.scripts]
 cursor-init = "cursor_init.__main__:main"

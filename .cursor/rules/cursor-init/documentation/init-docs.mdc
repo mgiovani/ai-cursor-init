@@ -1,0 +1,26 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+@if(user_message.starts_with("/init-docs")) {
+  "I will initialize project documentation by creating essential documentation files.
+
+  1. **Check Existing Files:** I will first check for the existence of `docs/architecture.md`, `docs/adr/0001-record-architecture-decisions.md`, `docs/onboarding.md`, and `docs/data-model.md`.
+
+  2. **Create Documentation Structure:** I will create the `docs/` directory and `docs/adr/` subdirectory if they don't exist.
+
+  3. **Generate Documentation Files:** For each missing file, I will create it with appropriate template content:
+     - `docs/architecture.md` - System architecture overview
+     - `docs/adr/0001-record-architecture-decisions.md` - Initial ADR about adopting ADRs
+     - `docs/onboarding.md` - Project setup and onboarding guide
+     - `docs/data-model.md` - Entity relationship diagram (placeholder or generated from models)
+
+  4. **Framework Detection:** I will use codebase search to detect the project's technology stack and customize the templates accordingly.
+
+  If any of these files already exist, I will ask for your confirmation before overwriting them.
+  
+  Let me start by checking what documentation files already exist..."
+
+  I will use the `list_dir` tool to check existing files and `edit_file` to create the documentation structure.
+}

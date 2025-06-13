@@ -1,0 +1,35 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+@if(user_message.starts_with("/adr")) {
+  "Okay, I will create a new Architecture Decision Record based on your input.
+
+  1.  **Extracting and Sanitizing the Title:** I will extract the text after `/adr`. If no text is provided, I will use `untitled-adr` as the default title. I will then sanitize this title to be lowercase and kebab-case for the filename, and also refine it for clarity and conciseness for the document's main title.
+  2.  **Determining the Next ADR Number:** I will use the `list_dir` tool to list the contents of the `docs/adr/` directory. From the filenames, I will identify the highest existing ADR number and increment it by one. If no ADRs are found, I will start with `0001`.
+  3.  **Gathering Context:** I will use the `codebase_search` tool with the extracted ADR title to find relevant information from the project's codebase. This context will be used to pre-fill the **Context**, **Decision**, and **Consequences** sections of the ADR. I will prioritize using the `codebase_search` tool for this.
+  4.  **Generating the ADR Content:** I will populate the new file with the following ADR template. I will replace `[ADR Number]` with the determined sequential number, `[Refined Title]` with the refined title, and insert relevant context from the `codebase_search` results into the **Context** section.
+
+      ```
+      ### [ADR Number]-[Refined Title]
+
+      **Status:** Proposed
+
+      **Context:**
+      [Describe the forces at play, including technological, political, social, and project local.]
+
+      // Relevant codebase context from search results will be inserted here, for example:
+      // - filepath/to/code: relevant code snippet
+
+      **Decision:**
+      [Describe the decision being made, and why it was chosen over alternatives.]
+
+      **Consequences:**
+      [Describe the results of the decision, good or bad.]
+      ```
+  5.  **Creating the File:** Finally, I will create the new ADR file in the `docs/adr/` directory using the `edit_file` tool. The filename will be constructed using the determined ADR number and the sanitized title (e.g., `docs/adr/000X-sanitized-title.md`).
+
+  Please provide a brief title for the ADR after `/adr`. If you provide no title, I will use `untitled-adr` as a default.
+  "
+}

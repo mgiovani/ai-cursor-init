@@ -1,0 +1,21 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+@if(user_message.starts_with("/sync-docs")) {
+  "I will sync all documentation files with the current codebase state.
+
+  **Initiating full documentation synchronization. This may take a moment...**
+
+  I will:
+  1. **Analyze Current Codebase:** Detect languages, frameworks, and project structure using codebase search
+  2. **Check Documentation Status:** Compare existing docs with current code state
+  3. **Update Missing Files:** Create any missing core documentation files using templates
+  4. **Refresh Diagrams:** Update ER diagrams from SQLAlchemy models if present
+  5. **Sync Content:** Ensure documentation reflects current project configuration
+
+  Let me run the synchronization process..."
+
+  I will use the `codebase_search`, `list_dir`, `read_file`, and `edit_file` tools to analyze the current project state, detect what documentation needs updating, and apply necessary changes to keep documentation in sync with the codebase.
+}

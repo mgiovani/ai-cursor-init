@@ -48,10 +48,15 @@ To enable `cursor-init` functionality in your project without any installation:
    your-project/
    ├── .cursor/
    │   └── rules/
-   │       ├── init-docs.mdc
-   │       ├── adr.mdc
-   │       ├── check-docs.mdc
-   │       └── ... (other rule files)
+   │       └── cursor-init/
+   │           ├── documentation/
+   │           │   ├── init-docs.mdc
+   │           │   ├── adr.mdc
+   │           │   ├── check-docs.mdc
+   │           │   └── ... (other rule files)
+   │           ├── diagrams/
+   │           ├── context/
+   │           └── ... (other rule categories)
    ├── templates/
    │   ├── adr/
    │   ├── architecture/

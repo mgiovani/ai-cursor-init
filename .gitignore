@@ -161,8 +161,8 @@ cython_debug/
 # VS Code
 .vscode/
 
-# Cursor
-.cursor/
+# Cursor (keep .cursor/rules for the framework)
+# .cursor/
 
 # macOS
 .DS_Store
