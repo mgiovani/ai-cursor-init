@@ -6,7 +6,7 @@ We actively support the following versions of cursor-init:
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 0.1.x   | :white_check_mark: |
+| 0.1.x   | ✅ |
 
 ## Security Philosophy
 

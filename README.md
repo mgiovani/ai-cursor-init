@@ -149,19 +149,6 @@ custom_template_paths:
 
 ---
 
-## 🌟 **Why Developers Love It**
-
-> *"Finally, documentation that doesn't suck. Generated our entire ADR backlog in 10 minutes."*  
-> — **Sarah Chen**, Senior Engineer @ TechCorp
-
-> *"The ER diagrams are perfect. Saved me hours of Lucidchart wrestling."*  
-> — **Mike Rodriguez**, Full Stack Developer
-
-> *"Zero setup was the killer feature. Works immediately in any project."*  
-> — **Alex Kim**, DevOps Engineer
-
----
-
 ## 🔧 **Advanced Features**
 
 ### CI/CD Integration
