@@ -66,19 +66,19 @@ class Config:
         
         template_mappings = {
             'adr': {
-                'nygard_style': 'templates/adr/adr_template_nygard.md',
-                'full': 'templates/adr/adr_template_full.md',
-                'lightweight': 'templates/adr/adr_template_lightweight.md'
+                'nygard_style': '.cursor/templates/adr/adr_template_nygard.md',
+                'full': '.cursor/templates/adr/adr_template_full.md',
+                'lightweight': '.cursor/templates/adr/adr_template_lightweight.md'
             },
             'architecture': {
-                'google_style': 'templates/architecture/architecture_google.md',
-                'enterprise': 'templates/architecture/architecture_enterprise.md',
-                'arc42': 'templates/architecture/architecture_arc.md'
+                'google_style': '.cursor/templates/architecture/architecture_google.md',
+                'enterprise': '.cursor/templates/architecture/architecture_enterprise.md',
+                'arc42': '.cursor/templates/architecture/architecture_arc.md'
             },
             'onboarding': {
-                'general': 'templates/onboarding/onboarding_general.md',
-                'python': 'templates/onboarding/onboarding_python.md',
-                'frontend': 'templates/onboarding/onboarding_frontend.md'
+                'general': '.cursor/templates/onboarding/onboarding_general.md',
+                'python': '.cursor/templates/onboarding/onboarding_python.md',
+                'frontend': '.cursor/templates/onboarding/onboarding_frontend.md'
             }
         }
         

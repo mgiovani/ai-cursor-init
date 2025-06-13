@@ -16,11 +16,11 @@ templates:
 custom_template_paths:
   # Example: Add a custom security ADR template
   # - name: "security_adr"
-  #   path: "templates/custom/security-adr.md"
+  #   path: ".cursor/templates/custom/security-adr.md"
 
   # Example: Add a custom API documentation template
   # - name: "api_docs"
-  #   path: "templates/custom/api-documentation.md"
+  #   path: ".cursor/templates/custom/api-documentation.md"
 
 # Framework detection overrides (optional)
 # Uncomment to force specific framework detection

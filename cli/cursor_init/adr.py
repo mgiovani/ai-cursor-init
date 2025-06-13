@@ -19,7 +19,7 @@ def create_adr(title: str = "untitled-adr", context: str = "") -> str:
     config = load_config()
     template_path = config.get_template_path('adr')
     if not template_path or not os.path.exists(template_path):
-        template_path = "templates/adr/adr_template_nygard.md"
+        template_path = ".cursor/templates/adr/adr_template_nygard.md"
 
     next_adr_number = _get_next_adr_number(adr_dir)
     sanitized_title = _sanitize_title(title)

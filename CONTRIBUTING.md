@@ -29,12 +29,12 @@ Thank you for your interest in contributing to `cursor-init`! This guide will he
 
 ## Adding New Templates
 
-Templates are the foundation of `cursor-init`'s documentation generation. They're organized by document type in the `templates/` directory.
+Templates are the foundation of `cursor-init`'s documentation generation. They're organized by document type in the `.cursor/templates/` directory.
 
 ### Template Directory Structure
 
 ```
-templates/
+.cursor/templates/
 ├── adr/                    # Architecture Decision Records
 ├── architecture/           # System architecture documentation
 ├── onboarding/            # Project onboarding guides
@@ -44,7 +44,7 @@ templates/
 
 ### Adding Templates for Existing Document Types
 
-1. **Navigate to the appropriate directory** (e.g., `templates/adr/`)
+1. **Navigate to the appropriate directory** (e.g., `.cursor/templates/adr/`)
 2. **Create a new template file** following the naming convention:
    - Use descriptive names: `adr_template_[variant].md`
    - Examples: `adr_template_nygard.md`, `adr_template_comprehensive.md`
@@ -61,7 +61,7 @@ templates/
 
 ### Adding New Document Types
 
-1. **Create a new directory** under `templates/` (e.g., `templates/security/`)
+1. **Create a new directory** under `.cursor/templates/` (e.g., `.cursor/templates/security/`)
 2. **Add template variants** following the naming convention
 3. **Update detection logic** in `cli/cursor_init/detect_framework.py`
 4. **Consider adding a new slash command** (see [Adding New Slash Commands](#adding-new-slash-commands))
@@ -222,7 +222,7 @@ Slash commands provide in-IDE functionality through Cursor rules.
    ```
 
 3. **Test in Cursor IDE**:
-   - Copy `.cursor/` and `templates/` to a test project
+   - Copy `.cursor/` to a test project (templates are now included!)
    - Try slash commands: `/init-docs`, `/adr`, etc.
    - Verify generated content
 

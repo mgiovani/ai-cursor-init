@@ -26,18 +26,18 @@ def initialize_docs():
     config = load_config()
     
     # Get template paths from configuration with fallbacks
-    architecture_template_path = config.get_template_path('architecture') or "templates/architecture/architecture_google.md"
-    adr_template_path = config.get_template_path('adr') or "templates/adr/adr_template_nygard.md"
-    data_model_template_path = "templates/diagrams/er_diagram.md"
+    architecture_template_path = config.get_template_path('architecture') or ".cursor/templates/architecture/architecture_google.md"
+    adr_template_path = config.get_template_path('adr') or ".cursor/templates/adr/adr_template_nygard.md"
+    data_model_template_path = ".cursor/templates/diagrams/er_diagram.md"
 
     # Choose onboarding template based on configuration and detected languages
     onboarding_variant = config.get_template_variant('onboarding')
     if onboarding_variant == 'python' or "python" in detected_languages:
-        onboarding_template_path = "templates/onboarding/onboarding_python.md"
+        onboarding_template_path = ".cursor/templates/onboarding/onboarding_python.md"
     elif onboarding_variant == 'frontend' or "typescript" in detected_languages:
-        onboarding_template_path = "templates/onboarding/onboarding_frontend.md"
+        onboarding_template_path = ".cursor/templates/onboarding/onboarding_frontend.md"
     else:
-        onboarding_template_path = config.get_template_path('onboarding') or "templates/onboarding/onboarding_general.md"
+        onboarding_template_path = config.get_template_path('onboarding') or ".cursor/templates/onboarding/onboarding_general.md"
 
     architecture_content = _read_template_content(architecture_template_path)
     adr_content = _read_template_content(adr_template_path)

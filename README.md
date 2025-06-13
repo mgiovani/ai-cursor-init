@@ -12,7 +12,7 @@
 
 ## ✨ **What Makes This Special?**
 
-🎯 **Zero Installation** → Copy 2 folders, start documenting  
+🎯 **Zero Installation** → Copy 1 folder, start documenting  
 🤖 **AI-Powered** → Analyzes your code to generate contextual docs  
 ⚡ **Instant Results** → Type `/init-docs` and watch magic happen  
 🔄 **Always Fresh** → Docs that sync with your codebase automatically  
@@ -40,9 +40,8 @@
 # 1. Clone this repo
 git clone https://github.com/mgiovani/ai-cursor-init.git
 
-# 2. Copy to your project
+# 2. Copy to your project (ONLY ONE FOLDER!)
 cp -r ai-cursor-init/.cursor/ your-project/
-cp -r ai-cursor-init/templates/ your-project/
 
 # 3. (Optional) Customize configuration
 cp ai-cursor-init/.cursor-init.example.yaml your-project/.cursor-init.yaml
@@ -51,7 +50,7 @@ cp ai-cursor-init/.cursor-init.example.yaml your-project/.cursor-init.yaml
 /init-docs
 ```
 
-**That's it.** No pip install, no dependencies, no configuration files.
+**That's it.** No pip install, no dependencies, just ONE folder to copy!
 
 ### Option 2: CLI for Power Users
 
@@ -126,7 +125,7 @@ templates:
 # Add your own templates
 custom_template_paths:
   - name: "security_adr"
-    path: "templates/custom/security-adr.md"
+    path: ".cursor/templates/custom/security-adr.md"
 ```
 
 ---

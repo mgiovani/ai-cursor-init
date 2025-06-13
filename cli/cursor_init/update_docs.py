@@ -165,16 +165,16 @@ def _check_data_model_doc(filepath: str, languages: set, frameworks: set, config
 def _update_file(filepath: str, filename: str, languages: set, frameworks: set, config):
     """Update a specific documentation file."""
     if filename == "architecture.md":
-        template_path = config.get_template_path('architecture') or "templates/architecture/architecture_google.md"
+        template_path = config.get_template_path('architecture') or ".cursor/templates/architecture/architecture_google.md"
         _create_from_template(filepath, template_path, languages, frameworks)
     elif filename == "onboarding.md":
         # Choose appropriate onboarding template
         if "python" in languages:
-            template_path = "templates/onboarding/onboarding_python.md"
+            template_path = ".cursor/templates/onboarding/onboarding_python.md"
         elif "typescript" in languages:
-            template_path = "templates/onboarding/onboarding_frontend.md"
+            template_path = ".cursor/templates/onboarding/onboarding_frontend.md"
         else:
-            template_path = config.get_template_path('onboarding') or "templates/onboarding/onboarding_general.md"
+            template_path = config.get_template_path('onboarding') or ".cursor/templates/onboarding/onboarding_general.md"
         _create_from_template(filepath, template_path, languages, frameworks)
     elif filename == "data-model.md":
         if "sqlalchemy" in frameworks:
@@ -206,7 +206,7 @@ def _create_from_template(filepath: str, template_path: str, languages: set, fra
 
 def _create_initial_adr(filepath: str, config):
     """Create the initial ADR about adopting ADRs."""
-    template_path = config.get_template_path('adr') or "templates/adr/adr_template_nygard.md"
+    template_path = config.get_template_path('adr') or ".cursor/templates/adr/adr_template_nygard.md"
     
     try:
         with open(template_path, 'r') as f:
