@@ -222,7 +222,7 @@ Slash commands provide in-IDE functionality through Cursor rules.
    ```
 
 3. **Test in Cursor IDE**:
-   - Copy `.cursor/` to a test project (templates are now included!)
+   - Copy `.cursor/` to a test project
    - Try slash commands: `/init-docs`, `/adr`, etc.
    - Verify generated content
 
