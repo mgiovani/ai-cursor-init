@@ -55,8 +55,8 @@ cp ai-cursor-init/.cursor-init.example.yaml your-project/.cursor-init.yaml
 ### Option 2: CLI for Power Users
 
 ```bash
-pip install cursor-init
-cursor-init init  # Generate docs from command line
+pip install ai-cursor-init
+ai-cursor-init init  # Generate docs from command line
 ```
 
 ---
@@ -155,7 +155,7 @@ custom_template_paths:
 ```yaml
 # .github/workflows/docs.yml
 - name: Validate Documentation
-  run: cursor-init check-docs --fail-on-stale
+  run: ai-cursor-init check-docs --fail-on-stale
 ```
 
 ### Custom Templates

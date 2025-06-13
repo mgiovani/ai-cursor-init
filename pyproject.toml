@@ -3,18 +3,18 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "cursor-init"
+name = "ai-cursor-init"
 version = "0.1.0"
 description = "AI-driven in-IDE documentation framework for generating and maintaining project documentation, diagrams, and Architecture Decision Records (ADRs)"
 readme = "README.md"
-license = {file = "LICENSE"}
+license = "MIT"
 authors = [
-    {name = "cursor-init contributors"}
+    {name = "cursor-init contributors", email = "e@mgiovani.com"}
 ]
+keywords = ["documentation", "adr", "architecture", "diagrams", "cursor", "ide", "ai"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.8",
@@ -25,6 +25,7 @@ classifiers = [
     "Topic :: Documentation",
     "Topic :: Software Development :: Documentation",
     "Topic :: Text Processing :: Markup :: Markdown",
+    "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 requires-python = ">=3.8"
 dependencies = [
@@ -38,6 +39,8 @@ dev = [
     "black>=23.0",
     "flake8>=6.0",
     "mypy>=1.0",
+    "build>=0.10.0",
+    "twine>=4.0.0",
 ]
 sqlalchemy = [
     "SQLAlchemy>=1.4",
@@ -48,9 +51,10 @@ Homepage = "https://github.com/mgiovani/ai-cursor-init"
 Repository = "https://github.com/mgiovani/ai-cursor-init"
 Issues = "https://github.com/mgiovani/ai-cursor-init/issues"
 Documentation = "https://github.com/mgiovani/ai-cursor-init/blob/main/README.md"
+Changelog = "https://github.com/mgiovani/ai-cursor-init/blob/main/CHANGELOG.md"
 
 [project.scripts]
-cursor-init = "cursor_init.__main__:main"
+ai-cursor-init = "cursor_init.__main__:main"
 
 [tool.setuptools.packages.find]
 where = ["cli"]
