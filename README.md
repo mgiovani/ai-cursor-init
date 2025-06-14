@@ -66,6 +66,8 @@ ai-cursor-init adr "Database Migration Strategy"  # Context-aware ADRs
 ai-cursor-init update --apply  # Smart documentation updates
 ```
 
+📖 **[Complete AI CLI Documentation →](AI_DOCUMENTATION.md)**
+
 ---
 
 ## 🎯 **What You Get**

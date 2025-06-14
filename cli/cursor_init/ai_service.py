@@ -80,7 +80,7 @@ class AIService:
         
         if self.config.provider == AIProvider.ANTHROPIC:
             response = client.messages.create(
-                model=self.config.model or 'claude-3-5-sonnet-20241022',
+                model=self.config.model or 'claude-4-sonnet-20250514',
                 max_tokens=self.config.max_tokens,
                 temperature=self.config.temperature,
                 system=system_prompt or '',
@@ -89,7 +89,7 @@ class AIService:
             return response.content[0].text
             
         elif self.config.provider == AIProvider.GEMINI:
-            model_name = self.config.model or 'gemini-1.5-pro-latest'
+            model_name = self.config.model or 'gemini-2.5-pro-preview-06-05'
             model = client.GenerativeModel(model_name)
             
             # Combine system prompt and user prompt for Gemini

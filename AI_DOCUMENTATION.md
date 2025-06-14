@@ -49,7 +49,7 @@ ai:
   preferred_provider: "anthropic"  # or "openai", "gemini"
   
   anthropic:
-    model: "claude-3-5-sonnet-20241022"
+    model: "claude-4-sonnet-20250514"
     temperature: 0.3
     max_tokens: 4000
   
@@ -59,7 +59,7 @@ ai:
     max_tokens: 4000
   
   gemini:
-    model: "gemini-1.5-pro-latest"
+    model: "gemini-2.5-pro-preview-06-05"
     temperature: 0.3
     max_tokens: 4000
 ```
@@ -157,8 +157,8 @@ The AI system analyzes multiple sources:
 | Provider | Models | Features |
 |----------|---------|----------|
 | **OpenAI** | GPT-4o, GPT-4 | Fast, general-purpose |
-| **Anthropic** | Claude 3.5 Sonnet | Excellent for code analysis |
-| **Google Gemini** | Gemini 1.5 Pro | Powerful multimodal AI with latest features |
+| **Anthropic** | Claude 4 Sonnet | Excellent for code analysis |
+| **Google Gemini** | Gemini 2.5 Pro | Powerful multimodal AI with latest features |
 
 ## 🔄 Migration from Template-Based System
 
