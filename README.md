@@ -236,17 +236,6 @@ We're building the future of developer documentation. Join us!
 
 ---
 
-## 🗺️ **Roadmap**
-
-- [ ] **VS Code Extension** - Bring slash commands to VS Code
-- [ ] **More Frameworks** - Spring Boot, Vue, Angular support
-- [ ] **Team Features** - Shared templates and standards
-- [ ] **API Documentation** - Auto-generate from OpenAPI specs
-- [ ] **Confluence Integration** - Sync docs to Confluence
-- [ ] **Slack Bot** - Generate docs from Slack commands
-
----
-
 ## 📄 **License**
 
 MIT License - see [LICENSE](LICENSE) for details.
