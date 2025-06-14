@@ -1,100 +1,92 @@
 import os
-from .detect_framework import detect_project_frameworks
+from .ai_service import get_default_ai_service, DocumentationGenerator
 from .config import load_config
+from rich.console import Console
+from rich.progress import Progress, SpinnerColumn, TextColumn
 
-def _read_template_content(filepath: str) -> str:
-    with open(filepath, 'r') as f:
-        return f.read()
+console = Console()
 
 def initialize_docs():
-    docs_dir = "docs"
-    adr_dir = os.path.join(docs_dir, "adr")
+    docs_dir = 'docs'
+    adr_dir = os.path.join(docs_dir, 'adr')
 
     # Create docs/ and docs/adr/ directories
     os.makedirs(docs_dir, exist_ok=True)
     os.makedirs(adr_dir, exist_ok=True)
 
-    print(f"Created directory: {docs_dir}")
-    print(f"Created directory: {adr_dir}")
+    console.print(f'[green]✓[/green] Created directory: {docs_dir}')
+    console.print(f'[green]✓[/green] Created directory: {adr_dir}')
 
-    # Detect project languages and frameworks
-    project_info = detect_project_frameworks()
-    detected_languages = project_info.get("languages", set())
-    detected_frameworks = project_info.get("frameworks", set())
+    try:
+        # Initialize AI service
+        console.print('[cyan]Initializing AI service...[/cyan]')
+        ai_service = get_default_ai_service()
+        doc_generator = DocumentationGenerator(ai_service)
 
-    # Load configuration to get template preferences
-    config = load_config()
-    
-    # Get template paths from configuration with fallbacks
-    architecture_template_path = config.get_template_path('architecture') or ".cursor/templates/architecture/architecture_google.md"
-    adr_template_path = config.get_template_path('adr') or ".cursor/templates/adr/adr_template_nygard.md"
-    data_model_template_path = ".cursor/templates/diagrams/er_diagram.md"
+        # Generate documentation using AI
+        with Progress(
+            SpinnerColumn(),
+            TextColumn('[progress.description]{task.description}'),
+            console=console,
+        ) as progress:
+            
+            # Generate architecture documentation
+            task1 = progress.add_task('Generating architecture documentation...', total=None)
+            architecture_content = doc_generator.generate_architecture_docs()
+            progress.update(task1, completed=True)
+            
+            # Generate onboarding documentation  
+            task2 = progress.add_task('Generating onboarding documentation...', total=None)
+            onboarding_content = doc_generator.generate_onboarding_docs()
+            progress.update(task2, completed=True)
+            
+            # Generate initial ADR
+            task3 = progress.add_task('Generating initial ADR...', total=None)
+            adr_content = doc_generator.generate_adr(
+                'Record Architecture Decisions',
+                'Initial ADR documenting the adoption of Architecture Decision Records for this project'
+            )
+            progress.update(task3, completed=True)
 
-    # Choose onboarding template based on configuration and detected languages
-    onboarding_variant = config.get_template_variant('onboarding')
-    if onboarding_variant == 'python' or "python" in detected_languages:
-        onboarding_template_path = ".cursor/templates/onboarding/onboarding_python.md"
-    elif onboarding_variant == 'frontend' or "typescript" in detected_languages:
-        onboarding_template_path = ".cursor/templates/onboarding/onboarding_frontend.md"
-    else:
-        onboarding_template_path = config.get_template_path('onboarding') or ".cursor/templates/onboarding/onboarding_general.md"
+        # Create placeholder data model (can be enhanced later with AI analysis)
+        data_model_content = _create_data_model_placeholder()
 
-    architecture_content = _read_template_content(architecture_template_path)
-    adr_content = _read_template_content(adr_template_path)
-    onboarding_content = _read_template_content(onboarding_template_path)
-    
-    # Always create data-model.md with proper content
-    if "sqlalchemy" in detected_frameworks:
-        # If SQLAlchemy is detected, try to generate actual ER diagram
-        from .generate_diagrams import generate_er_diagram
-        try:
-            generate_er_diagram()
-            data_model_content = None  # File already created by generate_er_diagram
-        except Exception:
-            # Fallback to template if generation fails
-            data_model_content = _create_data_model_template()
-    else:
-        # Create placeholder template
-        data_model_content = _create_data_model_template()
+        # Create and populate files
+        files_to_create = {
+            os.path.join(docs_dir, 'architecture.md'): architecture_content,
+            os.path.join(adr_dir, '0001-record-architecture-decisions.md'): adr_content,
+            os.path.join(docs_dir, 'onboarding.md'): onboarding_content,
+            os.path.join(docs_dir, 'data-model.md'): data_model_content,
+        }
 
-    # Basic language and framework-specific injection for architecture.md
-    language_info = ", ".join(detected_languages) if detected_languages else "N/A"
-    framework_info = ", ".join(detected_frameworks) if detected_frameworks else "N/A"
+        for filepath, content in files_to_create.items():
+            if not os.path.exists(filepath):
+                with open(filepath, 'w') as f:
+                    f.write(content)
+                console.print(f'[green]✓[/green] Created file: {filepath}')
+            else:
+                console.print(f'[yellow]⚠[/yellow] File already exists, skipping: {filepath}')
 
-    architecture_content = architecture_content.replace(
-        "**Context and Scope**", 
-        f"**Context and Scope**\n\nProject Languages: {language_info}\nProject Frameworks: {framework_info}\n"
-    )
+        console.print('\n[bold green]Documentation initialization complete![/bold green]')
+        console.print('Generated AI-powered documentation based on your project structure and cursor rules.')
 
-    # Create and populate template files
-    files_to_create = {
-        os.path.join(docs_dir, "architecture.md"): architecture_content,
-        os.path.join(adr_dir, "0001-record-architecture-decisions.md"): adr_content,
-        os.path.join(docs_dir, "onboarding.md"): onboarding_content,
-    }
+    except Exception as e:
+        console.print(f'[red]✗[/red] AI generation failed: {str(e)}')
+        console.print('[yellow]Falling back to basic template generation...[/yellow]')
+        _fallback_template_generation(docs_dir, adr_dir)
 
-    # Only add data-model.md if we have content to write (not already created by generate_er_diagram)
-    if data_model_content is not None:
-        files_to_create[os.path.join(docs_dir, "data-model.md")] = data_model_content
 
-    for filepath, content in files_to_create.items():
-        if not os.path.exists(filepath):
-            with open(filepath, "w") as f:
-                f.write(content)
-            print(f"Created file: {filepath}")
-        else:
-            print(f"File already exists, skipping: {filepath}")
-
-def _create_data_model_template() -> str:
-    """Creates a placeholder data model template with proper formatting."""
-    return """# Project Data Model
+def _create_data_model_placeholder() -> str:
+    return '''# Project Data Model
 
 This document contains the Entity Relationship Diagram (ERD) for the project's data model.
 
 ```mermaid
 erDiagram
-    %% No SQLAlchemy models or relationships detected.
-    %% Add your entities and relationships here
+    %% Database schema will be analyzed and updated automatically
+    %% Use /gen-er-diagram command to generate from SQLAlchemy models
+    %% Or manually add your entities and relationships here
+    %%
     %% Example:
     %%   USER {
     %%       id int PK
@@ -108,4 +100,82 @@ erDiagram
     %%   }
     %%   USER ||--o{ ORDER : places
 ```
-""" 
+'''
+
+
+def _fallback_template_generation(docs_dir: str, adr_dir: str):
+    console.print('Using basic template fallback...')
+    
+    # Basic fallback templates
+    architecture_content = '''# Project Architecture
+
+## Overview
+This document describes the architecture of the project.
+
+## Components
+- Core application components
+- External dependencies
+- Data flow
+
+## Technology Stack
+- Programming languages and frameworks
+- Databases and storage
+- Infrastructure and deployment
+
+*This document was generated automatically. Please update with project-specific details.*
+'''
+
+    onboarding_content = '''# Project Onboarding
+
+## Getting Started
+Welcome to the project! This guide will help you get up and running.
+
+## Prerequisites
+- Required software and tools
+- Development environment setup
+
+## Installation
+1. Clone the repository
+2. Install dependencies
+3. Configure environment
+
+## Development Workflow
+- Coding standards
+- Testing procedures
+- Deployment process
+
+*This document was generated automatically. Please update with project-specific details.*
+'''
+
+    adr_content = '''# ADR-0001: Record Architecture Decisions
+
+**Status:** Accepted
+
+**Context:**
+We need to record the architectural decisions made on this project.
+
+**Decision:**
+We will use Architecture Decision Records (ADRs) to document significant architectural decisions.
+
+**Consequences:**
+- Better documentation of design decisions
+- Improved understanding for new team members
+- Historical context for future changes
+'''
+
+    data_model_content = _create_data_model_placeholder()
+
+    files_to_create = {
+        os.path.join(docs_dir, 'architecture.md'): architecture_content,
+        os.path.join(adr_dir, '0001-record-architecture-decisions.md'): adr_content,
+        os.path.join(docs_dir, 'onboarding.md'): onboarding_content,
+        os.path.join(docs_dir, 'data-model.md'): data_model_content,
+    }
+
+    for filepath, content in files_to_create.items():
+        if not os.path.exists(filepath):
+            with open(filepath, 'w') as f:
+                f.write(content)
+            console.print(f'[green]✓[/green] Created file: {filepath}')
+        else:
+            console.print(f'[yellow]⚠[/yellow] File already exists, skipping: {filepath}') 
