@@ -52,25 +52,32 @@ cp ai-cursor-init/.cursor-init.example.yaml your-project/.cursor-init.yaml
 
 **That's it.** No pip install, no dependencies, just ONE folder to copy!
 
-### Option 2: CLI for Power Users
+### Option 2: AI-Powered CLI for Power Users
 
 ```bash
-pip install cursor-init
-cursor-init init  # Generate docs from command line
+pip install ai-cursor-init
+
+# Configure AI provider (OpenAI, Anthropic, or Azure OpenAI)
+ai-cursor-init configure
+
+# Generate intelligent documentation with AI
+ai-cursor-init init  # AI-powered docs generation
+ai-cursor-init adr "Database Migration Strategy"  # Context-aware ADRs
+ai-cursor-init update --apply  # Smart documentation updates
 ```
 
 ---
 
 ## 🎯 **What You Get**
 
-| Command | What It Does | Time Saved |
-|---------|-------------|------------|
-| `/init-docs` | Complete documentation scaffold | **2-3 hours** |
-| `/adr "Decision"` | Architecture Decision Record | **30-45 min** |
-| `/gen-er-diagram` | Database schema visualization | **1-2 hours** |
-| `/gen-arch-diagram` | System architecture diagram | **1-2 hours** |
-| `/update-docs` | Sync docs with code changes | **30-60 min** |
-| `/check-docs` | Quality validation & freshness | **15-30 min** |
+| Command | What It Does | AI Enhancement | Time Saved |
+|---------|-------------|----------------|------------|
+| `/init-docs` | Complete documentation scaffold | **Context-aware generation** | **2-3 hours** |
+| `/adr "Decision"` | Architecture Decision Record | **Project-specific insights** | **30-45 min** |
+| `/gen-er-diagram` | Database schema visualization | **Auto-detection & relationships** | **1-2 hours** |
+| `/gen-arch-diagram` | System architecture diagram | **Intelligent component mapping** | **1-2 hours** |
+| `/update-docs` | Sync docs with code changes | **Smart content enhancement** | **30-60 min** |
+| `/check-docs` | Quality validation & freshness | **Semantic analysis** | **15-30 min** |
 
 **Total time saved per project: 6-10 hours** ⏰
 
