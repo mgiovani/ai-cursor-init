@@ -1,121 +1,168 @@
-# Project Onboarding Guide
+# AI-Cursor-Init Project Onboarding Guide
 
-This guide provides essential information for new team members joining the [Project Name] project. It covers the project's goals, team practices, development environment setup, and key resources.
+This guide provides essential information for contributors to the AI-Cursor-Init project - an AI-powered documentation framework for Cursor IDE.
 
 ## Overview and Goals
 
-* **Project Name:** [Project Name]
-* **Purpose:** [Briefly describe the main purpose and vision of the project.]
+* **Project Name:** AI-Cursor-Init
+* **Purpose:** Provide an AI-powered documentation framework that works seamlessly within Cursor IDE and as a standalone CLI tool
 * **Key Goals:**
-  * [Goal 1: e.g., Deliver a robust backend API for the mobile application.]
-  * [Goal 2: e.g., Maintain a highly available and scalable service.]
+  * Enable intelligent documentation generation using multiple AI providers (OpenAI, Anthropic, Gemini)
+  * Provide framework-aware documentation templates and content generation
+  * Offer seamless integration with Cursor IDE through slash commands
+  * Support automated diagram generation (ER diagrams, architecture diagrams)
+  * Maintain documentation freshness through CI-friendly validation tools
 
 ## Contacts
 
-* **Team Lead:** [Name/Contact Info]
-* **Primary Backend Contact:** [Name/Contact Info]
-* **Primary Frontend Contact:** [Name/Contact Info]
-* **General Inquiries/Support:** [e.g., #project-support Slack channel]
+* **Primary Maintainer:** [GitHub: @mgiovani](https://github.com/mgiovani)
+* **Email:** <e@mgiovani.com>
+* **Issues:** [GitHub Issues](https://github.com/mgiovani/ai-cursor-init/issues)
+* **Repository:** [GitHub Repository](https://github.com/mgiovani/ai-cursor-init)
 
-## Team Practices
+## Development Philosophy
 
-* **Code Style:** We follow [e.g., PEP 8 for Python, Airbnb style guide for TypeScript]. Linting and formatting are enforced via [e.g., Black, ESLint, Prettier].
-* **Version Control:** We use Git with a [e.g., trunk-based development, GitFlow] branching strategy. All changes go through pull requests (PRs).
-* **Code Reviews:** All code requires at least [number] approvals before merging.
-* **Daily Stand-ups:** [Time, platform: e.g., 9:30 AM daily on Google Meet]
-* **Communication:** [e.g., Primary communication on Slack, longer discussions on Google Meet, decisions documented in ADRs.]
+* **Code Quality:** Follow PEP 8 for Python. Use type hints, single quotes, and avoid unnecessary comments/docstrings
+* **Version Control:** Use Git with feature branches. All changes go through pull requests
+* **Code Reviews:** All code requires review before merging
+* **Testing:** Write unit tests for critical business logic; ensure tests are isolated and fast
+* **AI Integration:** Responsible AI usage with proper error handling and user consent
 
 ## Development Environment Setup
 
-Follow these steps to set up your local development environment:
-
 ### Prerequisites
 
-* [Prerequisite 1: e.g., Python 3.9+]
-* [Prerequisite 2: e.g., Node.js 18+ and npm/yarn]
-* [Prerequisite 3: e.g., Docker Desktop]
-* [Prerequisite 4: e.g., PostgreSQL (local installation or via Docker)]
+* **Python 3.12+** (required for modern typing features)
+* **Git** for version control
+* **Cursor IDE** (recommended for testing slash commands)
+* **AI Provider API Keys** (optional, for testing AI features):
+  * OpenAI API key
+  * Anthropic API key  
+  * Google Gemini API key
 
-### Steps
+### Setup Steps
 
 1. **Clone the Repository:**
 
     ```bash
-    git clone [repository URL]
-    cd [project-directory]
+    git clone https://github.com/mgiovani/ai-cursor-init.git
+    cd ai-cursor-init
     ```
 
-2. **Backend Setup (Python/FastAPI Example):**
-    * **Create Virtual Environment:**
+2. **Set up Python Environment:**
 
-        ```bash
-        python3 -m venv .venv
-        source .venv/bin/activate
-        ```
+    ```bash
+    # Create virtual environment
+    python3 -m venv .venv
+    source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+    
+    # Install dependencies
+    pip install -r requirements.txt
+    
+    # Install in development mode
+    pip install -e ./cli
+    ```
 
-    * **Install Dependencies:**
+3. **Configure AI Providers (Optional):**
 
-        ```bash
-        pip install -r requirements.txt
-        ```
+    ```bash
+    # Create .env file with your API keys
+    cp .env.example .env
+    
+    # Edit .env with your API keys:
+    # OPENAI_API_KEY=your_openai_key_here
+    # ANTHROPIC_API_KEY=your_anthropic_key_here
+    # GEMINI_API_KEY=your_gemini_key_here
+    ```
 
-    * **Database Setup:**
+4. **Test the Installation:**
 
-        ```bash
-        # Assuming PostgreSQL is running locally or via Docker
-        # Create database and apply migrations
-        # [Specific commands for DB setup, e.g., `alembic upgrade head`]
-        ```
+    ```bash
+    # Test CLI commands
+    ai-cursor-init --version
+    ai-cursor-init init
+    
+    # Test in Cursor IDE by opening the project and trying slash commands like:
+    # /init-docs
+    # /adr "Test ADR"
+    ```
 
-    * **Run Backend Server:**
+## Project Structure
 
-        ```bash
-        uvicorn app.main:app --reload
-        # Access API at http://127.0.0.1:8000
-        ```
+* **`/cli`:** Main CLI application source code
+  * `/cli/cursor_init`: Python package with core functionality
+  * `/cli/cursor_init/ai_service.py`: AI provider integration
+  * `/cli/cursor_init/detect_framework.py`: Framework detection logic
+  * `/cli/cursor_init/generate_diagrams.py`: Diagram generation
+* **`/.cursor/rules`:** Cursor IDE integration rules for slash commands
+* **`/.cursor/templates`:** Documentation templates organized by type
+* **`/docs`:** Project documentation (this serves as an example)
+  * `/docs/adr`: Architecture Decision Records
+  * `/docs/development`: Development guides and patterns
+* **`/tests`:** Test suite (to be expanded)
 
-3. **Frontend Setup (TypeScript/React/Next.js Example):**
-    * **Install Node.js Dependencies:**
+## Key Features to Understand
 
-        ```bash
-        npm install  # or yarn install
-        ```
+### AI Integration
 
-    * **Run Frontend Dev Server:**
+- Multi-provider support with fallback mechanisms
+* Context-aware documentation generation
+* Intelligent framework detection and content customization
 
-        ```bash
-        npm run dev  # or yarn dev
-        # Access frontend at http://localhost:3000
-        ```
+### Template System
 
-4. **Configuration:**
-    * Copy `.env.example` to `.env` and fill in necessary environment variables:
+- Framework-specific templates (Python/FastAPI, TypeScript/React)
+* Multiple variants per document type
+* Custom template support via configuration
 
-        ```bash
-        cp .env.example .env
-        # Edit .env with your local settings
-        ```
+### Cursor IDE Integration
 
-## Project Structure Overview
+- Slash commands for in-IDE documentation workflow
+* Zero-installation setup through Cursor rules
+* Seamless integration with existing project workflows
 
-* **`/backend`:** Contains the Python FastAPI application.
-  * `/backend/app/api`: API route definitions.
-  * `/backend/app/models`: Database models (SQLAlchemy).
-  * `/backend/app/services`: Business logic.
-* **`/frontend`:** Contains the Next.js/React frontend application.
-  * `/frontend/pages`: Next.js pages/routes.
-  * `/frontend/components`: Reusable React components.
-  * `/frontend/lib`: Utility functions and client-side logic.
-* **`/docs`:** Project documentation, including ADRs and architecture overview.
-* **`/tests`:** Unit and integration tests for both backend and frontend.
+### Diagram Generation
+
+- Mermaid-based diagrams stored as version-controlled text
+* ER diagrams from SQLAlchemy model analysis
+* Architecture diagrams from project structure analysis
+
+## Development Workflow
+
+1. **Create Feature Branch:** `git checkout -b feature/your-feature-name`
+2. **Make Changes:** Follow coding standards and write tests
+3. **Test Thoroughly:** Test both CLI and Cursor IDE integration
+4. **Update Documentation:** Update relevant docs if needed
+5. **Submit PR:** Create pull request with clear description
+6. **Address Review:** Respond to code review feedback
+7. **Merge:** Maintainer will merge approved changes
+
+## Testing Guidelines
+
+* **Unit Tests:** Test individual functions and classes
+* **Integration Tests:** Test AI provider integrations (with mocking)
+* **End-to-End Tests:** Test complete workflows (CLI commands, slash commands)
+* **Documentation Tests:** Verify generated documentation is valid
 
 ## Resources and Links
 
-* **Jira/Task Tracker:** [Link to Jira, Asana, Trello, etc.]
-* **Figma/Design Prototypes:** [Link to Figma, Sketch, Adobe XD, etc.]
-* **API Documentation:** [Link to OpenAPI/Swagger UI, Postman collection, etc.]
-* **ADR Log:** [Link to docs/adr directory index]
-* **Architecture Overview:** [Link to docs/architecture.md]
-* **Deployment Dashboard:** [Link to Vercel, Netlify, AWS Console, etc.]
+* **GitHub Repository:** [https://github.com/mgiovani/ai-cursor-init](https://github.com/mgiovani/ai-cursor-init)
+* **PyPI Package:** [https://pypi.org/project/ai-cursor-init/](https://pypi.org/project/ai-cursor-init/)
+* **Architecture Overview:** [docs/architecture.md](./architecture.md)
+* **ADR Log:** [docs/adr/](./adr/)
+* **Development Patterns:** [docs/development/](./development/)
+* **Issue Templates:** [GitHub Issues](https://github.com/mgiovani/ai-cursor-init/issues)
+
+## Contributing
+
+We welcome contributions! Please:
+
+1. **Read the Code:** Understand the existing patterns and architecture
+2. **Start Small:** Begin with bug fixes or small feature additions
+3. **Ask Questions:** Use GitHub Issues for clarification
+4. **Follow Standards:** Maintain code quality and test coverage
+5. **Document Changes:** Update relevant documentation
 
 ---
+
+*This onboarding guide is maintained using the ai-cursor-init framework itself - a living example of the tool in action.*

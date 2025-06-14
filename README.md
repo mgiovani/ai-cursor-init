@@ -3,7 +3,7 @@
 > **Stop writing documentation. Start generating it.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
 **The AI-powered documentation framework that lives inside your IDE.** Generate Architecture Decision Records, system diagrams, and onboarding guides with simple slash commands. No installations, no setup, no excuses.
@@ -29,6 +29,32 @@
 ```
 
 **Result:** Professional documentation that would take hours to write, generated in seconds.
+
+## 📸 **Visual Showcase**
+
+### 🏗️ System Architecture Documentation
+
+Auto-generated architecture overview with intelligent component mapping:
+
+![System Architecture Example](images/system-architecture-example.png)
+
+### 🚀 Onboarding Guide Generation  
+
+Context-aware onboarding documentation tailored to your project:
+
+![Onboarding Doc Example](images/onboarding-doc-example.png)
+
+### 📋 Advanced Onboarding Features
+
+Comprehensive setup guides with framework-specific instructions:
+
+![Onboarding Doc Example 2](images/onboarding-doc-example-2.png)
+
+### 🗂️ Data Model Generation
+
+Professional ER diagrams and database schema documentation:
+
+![Data Model Generation](images/data-model-generation.png)
 
 ---
 
