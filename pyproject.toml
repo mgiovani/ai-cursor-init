@@ -7,20 +7,16 @@ name = "ai-cursor-init"
 version = "0.2.0"
 description = "AI-powered documentation framework with intelligent code analysis, multi-provider AI support (OpenAI, Anthropic, Gemini), and context-aware generation of architecture docs, ADRs, and diagrams"
 readme = "README.md"
-license = {file = "LICENSE"}
+license = "MIT"
 authors = [
-    {name = "cursor-init contributors"}
+    {name = "cursor-init contributors", email = "e@mgiovani.com"}
 ]
+keywords = ["documentation", "adr", "architecture", "diagrams", "cursor", "ide", "ai"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Topic :: Documentation",
     "Topic :: Software Development :: Documentation",
@@ -28,7 +24,7 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
     "Topic :: Software Development :: Code Generators",
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.12"
 dependencies = [
     "PyYAML>=6.0",
     "openai>=1.0.0",
@@ -41,21 +37,21 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "pytest>=7.0",
-    "pytest-cov>=4.0",
-    "black>=23.0",
-    "flake8>=6.0",
-    "mypy>=1.0",
-]
-sqlalchemy = [
-    "SQLAlchemy>=1.4",
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=22.0.0",
+    "isort>=5.0.0",
+    "flake8>=5.0.0",
+    "mypy>=1.0.0",
+    "build>=0.10.0",
+    "twine>=4.0.0",
 ]
 
 [project.urls]
 Homepage = "https://github.com/mgiovani/ai-cursor-init"
 Repository = "https://github.com/mgiovani/ai-cursor-init"
 Issues = "https://github.com/mgiovani/ai-cursor-init/issues"
-Documentation = "https://github.com/mgiovani/ai-cursor-init/blob/main/README.md"
+Documentation = "https://github.com/mgiovani/ai-cursor-init#readme"
 
 [project.scripts]
 ai-cursor-init = "cursor_init.__main__:main"
@@ -64,20 +60,18 @@ ai-cursor-init = "cursor_init.__main__:main"
 where = ["cli"]
 
 [tool.setuptools.package-data]
-cursor_init = ["py.typed"]
+cursor_init = ["templates/**/*"]
 
 [tool.black]
 line-length = 88
-target-version = ['py38']
+target-version = ['py312']
+
+[tool.isort]
+profile = "black"
+line_length = 88
 
 [tool.mypy]
-python_version = "3.8"
+python_version = "3.12"
 warn_return_any = true
 warn_unused_configs = true
-disallow_untyped_defs = true
-
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-python_files = ["test_*.py"]
-python_classes = ["Test*"]
-python_functions = ["test_*"] 
+disallow_untyped_defs = true 

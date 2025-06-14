@@ -132,7 +132,7 @@ def init_ai_config() -> str:
     print('=====================')
     print()
     print('Available providers:')
-    print('1. OpenAI (GPT-4)')
+    print('1. OpenAI (o3)')
     print('2. Anthropic (Claude)')
     print('3. Google Gemini')
     print()

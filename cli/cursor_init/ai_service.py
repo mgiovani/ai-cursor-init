@@ -101,7 +101,7 @@ class AIService:
                 full_prompt,
                 generation_config=genai.types.GenerationConfig(
                     temperature=self.config.temperature,
-                    max_output_tokens=self.config.max_tokens,
+                    max_output_tokens=self.config.max_tokens
                 )
             )
             return response.text

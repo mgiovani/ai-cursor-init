@@ -23,7 +23,7 @@ The `ai-cursor-init` CLI tool has been completely refactored to use AI for intel
 ### 1. Install Dependencies
 
 ```bash
-pip install openai anthropic python-dotenv rich tiktoken PyYAML
+pip install openai anthropic google-generativeai python-dotenv rich tiktoken PyYAML
 ```
 
 ### 2. Configure AI Provider
@@ -156,7 +156,7 @@ The AI system analyzes multiple sources:
 
 | Provider | Models | Features |
 |----------|---------|----------|
-| **OpenAI** | o3, o4-mini | Advanced reasoning and problem-solving |
+| **OpenAI** | o3, GPT-4o | Advanced reasoning and problem-solving |
 | **Anthropic** | Claude 4 Sonnet | Excellent for code analysis |
 | **Google Gemini** | Gemini 2.5 Pro | Powerful multimodal AI with latest features |
 
