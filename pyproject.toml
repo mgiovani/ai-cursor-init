@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "cursor-init"
+name = "ai-cursor-init"
 version = "0.2.0"
 description = "AI-powered documentation framework with intelligent code analysis, multi-provider AI support (OpenAI, Anthropic, Azure), and context-aware generation of architecture docs, ADRs, and diagrams"
 readme = "README.md"
@@ -57,7 +57,7 @@ Issues = "https://github.com/mgiovani/ai-cursor-init/issues"
 Documentation = "https://github.com/mgiovani/ai-cursor-init/blob/main/README.md"
 
 [project.scripts]
-cursor-init = "cursor_init.__main__:main"
+ai-cursor-init = "cursor_init.__main__:main"
 
 [tool.setuptools.packages.find]
 where = ["cli"]
