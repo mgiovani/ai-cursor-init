@@ -69,8 +69,8 @@ class CursorInitAIConfig:
             return AIProvider.ANTHROPIC
         elif os.getenv('OPENAI_API_KEY'):
             return AIProvider.OPENAI
-        elif os.getenv('AZURE_OPENAI_API_KEY') and os.getenv('AZURE_OPENAI_ENDPOINT'):
-            return AIProvider.AZURE_OPENAI
+        elif os.getenv('GEMINI_API_KEY'):
+            return AIProvider.GEMINI
         else:
             # Default to OpenAI (will show helpful error if no key)
             return AIProvider.OPENAI
@@ -101,29 +101,27 @@ class CursorInitAIConfig:
     def get_example_config(self) -> str:
         """Return an example configuration."""
         return '''ai:
-  preferred_provider: "anthropic"  # or "openai", "azure_openai"
+  preferred_provider: "anthropic"  # or "openai", "gemini"
   
   anthropic:
-    model: "claude-3-5-sonnet-20241022"
+    model: "claude-4-sonnet"
     temperature: 0.3
     max_tokens: 4000
   
   openai:
-    model: "gpt-4o"
+    model: "o3"
     temperature: 0.3
     max_tokens: 4000
   
-  azure_openai:
-    model: "gpt-4"
-    base_url: "https://your-resource.openai.azure.com/"
+  gemini:
+    model: "gemini-2.5-pro"
     temperature: 0.3
     max_tokens: 4000
 
 # Environment variables (recommended for API keys):
 # ANTHROPIC_API_KEY=your_anthropic_key
 # OPENAI_API_KEY=your_openai_key
-# AZURE_OPENAI_API_KEY=your_azure_key
-# AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com/
+# GEMINI_API_KEY=your_gemini_key
 '''
 
 def init_ai_config() -> str:
@@ -134,9 +132,9 @@ def init_ai_config() -> str:
     print('=====================')
     print()
     print('Available providers:')
-    print('1. OpenAI (GPT-4)')
+    print('1. OpenAI (o3)')
     print('2. Anthropic (Claude)')
-    print('3. Azure OpenAI')
+    print('3. Google Gemini')
     print()
     
     choice = input('Select provider (1-3): ').strip()
@@ -145,24 +143,22 @@ def init_ai_config() -> str:
         provider = 'openai'
         print('\nSet your OpenAI API key:')
         print('export OPENAI_API_KEY=your_key_here')
-        model = input('Model (default: gpt-4o): ').strip() or 'gpt-4o'
+        model = input('Model (default: o3): ').strip() or 'o3'
         config.configure_provider(provider, model=model)
         
     elif choice == '2':
         provider = 'anthropic'
         print('\nSet your Anthropic API key:')
         print('export ANTHROPIC_API_KEY=your_key_here')
-        model = input('Model (default: claude-3-5-sonnet-20241022): ').strip() or 'claude-3-5-sonnet-20241022'
+        model = input('Model (default: claude-4-sonnet): ').strip() or 'claude-4-sonnet'
         config.configure_provider(provider, model=model)
         
     elif choice == '3':
-        provider = 'azure_openai'
-        print('\nSet your Azure OpenAI credentials:')
-        print('export AZURE_OPENAI_API_KEY=your_key_here')
-        print('export AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com/')
-        endpoint = input('Azure OpenAI Endpoint: ').strip()
-        model = input('Model (default: gpt-4): ').strip() or 'gpt-4'
-        config.configure_provider(provider, base_url=endpoint, model=model)
+        provider = 'gemini'
+        print('\nSet your Gemini API key:')
+        print('export GEMINI_API_KEY=your_key_here')
+        model = input('Model (default: gemini-2.5-pro): ').strip() or 'gemini-2.5-pro'
+        config.configure_provider(provider, model=model)
         
     else:
         print('Invalid choice. Configuration cancelled.')
