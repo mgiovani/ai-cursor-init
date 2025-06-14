@@ -157,6 +157,7 @@ def init_ai_config() -> str:
         provider = 'gemini'
         print('\nSet your Gemini API key:')
         print('export GEMINI_API_KEY=your_key_here')
+        print('Get your API key from: https://makersuite.google.com/app/apikey')
         model = input('Model (default: gemini-2.5-pro): ').strip() or 'gemini-2.5-pro'
         config.configure_provider(provider, model=model)
         

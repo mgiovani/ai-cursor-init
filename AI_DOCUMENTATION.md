@@ -156,9 +156,9 @@ The AI system analyzes multiple sources:
 
 | Provider | Models | Features |
 |----------|---------|----------|
-| **OpenAI** | o3, GPT-4o | Fast, general-purpose |
+| **OpenAI** | o3, GPT-4o | Advanced reasoning and problem-solving |
 | **Anthropic** | Claude 4 Sonnet | Excellent for code analysis |
-| **Google Gemini** | Gemini 2.5 Pro | Multimodal capabilities |
+| **Google Gemini** | Gemini 2.5 Pro | Powerful multimodal AI with latest features |
 
 ## 🔄 Migration from Template-Based System
 

@@ -99,7 +99,7 @@ class AIService:
             
             response = model.generate_content(
                 full_prompt,
-                generation_config=client.types.GenerationConfig(
+                generation_config=genai.types.GenerationConfig(
                     temperature=self.config.temperature,
                     max_output_tokens=self.config.max_tokens
                 )

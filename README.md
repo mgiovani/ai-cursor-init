@@ -57,7 +57,7 @@ cp ai-cursor-init/.cursor-init.example.yaml your-project/.cursor-init.yaml
 ```bash
 pip install ai-cursor-init
 
-# Configure AI provider (OpenAI, Anthropic, or Azure OpenAI)
+# Configure AI provider (OpenAI, Anthropic, or Google Gemini)
 ai-cursor-init configure
 
 # Generate intelligent documentation with AI
@@ -65,6 +65,8 @@ ai-cursor-init init  # AI-powered docs generation
 ai-cursor-init adr "Database Migration Strategy"  # Context-aware ADRs
 ai-cursor-init update --apply  # Smart documentation updates
 ```
+
+📖 **[Complete AI CLI Documentation →](AI_DOCUMENTATION.md)**
 
 ---
 
