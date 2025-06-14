@@ -104,17 +104,17 @@ class CursorInitAIConfig:
   preferred_provider: "anthropic"  # or "openai", "gemini"
   
   anthropic:
-    model: "claude-4-sonnet-20250514"
+    model: "claude-4-sonnet"
     temperature: 0.3
     max_tokens: 4000
   
   openai:
-    model: "gpt-4o-2024-11-20"
+    model: "o3"
     temperature: 0.3
     max_tokens: 4000
   
   gemini:
-    model: "gemini-2.5-pro-preview-06-05"
+    model: "gemini-2.5-pro"
     temperature: 0.3
     max_tokens: 4000
 
@@ -143,14 +143,14 @@ def init_ai_config() -> str:
         provider = 'openai'
         print('\nSet your OpenAI API key:')
         print('export OPENAI_API_KEY=your_key_here')
-        model = input('Model (default: gpt-4o-2024-11-20): ').strip() or 'gpt-4o-2024-11-20'
+        model = input('Model (default: o3): ').strip() or 'o3'
         config.configure_provider(provider, model=model)
         
     elif choice == '2':
         provider = 'anthropic'
         print('\nSet your Anthropic API key:')
         print('export ANTHROPIC_API_KEY=your_key_here')
-        model = input('Model (default: claude-4-sonnet-20250514): ').strip() or 'claude-4-sonnet-20250514'
+        model = input('Model (default: claude-4-sonnet): ').strip() or 'claude-4-sonnet'
         config.configure_provider(provider, model=model)
         
     elif choice == '3':
@@ -158,7 +158,7 @@ def init_ai_config() -> str:
         print('\nSet your Gemini API key:')
         print('export GEMINI_API_KEY=your_key_here')
         print('Get your API key from: https://makersuite.google.com/app/apikey')
-        model = input('Model (default: gemini-2.5-pro-preview-06-05): ').strip() or 'gemini-2.5-pro-preview-06-05'
+        model = input('Model (default: gemini-2.5-pro): ').strip() or 'gemini-2.5-pro'
         config.configure_provider(provider, model=model)
         
     else:
