@@ -57,7 +57,7 @@ cp ai-cursor-init/.cursor-init.example.yaml your-project/.cursor-init.yaml
 ```bash
 pip install ai-cursor-init
 
-# Configure AI provider (OpenAI, Anthropic, or Azure OpenAI)
+# Configure AI provider (OpenAI, Anthropic, or Google Gemini)
 ai-cursor-init configure
 
 # Generate intelligent documentation with AI

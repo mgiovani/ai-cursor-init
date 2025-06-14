@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ai-cursor-init"
-version = "0.2.0"
-description = "AI-powered documentation framework with intelligent code analysis, multi-provider AI support (OpenAI, Anthropic, Azure), and context-aware generation of architecture docs, ADRs, and diagrams"
+version = "0.3.0"
+description = "AI-powered documentation framework with intelligent code analysis, multi-provider AI support (OpenAI, Anthropic, Gemini), and context-aware generation of architecture docs, ADRs, and diagrams"
 readme = "README.md"
 license = {file = "LICENSE"}
 authors = [
@@ -33,6 +33,7 @@ dependencies = [
     "PyYAML>=6.0",
     "openai>=1.0.0",
     "anthropic>=0.25.0",
+    "google-generativeai>=0.8.0",
     "python-dotenv>=1.0.0",
     "rich>=13.0.0",
     "tiktoken>=0.6.0",

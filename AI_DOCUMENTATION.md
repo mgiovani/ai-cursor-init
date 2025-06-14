@@ -8,7 +8,7 @@ The `ai-cursor-init` CLI tool has been completely refactored to use AI for intel
 
 - **Context-Aware**: Analyzes your `.cursor` rules and project structure
 - **Intelligent Content**: Generates documentation that reflects your actual codebase
-- **Multiple Providers**: Support for OpenAI, Anthropic Claude, and Azure OpenAI
+- **Multiple Providers**: Support for OpenAI, Anthropic Claude, and Google Gemini
 - **Fallback Support**: Graceful degradation to basic templates if AI fails
 
 ### Enhanced Features
@@ -37,8 +37,7 @@ export OPENAI_API_KEY=your_openai_key
 # OR
 export ANTHROPIC_API_KEY=your_anthropic_key
 # OR
-export AZURE_OPENAI_API_KEY=your_azure_key
-export AZURE_OPENAI_ENDPOINT=https://your-resource.openai.azure.com/
+export GEMINI_API_KEY=your_gemini_key
 ```
 
 ### 3. Optional: Create Configuration File
@@ -47,7 +46,7 @@ Create `.cursor-init.yaml` in your project root:
 
 ```yaml
 ai:
-  preferred_provider: "anthropic"  # or "openai", "azure_openai"
+  preferred_provider: "anthropic"  # or "openai", "gemini"
   
   anthropic:
     model: "claude-3-5-sonnet-20241022"
@@ -55,7 +54,12 @@ ai:
     max_tokens: 4000
   
   openai:
-    model: "gpt-4o"
+    model: "gpt-4o-2024-11-20"
+    temperature: 0.3
+    max_tokens: 4000
+  
+  gemini:
+    model: "gemini-1.5-pro-latest"
     temperature: 0.3
     max_tokens: 4000
 ```
@@ -154,7 +158,7 @@ The AI system analyzes multiple sources:
 |----------|---------|----------|
 | **OpenAI** | GPT-4o, GPT-4 | Fast, general-purpose |
 | **Anthropic** | Claude 3.5 Sonnet | Excellent for code analysis |
-| **Azure OpenAI** | GPT-4 | Enterprise-ready with custom endpoints |
+| **Google Gemini** | Gemini 1.5 Pro | Powerful multimodal AI with latest features |
 
 ## 🔄 Migration from Template-Based System
 
