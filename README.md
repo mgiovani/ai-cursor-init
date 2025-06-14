@@ -55,15 +55,15 @@ cp ai-cursor-init/.cursor-init.example.yaml your-project/.cursor-init.yaml
 ### Option 2: AI-Powered CLI for Power Users
 
 ```bash
-pip install cursor-init
+pip install ai-cursor-init
 
 # Configure AI provider (OpenAI, Anthropic, or Azure OpenAI)
-cursor-init configure
+ai-cursor-init configure
 
 # Generate intelligent documentation with AI
-cursor-init init  # AI-powered docs generation
-cursor-init adr "Database Migration Strategy"  # Context-aware ADRs
-cursor-init update --apply  # Smart documentation updates
+ai-cursor-init init  # AI-powered docs generation
+ai-cursor-init adr "Database Migration Strategy"  # Context-aware ADRs
+ai-cursor-init update --apply  # Smart documentation updates
 ```
 
 ---
