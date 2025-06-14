@@ -3,18 +3,18 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "cursor-init"
+name = "ai-cursor-init"
 version = "0.1.0"
 description = "AI-driven in-IDE documentation framework for generating and maintaining project documentation, diagrams, and Architecture Decision Records (ADRs)"
 readme = "README.md"
-license = {file = "LICENSE"}
+license = "MIT"
 authors = [
-    {name = "cursor-init contributors"}
+    {name = "cursor-init contributors", email = "e@mgiovani.com"}
 ]
+keywords = ["documentation", "adr", "architecture", "diagrams", "cursor", "ide", "ai"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.8",
@@ -28,48 +28,48 @@ classifiers = [
 ]
 requires-python = ">=3.8"
 dependencies = [
-    "PyYAML>=6.0",
+    "click>=8.0.0",
+    "pyyaml>=6.0",
+    "jinja2>=3.0.0",
 ]
 
 [project.optional-dependencies]
 dev = [
-    "pytest>=7.0",
-    "pytest-cov>=4.0",
-    "black>=23.0",
-    "flake8>=6.0",
-    "mypy>=1.0",
-]
-sqlalchemy = [
-    "SQLAlchemy>=1.4",
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=22.0.0",
+    "isort>=5.0.0",
+    "flake8>=5.0.0",
+    "mypy>=1.0.0",
+    "build>=0.10.0",
+    "twine>=4.0.0",
 ]
 
 [project.urls]
 Homepage = "https://github.com/mgiovani/ai-cursor-init"
 Repository = "https://github.com/mgiovani/ai-cursor-init"
 Issues = "https://github.com/mgiovani/ai-cursor-init/issues"
-Documentation = "https://github.com/mgiovani/ai-cursor-init/blob/main/README.md"
+Documentation = "https://github.com/mgiovani/ai-cursor-init#readme"
 
 [project.scripts]
-cursor-init = "cursor_init.__main__:main"
+ai-cursor-init = "cursor_init.__main__:main"
 
 [tool.setuptools.packages.find]
 where = ["cli"]
 
 [tool.setuptools.package-data]
-cursor_init = ["py.typed"]
+cursor_init = ["templates/**/*"]
 
 [tool.black]
 line-length = 88
 target-version = ['py38']
 
+[tool.isort]
+profile = "black"
+line_length = 88
+
 [tool.mypy]
 python_version = "3.8"
 warn_return_any = true
 warn_unused_configs = true
-disallow_untyped_defs = true
-
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-python_files = ["test_*.py"]
-python_classes = ["Test*"]
-python_functions = ["test_*"] 
+disallow_untyped_defs = true 
