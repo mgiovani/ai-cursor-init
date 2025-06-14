@@ -16,11 +16,16 @@ try:
 except ImportError:
     anthropic = None
 
+try:
+    import google.generativeai as genai
+except ImportError:
+    genai = None
+
 
 class AIProvider(Enum):
     OPENAI = 'openai'
     ANTHROPIC = 'anthropic'
-    AZURE_OPENAI = 'azure_openai'
+    GEMINI = 'gemini'
 
 
 @dataclass
@@ -59,18 +64,14 @@ class AIService:
                 raise ValueError('Anthropic API key not found. Set ANTHROPIC_API_KEY environment variable.')
             self._client = anthropic.Anthropic(api_key=api_key)
             
-        elif self.config.provider == AIProvider.AZURE_OPENAI:
-            if not openai:
-                raise ImportError('OpenAI library not installed. Install with: pip install openai')
-            api_key = self.config.api_key or os.getenv('AZURE_OPENAI_API_KEY')
-            endpoint = self.config.base_url or os.getenv('AZURE_OPENAI_ENDPOINT')
-            if not api_key or not endpoint:
-                raise ValueError('Azure OpenAI credentials not found. Set AZURE_OPENAI_API_KEY and AZURE_OPENAI_ENDPOINT environment variables.')
-            self._client = openai.AzureOpenAI(
-                api_key=api_key,
-                azure_endpoint=endpoint,
-                api_version='2024-02-01'
-            )
+        elif self.config.provider == AIProvider.GEMINI:
+            if not genai:
+                raise ImportError('Google Generative AI library not installed. Install with: pip install google-generativeai')
+            api_key = self.config.api_key or os.getenv('GEMINI_API_KEY')
+            if not api_key:
+                raise ValueError('Gemini API key not found. Set GEMINI_API_KEY environment variable.')
+            genai.configure(api_key=api_key)
+            self._client = genai
             
         return self._client
 
@@ -79,7 +80,7 @@ class AIService:
         
         if self.config.provider == AIProvider.ANTHROPIC:
             response = client.messages.create(
-                model=self.config.model or 'claude-3-5-sonnet-20241022',
+                model=self.config.model or 'claude-4-sonnet',
                 max_tokens=self.config.max_tokens,
                 temperature=self.config.temperature,
                 system=system_prompt or '',
@@ -87,14 +88,32 @@ class AIService:
             )
             return response.content[0].text
             
-        else:  # OpenAI or Azure OpenAI
+        elif self.config.provider == AIProvider.GEMINI:
+            model_name = self.config.model or 'gemini-2.5-pro'
+            model = client.GenerativeModel(model_name)
+            
+            # Combine system prompt and user prompt for Gemini
+            full_prompt = prompt
+            if system_prompt:
+                full_prompt = f"{system_prompt}\n\n{prompt}"
+            
+            response = model.generate_content(
+                full_prompt,
+                generation_config=client.types.GenerationConfig(
+                    temperature=self.config.temperature,
+                    max_output_tokens=self.config.max_tokens
+                )
+            )
+            return response.text
+            
+        else:  # OpenAI
             messages = []
             if system_prompt:
                 messages.append({'role': 'system', 'content': system_prompt})
             messages.append({'role': 'user', 'content': prompt})
             
             response = client.chat.completions.create(
-                model=self.config.model or 'gpt-4o',
+                model=self.config.model or 'o3',
                 messages=messages,
                 temperature=self.config.temperature,
                 max_tokens=self.config.max_tokens
