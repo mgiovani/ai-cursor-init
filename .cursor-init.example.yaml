@@ -4,7 +4,7 @@
 # Template preferences - choose your preferred style for each document type
 templates:
   # ADR (Architecture Decision Record) templates
-  adr: "nygard_style" # Options: nygard_style, full, lightweight
+  adr: "nygard_style" # Options: nygard_style, full, lightweight, madr
 
   # Architecture documentation templates
   architecture: "google_style" # Options: google_style, enterprise, arc42
