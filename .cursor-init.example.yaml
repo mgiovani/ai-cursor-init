@@ -29,7 +29,7 @@ templates:
   #
   # - simple: Basic ER diagram with entity overview (~44 lines)
   # - comprehensive: Detailed data model with full database documentation (~263 lines)
-  data_model: "simple"
+  data_model: "comprehensive"
 
 # Custom template paths - add your own templates
 custom_template_paths:
