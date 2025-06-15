@@ -1,277 +1,252 @@
 import os
 import re
+from .ai_service import get_default_ai_service, DocumentationGenerator
+from rich.console import Console
 
+console = Console()
+
+# Keep the legacy parsing functions for backward compatibility but they won't be used
 def _parse_sqlalchemy_models(project_root: str) -> dict:
-    """
-    Parses SQLAlchemy models to extract table and relationship information.
-    This is a simplified implementation. A robust solution would involve
-    more sophisticated AST parsing or using libraries like `eralchemy`.
-    """
-    tables = {}
-    relationships = []
-
-    for root, _, files in os.walk(project_root):
-        for file in files:
-            if file.endswith(".py"):
-                file_path = os.path.join(root, file)
-                try:
-                    with open(file_path, "r", errors="ignore") as f:
-                        content = f.read()
-
-                    # Check if file contains SQLAlchemy imports
-                    if not any(keyword in content for keyword in ["from sqlalchemy", "import sqlalchemy", "declarative_base", "Base"]):
-                        continue
-
-                    # Look for classes that inherit from Base or have __tablename__
-                    class_pattern = r"class\s+(\w+)\s*\([^)]*Base[^)]*\)\s*:(.*?)(?=\nclass|\Z)"
-                    class_matches = re.findall(class_pattern, content, re.DOTALL)
-                    
-                    # Also look for classes with __tablename__ attribute
-                    tablename_pattern = r"class\s+(\w+)\s*\([^)]*\)\s*:(.*?__tablename__\s*=\s*['\"](\w+)['\"].*?)(?=\nclass|\Z)"
-                    tablename_matches = re.findall(tablename_pattern, content, re.DOTALL)
-                    
-                    all_matches = []
-                    for class_name, class_content in class_matches:
-                        # Extract table name from __tablename__ or use class name
-                        tablename_match = re.search(r"__tablename__\s*=\s*['\"](\w+)['\"]", class_content)
-                        table_name = tablename_match.group(1) if tablename_match else class_name.lower()
-                        all_matches.append((class_name, class_content, table_name))
-                    
-                    for class_name, class_content, table_name in tablename_matches:
-                        if not any(match[0] == class_name for match in all_matches):
-                            all_matches.append((class_name, class_content, table_name))
-
-                    for class_name, class_content, table_name in all_matches:
-                        tables[table_name] = {"columns": [], "pk": [], "fk": []}
-
-                        # Extract columns (looks for ' = Column(')
-                        # Improved regex to handle nested parentheses properly
-                        column_pattern = r"(\w+)\s*=\s*Column\(((?:[^()]|\([^()]*\))*)\)"
-                        column_matches = re.findall(column_pattern, class_content)
-                        for col_name, col_args in column_matches:
-                            col_type = "string"  # Default type
-                            if "Integer" in col_args: 
-                                col_type = "int"
-                            elif "String" in col_args: 
-                                col_type = "string"
-                            elif "Boolean" in col_args: 
-                                col_type = "bool"
-                            elif "DateTime" in col_args: 
-                                col_type = "datetime"
-
-                            tables[table_name]["columns"].append(f"{col_name} {col_type}")
-
-                            if "primary_key=True" in col_args:
-                                tables[table_name]["pk"].append(col_name)
-
-                            # Basic foreign key detection
-                            if "ForeignKey(" in col_args:
-                                fk_match = re.search(r"ForeignKey\(['\"](\w+)\.(\w+)['\"]\)", col_args)
-                                if fk_match:
-                                    target_table = fk_match.group(1)
-                                    relationships.append(f"{table_name} ||--o{{ {target_table} : references")
-
-                except Exception as e:
-                    # For debugging, you might want to print the error
-                    pass
-    
-    return {"tables": tables, "relationships": relationships}
+    """Legacy function - kept for backward compatibility but not used in AI-powered generation."""
+    return {"tables": {}, "relationships": []}
 
 def _analyze_project_structure(project_root: str = ".") -> dict:
-    """
-    Analyzes the project structure to identify main components and their relationships.
-    """
-    components = {}
-    
-    # Get top-level directories, excluding hidden and common non-component dirs
-    exclude_dirs = {'.git', '.github', '__pycache__', '.pytest_cache', 'node_modules', '.venv', 'venv', '.DS_Store'}
-    
-    try:
-        items = os.listdir(project_root)
-        for item in items:
-            item_path = os.path.join(project_root, item)
-            if os.path.isdir(item_path) and item not in exclude_dirs and not item.startswith('.'):
-                components[item] = _classify_component(item, item_path)
-    except Exception:
-        pass
-    
-    return components
+    """Legacy function - kept for backward compatibility but not used in AI-powered generation."""
+    return {}
 
 def _classify_component(dir_name: str, dir_path: str) -> dict:
+    """Legacy function - kept for backward compatibility but not used in AI-powered generation."""
+    return {"type": "module", "description": ""}
+
+def _analyze_database_models_comprehensive(project_root: str) -> str:
     """
-    Classifies a directory component based on its name and contents.
+    Comprehensive analysis of database models in the project.
     """
-    component_type = "module"
-    description = ""
+    from pathlib import Path
     
-    # Classify based on directory name patterns
-    if dir_name in ['docs', 'documentation']:
-        component_type = "documentation"
-        description = "Project documentation"
-    elif dir_name in ['cli', 'cmd', 'commands']:
-        component_type = "cli"
-        description = "Command-line interface"
-    elif dir_name in ['templates', 'template']:
-        component_type = "templates"
-        description = "Template files"
-    elif dir_name in ['src', 'source']:
-        component_type = "source"
-        description = "Source code"
-    elif dir_name in ['tests', 'test']:
-        component_type = "tests"
-        description = "Test files"
-    elif dir_name in ['config', 'configuration']:
-        component_type = "config"
-        description = "Configuration"
-    elif dir_name in ['api', 'apis']:
-        component_type = "api"
-        description = "API layer"
-    elif dir_name in ['frontend', 'ui', 'web']:
-        component_type = "frontend"
-        description = "Frontend/UI"
-    elif dir_name in ['backend', 'server']:
-        component_type = "backend"
-        description = "Backend services"
-    elif dir_name in ['database', 'db', 'models']:
-        component_type = "database"
-        description = "Database layer"
+    root_path = Path(project_root)
+    model_analysis = []
+    
+    # Look for database model files with expanded patterns
+    model_patterns = [
+        '**/*model*.py',      # Python models
+        '**/*schema*.py',     # Schema files
+        '**/*entity*.py',     # Entity files
+        '**/*table*.py',      # Table files
+        '**/*models*.ts',     # TypeScript models
+        '**/*schema*.ts',     # TypeScript schema
+        '**/*entity*.ts',     # TypeScript entities
+        '**/migration*.py',   # Migration files
+        '**/migration*.sql',  # SQL migrations
+        '**/*.sql',          # SQL files
+    ]
+    
+    for pattern in model_patterns:
+        for file_path in root_path.glob(pattern):
+            if file_path.is_file():
+                try:
+                    content = file_path.read_text(encoding='utf-8')
+                    
+                    # Check for database-related keywords
+                    db_keywords = [
+                        'sqlalchemy', 'django.db', 'model', 'table', 'column', 
+                        'primarykey', 'foreignkey', 'relationship', 'backref',
+                        'create table', 'alter table', 'schema', 'entity',
+                        'sequelize', 'typeorm', 'prisma', 'knex'
+                    ]
+                    
+                    if any(keyword in content.lower() for keyword in db_keywords):
+                        # Include more context for better AI analysis
+                        model_analysis.append(f'''
+## {file_path.name}
+**Path:** {file_path.relative_to(root_path)}
+**Size:** {len(content)} characters
+
+```{file_path.suffix[1:] if file_path.suffix else 'text'}
+{content[:2000]}{"..." if len(content) > 2000 else ""}
+```
+''')
+                except Exception:
+                    continue
+    
+    if model_analysis:
+        return '\n'.join(model_analysis)
     else:
-        # Try to infer from contents
-        try:
-            files = os.listdir(dir_path)
-            if any(f.endswith('.py') for f in files):
-                component_type = "python_module"
-                description = f"Python module ({dir_name})"
-            elif any(f.endswith(('.js', '.ts', '.jsx', '.tsx')) for f in files):
-                component_type = "js_module"
-                description = f"JavaScript/TypeScript module ({dir_name})"
-            elif any(f.endswith('.md') for f in files):
-                component_type = "documentation"
-                description = f"Documentation ({dir_name})"
-            else:
-                description = f"Project component ({dir_name})"
-        except Exception:
-            description = f"Project component ({dir_name})"
-    
-    return {"type": component_type, "description": description}
+        return '''No database models found in the project. This analysis searched for:
+- SQLAlchemy models (Python)
+- Django models (Python)
+- TypeORM entities (TypeScript)
+- Sequelize models (JavaScript/TypeScript)
+- Prisma schema files
+- SQL migration files
+- Schema definition files
+
+The project appears to not have explicit database schema definitions, or they may be in a format not covered by this analysis.'''
 
 def generate_architecture_diagram(project_root: str = ".") -> str:
     """
-    Generates a Mermaid architecture diagram based on the project's top-level structure.
+    Generates an AI-powered Mermaid architecture diagram based on the project's structure and code analysis.
 
     Args:
         project_root: The root directory of the project.
 
     Returns:
-        A string containing the Mermaid architecture diagram.
+        A string containing the result message.
     """
-    components = _analyze_project_structure(project_root)
-    
-    mermaid_diagram = "```mermaid\ngraph TD\n"
-    
-    if not components:
-        mermaid_diagram += "    %% No major components detected.\n"
-        mermaid_diagram += "    %% Add your architecture components here\n"
-        mermaid_diagram += "    %% Example:\n"
-        mermaid_diagram += "    %%   Frontend[\"Frontend (React)\"]\n"
-        mermaid_diagram += "    %%   Backend[\"Backend (FastAPI)\"]\n"
-        mermaid_diagram += "    %%   Database[\"Database (PostgreSQL)\"]\n"
-        mermaid_diagram += "    %%   Frontend --> Backend\n"
-        mermaid_diagram += "    %%   Backend --> Database\n"
-    else:
-        # Add nodes for each component
-        for comp_name, comp_info in components.items():
-            safe_name = comp_name.replace('-', '_').replace('.', '_')
-            description = comp_info['description']
-            mermaid_diagram += f"    {safe_name}[\"{description}\"]\n"
+    try:
+        console.print('[cyan]Analyzing project structure with AI...[/cyan]')
         
-        # Add basic relationships based on common patterns
-        comp_names = list(components.keys())
-        safe_names = {name: name.replace('-', '_').replace('.', '_') for name in comp_names}
+        # Initialize AI service
+        ai_service = get_default_ai_service()
+        doc_generator = DocumentationGenerator(ai_service)
         
-        # Common architectural patterns
-        if 'frontend' in comp_names and 'backend' in comp_names:
-            mermaid_diagram += f"    {safe_names['frontend']} --> {safe_names['backend']}\n"
+        # Get comprehensive project analysis
+        cursor_rules = doc_generator._read_cursor_rules(project_root)
+        project_structure = doc_generator._analyze_project_structure(project_root)
         
-        if 'cli' in comp_names and any(name in comp_names for name in ['src', 'backend']):
-            target = 'src' if 'src' in comp_names else 'backend'
-            mermaid_diagram += f"    {safe_names['cli']} --> {safe_names[target]}\n"
+        system_prompt = '''You are an expert system architect. Generate a comprehensive Mermaid architecture diagram that visualizes the system's components and their relationships.
+
+Your output should be a complete markdown document with:
+1. A title and description
+2. A properly formatted Mermaid diagram using `graph TD` syntax
+3. Meaningful component names and relationships
+4. Proper Mermaid syntax (avoid special characters, use quotes for labels)
+
+Focus on the actual architecture revealed by the project structure, dependencies, and code organization.'''
+
+        user_prompt = f'''Generate an architecture diagram for this project:
+
+## Cursor Rules Context:
+{cursor_rules}
+
+## Project Analysis:
+{str(project_structure)}
+
+Create a comprehensive architecture diagram that shows:
+- Main system components
+- Data flow between components
+- External dependencies
+- Technology stack relationships
+
+Use proper Mermaid syntax and make it visually clear and informative.'''
+
+        # Generate AI-powered diagram
+        diagram_content = doc_generator.ai_service.generate_completion(user_prompt, system_prompt)
         
-        if any(name in comp_names for name in ['backend', 'src']) and any(name in comp_names for name in ['database', 'models']):
-            source = 'backend' if 'backend' in comp_names else 'src'
-            target = 'database' if 'database' in comp_names else 'models'
-            mermaid_diagram += f"    {safe_names[source]} --> {safe_names[target]}\n"
+        # Save to docs/architecture.md or update existing file
+        docs_dir = "docs"
+        os.makedirs(docs_dir, exist_ok=True)
+        arch_file = os.path.join(docs_dir, "architecture.md")
         
-        if 'docs' in comp_names and 'templates' in comp_names:
-            mermaid_diagram += f"    {safe_names['templates']} --> {safe_names['docs']}\n"
-    
-    mermaid_diagram += "```\n"
-    
-    return mermaid_diagram
+        # If architecture.md exists, append the diagram section
+        if os.path.exists(arch_file):
+            with open(arch_file, 'r') as f:
+                existing_content = f.read()
+            
+            # Check if it already has a diagram section
+            if '## Architecture Diagram' not in existing_content and '```mermaid' not in existing_content:
+                # Append the diagram
+                updated_content = existing_content + '\n\n## Architecture Diagram\n\n' + diagram_content
+                with open(arch_file, 'w') as f:
+                    f.write(updated_content)
+                return f"Successfully added architecture diagram to existing {arch_file}"
+            else:
+                # Replace existing diagram section
+                # Replace from ## Architecture Diagram to the end or next ## section
+                pattern = r'(## Architecture Diagram.*?)(?=\n## |\Z)'
+                if re.search(pattern, existing_content, re.DOTALL):
+                    updated_content = re.sub(pattern, f'## Architecture Diagram\n\n{diagram_content}', existing_content, flags=re.DOTALL)
+                else:
+                    # Replace mermaid diagram
+                    pattern = r'```mermaid.*?```'
+                    if re.search(pattern, existing_content, re.DOTALL):
+                        updated_content = re.sub(pattern, diagram_content, existing_content, flags=re.DOTALL)
+                    else:
+                        updated_content = existing_content + '\n\n## Architecture Diagram\n\n' + diagram_content
+                
+                with open(arch_file, 'w') as f:
+                    f.write(updated_content)
+                return f"Successfully updated architecture diagram in {arch_file}"
+        else:
+            # Create new file with full architecture documentation
+            full_content = doc_generator.generate_architecture_docs(project_root)
+            with open(arch_file, 'w') as f:
+                f.write(full_content)
+            return f"Successfully generated architecture documentation with diagram in {arch_file}"
+            
+    except Exception as e:
+        error_msg = f"AI-powered architecture diagram generation failed: {str(e)}"
+        console.print(f"[red]✗[/red] {error_msg}")
+        return error_msg
 
 def generate_er_diagram(project_root: str = ".") -> str:
     """
-    Generates a Mermaid ER diagram from SQLAlchemy models found in the project.
+    Generates an AI-powered Mermaid ER diagram by analyzing the project's database models and schema.
 
     Args:
         project_root: The root directory of the project.
 
     Returns:
-        A string containing the Mermaid ER diagram, wrapped in a markdown code block.
+        A string containing the result message.
     """
-    er_data = _parse_sqlalchemy_models(project_root)
-    tables = er_data["tables"]
-    relationships = er_data["relationships"]
+    try:
+        console.print('[cyan]Analyzing database models with AI...[/cyan]')
+        
+        # Initialize AI service
+        ai_service = get_default_ai_service()
+        doc_generator = DocumentationGenerator(ai_service)
+        
+        # Get comprehensive project analysis
+        cursor_rules = doc_generator._read_cursor_rules(project_root)
+        project_structure = doc_generator._analyze_project_structure(project_root)
+        
+        # Analyze database models more thoroughly
+        model_analysis = _analyze_database_models_comprehensive(project_root)
+        
+        system_prompt = '''You are an expert database architect. Generate a comprehensive Mermaid ER diagram that visualizes the database schema and entity relationships.
 
-    # Create the complete markdown content with title
-    markdown_content = "# Project Data Model\n\n"
-    markdown_content += "This document contains the Entity Relationship Diagram (ERD) for the project's data model.\n\n"
-    
-    mermaid_diagram = "```mermaid\nerDiagram\n"
+Your output should be a complete markdown document with:
+1. A title and overview of the data model
+2. A properly formatted Mermaid ER diagram using `erDiagram` syntax
+3. Proper entity definitions with attributes and types
+4. Relationship definitions with cardinality
+5. Key constraints (PK, FK) clearly marked
 
-    if not tables and not relationships:
-        mermaid_diagram += "    %% No SQLAlchemy models or relationships detected.\n"
-        mermaid_diagram += "    %% Add your entities and relationships here\n"
-        mermaid_diagram += "    %% Example:\n"
-        mermaid_diagram += "    %%   USER {\n"
-        mermaid_diagram += "    %%       id int PK\n"
-        mermaid_diagram += "    %%       name string\n"
-        mermaid_diagram += "    %%       email string\n"
-        mermaid_diagram += "    %%   }\n"
-        mermaid_diagram += "    %%   ORDER {\n"
-        mermaid_diagram += "    %%       id int PK\n"
-        mermaid_diagram += "    %%       user_id int FK\n"
-        mermaid_diagram += "    %%       total decimal\n"
-        mermaid_diagram += "    %%   }\n"
-        mermaid_diagram += "    %%   USER ||--o{ ORDER : places\n"
-    else:
-        for table_name, details in tables.items():
-            mermaid_diagram += f"    {table_name} {{\n"
-            for col in details["columns"]:
-                # Add PK notation for primary keys
-                if any(pk in col for pk in details["pk"]):
-                    col_parts = col.split()
-                    if len(col_parts) >= 2:
-                        mermaid_diagram += f"        {col_parts[0]} {col_parts[1]} PK\n"
-                    else:
-                        mermaid_diagram += f"        {col} PK\n"
-                else:
-                    mermaid_diagram += f"        {col}\n"
-            mermaid_diagram += f"    }}\n"
+Focus on the actual database schema revealed by the code analysis.'''
 
-        for rel in relationships:
-            mermaid_diagram += f"    {rel}\n"
+        user_prompt = f'''Generate an ER diagram for this project's database:
 
-    mermaid_diagram += "```\n"
-    
-    # Combine title and diagram
-    full_content = markdown_content + mermaid_diagram
+## Cursor Rules Context:
+{cursor_rules}
 
-    # Write to docs/data-model.md
-    docs_dir = "docs"
-    os.makedirs(docs_dir, exist_ok=True)
-    data_model_path = os.path.join(docs_dir, "data-model.md")
-    with open(data_model_path, "w") as f:
-        f.write(full_content)
+## Project Analysis:
+{str(project_structure)}
 
-    return f"Successfully generated ER diagram in {data_model_path}" 
+## Database Models Analysis:
+{model_analysis}
+
+Create a comprehensive ER diagram that shows:
+- All entities/tables with their attributes
+- Primary keys and foreign keys
+- Relationships between entities with proper cardinality
+- Data types for each attribute
+
+Use proper Mermaid ER diagram syntax.'''
+
+        # Generate AI-powered ER diagram
+        diagram_content = doc_generator.ai_service.generate_completion(user_prompt, system_prompt)
+        
+        # Save to docs/data-model.md
+        docs_dir = "docs"
+        os.makedirs(docs_dir, exist_ok=True)
+        data_model_path = os.path.join(docs_dir, "data-model.md")
+        
+        with open(data_model_path, 'w') as f:
+            f.write(diagram_content)
+        
+        return f"Successfully generated AI-powered ER diagram in {data_model_path}"
+        
+    except Exception as e:
+        error_msg = f"AI-powered ER diagram generation failed: {str(e)}"
+        console.print(f"[red]✗[/red] {error_msg}")
+        return error_msg 

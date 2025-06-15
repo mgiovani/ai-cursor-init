@@ -40,6 +40,13 @@ generation:
   # Include file modification timestamps
   include_timestamps: false
 
+# Custom documentation types (advanced usage)
+custom_document_types:
+  # Example: Add a custom security documentation type
+  # - name: "security"
+  #   description: "Generate security documentation and threat models"
+  #   system_prompt: "You are a security expert..."
+
 # Diagram preferences
 diagrams:
   # ER diagram styling

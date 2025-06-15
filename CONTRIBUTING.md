@@ -1,159 +1,123 @@
 # Contributing to cursor-init
 
-Thank you for your interest in contributing to `cursor-init`! This guide will help you understand how to extend the tool with new templates, add support for additional languages/frameworks, and contribute effectively to the project.
+Thank you for your interest in contributing to `cursor-init`! This guide will help you get started with adding templates, slash commands, and extending the framework.
 
-## Table of Contents
+## Quick Start
 
-- [Getting Started](#getting-started)
-- [Adding New Templates](#adding-new-templates)
-- [Extending Detection Logic](#extending-detection-logic)
-- [Adding New Slash Commands](#adding-new-slash-commands)
-- [Testing Your Contributions](#testing-your-contributions)
-- [Pull Request Guidelines](#pull-request-guidelines)
-- [Code Style and Standards](#code-style-and-standards)
+1. **Fork the repository** and create a feature branch
+2. **Make your changes** following the guidelines below
+3. **Test your changes** manually and with the test suite
+4. **Submit a pull request** with a clear description
 
-## Getting Started
+## Understanding the Architecture
 
-1. **Fork the repository** and clone your fork locally
-2. **Install in development mode**:
+`cursor-init` is built around three main components:
 
-   ```bash
-   pip install -e .
-   ```
+1. **AI-Powered Documentation Generation**: All documentation is now generated using AI that analyzes your codebase
+2. **Cursor Rules**: Slash commands that provide in-IDE functionality
+3. **CLI Tool**: Command-line interface for CI integration and offline usage
 
-3. **Verify the installation**:
+## Adding New Documentation Types
 
-   ```bash
-   cursor-init --version
-   ```
+Since all documentation is AI-generated, adding new document types is simpler:
 
-## Adding New Templates
+### 1. Add AI Generation Logic
 
-Templates are the foundation of `cursor-init`'s documentation generation. They're organized by document type in the `.cursor/templates/` directory.
+Create generation methods in `cli/cursor_init/ai_service.py`:
 
-### Template Directory Structure
+```python
+def generate_security_docs(self, project_root: str = '.') -> str:
+    cursor_rules = self._read_cursor_rules(project_root)
+    project_structure = self._analyze_project_structure(project_root)
+    
+    system_prompt = '''You are an expert in security documentation. Generate comprehensive security documentation based on the project analysis.'''
+    
+    user_prompt = f'''Generate security documentation for this project:
 
+Project Structure: {json.dumps(project_structure, indent=2)}
+Cursor Rules: {cursor_rules}
+
+Include security best practices, threat modeling, and security architecture relevant to this specific technology stack.'''
+
+    return self.ai_service.generate_content(system_prompt, user_prompt)
 ```
-.cursor/templates/
-├── adr/                    # Architecture Decision Records
-├── architecture/           # System architecture documentation
-├── onboarding/            # Project onboarding guides
-├── rfc/                   # Request For Comments documents
-└── diagrams/              # Diagram templates
+
+### 2. Add CLI Command
+
+Add the command to your main CLI in `cli/cursor_init/__main__.py`:
+
+```python
+security_parser = subparsers.add_parser('security', help='Generate security documentation')
+security_parser.set_defaults(func=lambda args: generate_security_docs())
 ```
 
-### Adding Templates for Existing Document Types
+### 3. Create Cursor Rule
 
-1. **Navigate to the appropriate directory** (e.g., `.cursor/templates/adr/`)
-2. **Create a new template file** following the naming convention:
-   - Use descriptive names: `adr_template_[variant].md`
-   - Examples: `adr_template_nygard.md`, `adr_template_comprehensive.md`
-3. **Write your template** using Markdown with placeholders:
+Add `.cursor/rules/cursor-init/security.mdc`:
 
-   ```markdown
-   ### ADR: [Title]
-   
-   **Status:** [Status]
-   
-   **Context:**
-   [Describe the context and problem statement]
-   ```
+```markdown
+---
+description: "Generate comprehensive security documentation"
+alwaysApply: true
+---
 
-### Adding New Document Types
-
-1. **Create a new directory** under `.cursor/templates/` (e.g., `.cursor/templates/security/`)
-2. **Add template variants** following the naming convention
-3. **Update detection logic** in `cli/cursor_init/detect_framework.py`
-4. **Consider adding a new slash command** (see [Adding New Slash Commands](#adding-new-slash-commands))
-
-### Template Best Practices
-
-- Use clear, descriptive section headings
-- Include placeholder text in brackets: `[Description]`
-- Provide guidance comments where helpful
-- Include Mermaid diagram placeholders when relevant:
-
-  ```markdown
-  ```mermaid
-  graph TD
-      A[Component A] --> B[Component B]
-  ```
-
-  ```
-- Keep templates focused and concise
-- Test templates with real projects
+@if(user_message.starts_with("/security")) {
+  "I will generate comprehensive security documentation by analyzing your project's technology stack, architecture, and security requirements.
+  
+  This will include:
+  1. **Security Architecture**: How security is implemented in your system
+  2. **Threat Model**: Potential security risks and mitigations
+  3. **Best Practices**: Security guidelines specific to your tech stack
+  4. **Compliance**: Relevant security standards and requirements
+  
+  Let me analyze your project and generate tailored security documentation..."
+}
+```
 
 ## Extending Detection Logic
 
-Detection logic determines which templates and configurations to use based on the project's technology stack.
+Framework detection is primarily used to provide **context to AI** rather than selecting specific templates.
 
-### Framework Detection
+### Current Detection Strategy
 
-The main detection logic is in `cli/cursor_init/detect_framework.py`. To add support for a new framework:
+The AI service automatically detects:
 
-1. **Add detection function**:
+- **Languages**: Python, TypeScript, JavaScript, Go, Rust, Java, C++, C, etc.
+- **Frameworks**: FastAPI, Django, Flask, React, Next.js, Vue.js, Spring Boot, etc.
+- **Databases**: PostgreSQL, MySQL, MongoDB, Redis, SQLAlchemy, etc.
+- **Tools**: Docker, Kubernetes, CI/CD systems, etc.
 
-   ```python
-   def detect_spring_boot() -> bool:
-       """Detect Spring Boot projects."""
-       return (
-           Path('pom.xml').exists() or 
-           Path('build.gradle').exists()
-       ) and any(
-           'spring-boot' in line.lower()
-           for file_path in ['pom.xml', 'build.gradle']
-           if Path(file_path).exists()
-           for line in Path(file_path).read_text().splitlines()
-       )
-   ```
+### Adding New Technology Detection
 
-2. **Update the main detection function**:
+To improve AI context for new technologies:
 
-   ```python
-   def detect_project_type() -> Dict[str, Any]:
-       frameworks = {
-           'spring_boot': detect_spring_boot(),
-           'fastapi': detect_fastapi(),
-           # ... existing frameworks
-       }
-   ```
-
-3. **Add template mapping** in relevant modules:
-
-   ```python
-   FRAMEWORK_TEMPLATES = {
-       'spring_boot': {
-           'onboarding': 'onboarding_spring.md',
-           'architecture': 'architecture_enterprise.md'
-       }
-   }
-   ```
-
-### Common Detection Patterns
-
-- **Package files**: `package.json`, `pyproject.toml`, `pom.xml`, `Cargo.toml`
-- **Dependency analysis**: Search for specific packages in dependency files
-- **File structure**: Look for conventional directories (`src/`, `app/`, `controllers/`)
-- **Import statements**: Parse source files for framework-specific imports
-- **Configuration files**: `.env`, `config/`, framework-specific configs
-
-### Example: Adding Django Support
+1. **Update `_detect_technologies()` in `ai_service.py`**:
 
 ```python
-def detect_django() -> bool:
-    """Detect Django projects."""
-    # Check for Django in requirements
-    if Path('requirements.txt').exists():
-        requirements = Path('requirements.txt').read_text()
-        if 'django' in requirements.lower():
-            return True
-    
-    # Check for Django project structure
-    return (
-        Path('manage.py').exists() or
-        any(Path(p).exists() for p in ['settings.py', 'settings/'])
-    )
+# Add new framework detection
+if 'spring-boot' in content_lower:
+    technologies['frameworks'].add('Spring Boot')
+if 'kubernetes' in content_lower or 'k8s' in content_lower:
+    technologies['tools'].add('Kubernetes')
 ```
+
+2. **Update `_analyze_imports()` for new languages**:
+
+```python
+elif file_path.endswith('.go'):
+    # Extract Go imports
+    go_imports = re.findall(r'import\s+["\']([^"\']+)', content)
+    for imp in go_imports:
+        if not imp.startswith('.'):
+            imports['go'].append(imp.split('/')[0])
+```
+
+### Philosophy: AI-First Approach
+
+- **No Hardcoded Templates**: AI generates content based on project analysis
+- **Universal Support**: Works with any programming language or framework
+- **Context-Aware**: Detection provides rich context to AI for better generation
+- **Extensible**: Easy to add support for new technologies
 
 ## Adding New Slash Commands
 
@@ -161,124 +125,75 @@ Slash commands provide in-IDE functionality through Cursor rules.
 
 ### Creating a New Slash Command
 
-1. **Create the rule file** in `.cursor/rules/[command].mdc`:
+1. **Create the rule file** in `.cursor/rules/cursor-init/[command].mdc`:
 
-   ```markdown
-   description: "Creates a new [document type] from template"
-   alwaysApply: true
+```markdown
+---
+description: "Creates a new [document type] from AI analysis"
+alwaysApply: true
+---
 
-   @if(user_message.starts_with("/[command]")) {
-     "I will create a new [document type] based on your input.
-     
-     [Detailed instructions for the AI agent]"
-   }
-   ```
+@if(user_message.starts_with("/[command]")) {
+  "I will create a new [document type] based on AI analysis of your project.
+  
+  [Detailed instructions for the AI agent about what to analyze and generate]"
+}
+```
 
-2. **Implement CLI counterpart** in `cli/cursor_init/[command].py`:
+2. **Implement AI generation** in `cli/cursor_init/ai_service.py`:
 
-   ```python
-   def create_[document](title: Optional[str] = None) -> str:
-       """Create a new [document type] with the given title."""
-       # Implementation logic
-       return f'Created [document]: {filepath}'
-   ```
+```python
+def generate_[document_type](self, project_root: str = '.') -> str:
+    """Generate [document type] using AI analysis."""
+    cursor_rules = self._read_cursor_rules(project_root)
+    project_structure = self._analyze_project_structure(project_root)
+    
+    system_prompt = '''Expert prompt for generating this document type'''
+    user_prompt = f'''Generate content based on: {project_structure}'''
+    
+    return self.ai_service.generate_content(system_prompt, user_prompt)
+```
 
-3. **Integrate with main CLI** in `cli/cursor_init/__main__.py`:
+3. **Integrate with CLI** in `cli/cursor_init/__main__.py`:
 
-   ```python
-   # Import the function
-   from .[command] import create_[document]
-   
-   # Add parser
-   [command]_parser = subparsers.add_parser("[command]", help="Create a new [document type].")
-   [command]_parser.add_argument("title", nargs='?', default="new-[document]")
-   [command]_parser.set_defaults(func=lambda args: create_[document](title=args.title))
-   
-   # Update command handling
-   elif args.command in ["adr", "rfc", "[command]", ...]:
-   ```
+```python
+[command]_parser = subparsers.add_parser("[command]", help="Generate [document type].")
+[command]_parser.set_defaults(func=lambda args: generate_[document_type]())
+```
 
 ## Testing Your Contributions
 
 ### Manual Testing
 
-1. **Test CLI commands**:
+1. **Test AI Generation**:
 
-   ```bash
-   cursor-init [command] "Test Title"
-   ls docs/[document-type]/
-   cat docs/[document-type]/test-title.md
-   ```
+```bash
+cd cli
+python -m cursor_init init
+python -m cursor_init update
+python -m cursor_init gen-er-diagram
+python -m cursor_init gen-arch-diagram
+```
 
-2. **Test detection logic**:
+2. **Test in Cursor IDE**:
+   - Try slash commands: `/init-docs`, `/adr "Test Decision"`, `/gen-er-diagram`
+   - Verify AI-generated content is relevant and accurate
 
-   ```bash
-   # Create test project structure
-   mkdir test-project && cd test-project
-   # Add framework-specific files
-   touch package.json  # or pom.xml, etc.
-   # Test detection
-   cursor-init init
-   ```
-
-3. **Test in Cursor IDE**:
-   - Copy `.cursor/` to a test project
-   - Try slash commands: `/init-docs`, `/adr`, etc.
-   - Verify generated content
+3. **Test with Different Project Types**:
+   - Test with Python/FastAPI projects
+   - Test with TypeScript/React projects
+   - Test with other language combinations
 
 ### Automated Testing
 
 When adding tests (future enhancement):
 
 ```python
-def test_detect_spring_boot():
-    # Create temporary project structure
-    # Test detection function
-    # Assert expected results
+def test_ai_generation():
+    # Mock AI service
+    # Test generation functions
+    # Assert content quality and relevance
     pass
-```
-
-## Pull Request Guidelines
-
-### Before Submitting
-
-- [ ] Test your changes manually
-- [ ] Ensure code follows project style
-- [ ] Update documentation if needed
-- [ ] Add examples for new features
-
-### PR Description Template
-
-```markdown
-## Description
-Brief description of changes
-
-## Type of Change
-- [ ] New template
-- [ ] Framework detection
-- [ ] New slash command
-- [ ] Bug fix
-- [ ] Documentation update
-
-## Testing
-- [ ] Manual testing completed
-- [ ] Examples provided
-- [ ] Edge cases considered
-
-## Checklist
-- [ ] Code follows project style
-- [ ] Self-review completed
-- [ ] Documentation updated
-```
-
-### Commit Message Format
-
-Use clear, descriptive commit messages:
-
-```
-feat: add Spring Boot detection and templates
-fix: handle edge case in title sanitization
-docs: update contributing guide with new examples
 ```
 
 ## Code Style and Standards
@@ -289,49 +204,71 @@ docs: update contributing guide with new examples
 - **Use type hints** for function parameters and return values
 - **Keep functions focused** and single-purpose
 - **Use descriptive variable names**
-- **Avoid unnecessary comments** - code should be self-documenting
+- **Prefer composition over complex inheritance**
 
-### Example Code Style
+### AI Integration Guidelines
 
-```python
-from pathlib import Path
-from typing import Optional, Dict, Any
+- **Provide Rich Context**: Include project structure, cursor rules, and detected technologies
+- **Use Specific Prompts**: Tailor system prompts for each document type
+- **Handle Errors Gracefully**: Always provide fallback behavior for AI failures
+- **Respect Rate Limits**: Implement appropriate delays and error handling
 
-def detect_framework(project_path: Path) -> Dict[str, bool]:
-    """Detect frameworks used in the project."""
-    return {
-        'fastapi': _has_dependency('fastapi', project_path),
-        'react': _has_dependency('react', project_path),
-    }
+## Pull Request Guidelines
 
-def _has_dependency(package: str, project_path: Path) -> bool:
-    """Check if package exists in project dependencies."""
-    requirements_file = project_path / 'requirements.txt'
-    if requirements_file.exists():
-        content = requirements_file.read_text().lower()
-        return package.lower() in content
-    return False
+### Before Submitting
+
+- [ ] Test AI generation with multiple project types
+- [ ] Ensure code follows project style
+- [ ] Update documentation if needed
+- [ ] Verify slash commands work in Cursor IDE
+
+### PR Description Template
+
+```markdown
+## Description
+Brief description of changes
+
+## Type of Change
+- [ ] New AI generation capability
+- [ ] New slash command
+- [ ] Framework detection improvement
+- [ ] Bug fix
+- [ ] Documentation update
+
+## Testing
+- [ ] Manual testing completed with different project types
+- [ ] AI generation produces quality content
+- [ ] Slash commands work correctly
+- [ ] Edge cases considered
+
+## AI Integration
+- [ ] Appropriate system prompts created
+- [ ] Rich project context provided
+- [ ] Error handling implemented
+- [ ] Rate limiting considered
 ```
 
-### Template Style
+## Philosophy and Design Principles
 
-- Use consistent Markdown formatting
-- Include clear section headings
-- Provide helpful placeholder text
-- Use Mermaid for diagrams when appropriate
+### AI-First Documentation
 
-### Rule File Style
+- **Smart Generation**: AI analyzes your specific codebase and generates tailored documentation
+- **No Generic Templates**: Every piece of documentation is customized to your project
+- **Technology Agnostic**: Works with any programming language or framework
+- **Context Aware**: Leverages project structure, dependencies, and coding patterns
 
-- Include descriptive YAML front-matter
-- Provide clear instructions for the AI agent
-- Use consistent trigger patterns
-- Include examples in instructions
+### Developer Experience
+
+- **Zero Configuration**: Works out of the box with any project
+- **IDE Integration**: Seamless integration through Cursor slash commands
+- **Continuous Improvement**: Documentation stays fresh as code evolves
+- **Extensible**: Easy to add new document types and capabilities
 
 ## Getting Help
 
 - **Issues**: Report bugs or request features via GitHub Issues
 - **Discussions**: Ask questions in GitHub Discussions
-- **Documentation**: Check `docs/implementation_plan.md` for architectural details
+- **Documentation**: Check project documentation for implementation details
 
 ## License
 
@@ -339,4 +276,4 @@ By contributing to `cursor-init`, you agree that your contributions will be lice
 
 ---
 
-Thank you for contributing to `cursor-init`! Your contributions help make documentation easier for developers everywhere.
+Thank you for contributing to `cursor-init`! Your contributions help make AI-powered documentation accessible to developers everywhere.
