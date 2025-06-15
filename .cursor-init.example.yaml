@@ -10,7 +10,7 @@ templates:
   architecture: "google_style" # Options: google_style, enterprise, arc42
 
   # Onboarding guide templates
-  onboarding: "general" # Options: general, python, frontend
+  onboarding: "developer" # Options: developer, contributor, user
 
 # Custom template paths - add your own templates
 custom_template_paths:
