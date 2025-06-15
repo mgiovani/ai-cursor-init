@@ -60,7 +60,7 @@ Professional ER diagrams and database schema documentation:
 
 ## 🚀 **Quick Start** *(2 minutes to awesome docs)*
 
-### Option 1: Zero Installation *(Recommended)*
+### Zero Configuration *(Recommended)*
 
 ```bash
 # 1. Clone this repo
@@ -69,14 +69,33 @@ git clone https://github.com/mgiovani/ai-cursor-init.git
 # 2. Copy to your project (ONLY ONE FOLDER!)
 cp -r ai-cursor-init/.cursor/ your-project/
 
-# 3. (Optional) Customize configuration
-cp ai-cursor-init/.cursor-init.example.yaml your-project/.cursor-init.yaml
-
-# 4. Open your project in Cursor and type:
+# 3. Open your project in Cursor and type:
 /init-docs
 ```
 
-**That's it.** No pip install, no dependencies, just ONE folder to copy!
+**That's it!** The framework analyzes your project and generates all useful documentation automatically:
+
+- **Always**: Architecture overview, onboarding guide, ADRs
+- **If database models found**: ER diagrams, database operations guide  
+- **If API endpoints found**: API documentation, security flows
+- **If deployment configs found**: Infrastructure and deployment docs
+- **If open source/team project**: Contributing guidelines, RFC templates
+
+### Opt-Out Configuration *(Optional)*
+
+Don't want certain documentation? Create `.cursor-init.yaml` to disable specific types:
+
+```yaml
+# .cursor-init.yaml (optional - only to disable unwanted docs)
+documentation:
+  data:
+    database_ops: false     # Skip database operations guide
+  infrastructure:
+    deployment: false       # Skip deployment documentation
+    security: false         # Skip security flow diagrams
+  development:
+    rfc: false             # Skip RFC template setup
+```
 
 ### Option 2: AI-Powered CLI for Power Users
 
@@ -133,34 +152,68 @@ docs/
 
 ---
 
-## 🎨 **Smart Templates**
+## 🎨 **Smart Templates & Configuration**
 
-### Framework-Aware Generation
+### **Zero-Config Defaults**
+
+Works immediately with smart detection:
 
 - **Python/FastAPI** → API-focused architecture docs
 - **TypeScript/React** → Component-based system diagrams  
 - **SQLAlchemy** → Detailed ER diagrams with relationships
 - **Django** → Model-centric documentation
 
-### Multiple Template Styles
+### **Optional Configuration**
 
-- **ADRs**: Nygard, MADR, Comprehensive formats
-- **Architecture**: Google, Enterprise, Arc42 styles
-- **Onboarding**: General, Python, Frontend variants
-
-### Customizable Everything
+Choose exactly what documentation you need:
 
 ```yaml
-# .cursor-init.yaml (copy from .cursor-init.example.yaml)
-templates:
-  adr: "nygard_style"           # Your preferred ADR format
-  architecture: "google_style"  # Documentation style
-  onboarding: "python"          # Framework-specific guides
+# .cursor-init.yaml (optional customization)
+documentation:
+  core:
+    architecture: true    # System overview
+    onboarding: true     # Developer setup guide
+    adr: true           # Architecture decisions
+  data:
+    data_model: true    # Database schema
+    database_ops: false # Performance & operations
+    data_security: false # Security policies
+  infrastructure:
+    deployment: false   # CI/CD & infrastructure
+    dependencies: false # External services
+    security: false    # Security flows
+  development:
+    rfc: false         # Request for Comments
+    contributing: false # Contribution guides
+    api_docs: false    # API documentation
+```
 
-# Add your own templates
-custom_template_paths:
-  - name: "security_adr"
-    path: ".cursor/templates/custom/security-adr.md"
+### **Template Variants**
+
+- **ADRs**: Nygard, MADR, Comprehensive, Lightweight
+- **Architecture**: Google Style, Enterprise, Arc42
+- **Onboarding**: Developer, Contributor, User
+- **Data Model**: Simple, Comprehensive
+
+### **Common Configurations**
+
+**Startup/Small Team:**
+
+```yaml
+documentation:
+  core: { architecture: true, onboarding: true, adr: true }
+  data: { data_model: true }
+  development: { contributing: true }
+```
+
+**Enterprise/Large Team:**
+
+```yaml
+documentation:
+  core: { architecture: true, onboarding: true, adr: true }
+  data: { data_model: true, database_ops: true, data_security: true }
+  infrastructure: { deployment: true, dependencies: true, security: true }
+  development: { rfc: true, contributing: true, api_docs: true }
 ```
 
 ---

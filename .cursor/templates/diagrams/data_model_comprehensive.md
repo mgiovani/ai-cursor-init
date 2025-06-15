@@ -8,7 +8,7 @@
 
 {{OVERVIEW}}
 
-This document describes the data model and database design for {{PROJECT_NAME}}.
+This document describes the core data model and entity relationships for {{PROJECT_NAME}}.
 
 ## Database Information
 
@@ -50,12 +50,6 @@ erDiagram
 - {{BUSINESS_RULE_1}}
 - {{BUSINESS_RULE_2}}
 
-#### Indexes
-
-```sql
-{{ENTITY_1_INDEXES}}
-```
-
 ### {{ENTITY_2}}
 
 {{ENTITY_2_DESCRIPTION}}
@@ -77,12 +71,6 @@ erDiagram
 
 - {{BUSINESS_RULE_1}}
 - {{BUSINESS_RULE_2}}
-
-#### Indexes
-
-```sql
-{{ENTITY_2_INDEXES}}
-```
 
 ## Domain Models
 
@@ -115,149 +103,39 @@ erDiagram
 {{ENUMS}}
 ```
 
-## Constraints and Validations
+## Key Constraints
 
-### Database Constraints
+### Primary Keys
 
-```sql
-{{DATABASE_CONSTRAINTS}}
-```
+| Table | Primary Key | Type |
+|-------|-------------|------|
+| {{TABLE_1}} | {{PK_1}} | {{PK_TYPE_1}} |
+| {{TABLE_2}} | {{PK_2}} | {{PK_TYPE_2}} |
 
-### Application-Level Validations
+### Foreign Keys
 
-{{APPLICATION_VALIDATIONS}}
+| Child Table | Foreign Key | Parent Table | Parent Key | On Delete | On Update |
+|-------------|-------------|--------------|------------|-----------|-----------|
+| {{CHILD_1}} | {{FK_1}} | {{PARENT_1}} | {{PK_1}} | {{DELETE_1}} | {{UPDATE_1}} |
+| {{CHILD_2}} | {{FK_2}} | {{PARENT_2}} | {{PK_2}} | {{DELETE_2}} | {{UPDATE_2}} |
 
-## Performance Considerations
+### Unique Constraints
 
-### Indexing Strategy
+| Table | Columns | Description |
+|-------|---------|-------------|
+| {{TABLE_1}} | {{COLUMNS_1}} | {{UNIQUE_DESC_1}} |
+| {{TABLE_2}} | {{COLUMNS_2}} | {{UNIQUE_DESC_2}} |
 
-{{INDEXING_STRATEGY}}
+## Related Documentation
 
-### Query Optimization
+- [Database Operations](database-operations.md) - Performance, migrations, and troubleshooting
+- [Data Security](data-security.md) - Security policies and access control
+- [Architecture Overview](architecture.md) - System design and component relationships
 
-{{QUERY_OPTIMIZATION}}
+## Notes
 
-### Partitioning
+{{ADDITIONAL_NOTES}}
 
-{{PARTITIONING_STRATEGY}}
+---
 
-## Security and Access Control
-
-### Data Classification
-
-| Entity | Classification | Access Control |
-|--------|----------------|----------------|
-| {{ENTITY_1}} | {{CLASSIFICATION_1}} | {{ACCESS_1}} |
-| {{ENTITY_2}} | {{CLASSIFICATION_2}} | {{ACCESS_2}} |
-
-### Encryption
-
-{{ENCRYPTION_STRATEGY}}
-
-### Audit Trail
-
-{{AUDIT_STRATEGY}}
-
-## Migration and Versioning
-
-### Migration Strategy
-
-{{MIGRATION_STRATEGY}}
-
-### Version History
-
-| Version | Date | Changes | Migration Script |
-|---------|------|---------|------------------|
-| {{VERSION_1}} | {{DATE_1}} | {{CHANGES_1}} | {{SCRIPT_1}} |
-| {{VERSION_2}} | {{DATE_2}} | {{CHANGES_2}} | {{SCRIPT_2}} |
-
-### Rollback Procedures
-
-{{ROLLBACK_PROCEDURES}}
-
-## Data Lifecycle
-
-### Data Retention
-
-{{DATA_RETENTION_POLICY}}
-
-### Archival Strategy
-
-{{ARCHIVAL_STRATEGY}}
-
-### Backup and Recovery
-
-{{BACKUP_STRATEGY}}
-
-## API Integration
-
-### ORM Mapping
-
-{{ORM_MAPPING}}
-
-### API Endpoints
-
-| Entity | Endpoint | Operations |
-|--------|----------|------------|
-| {{ENTITY_1}} | {{ENDPOINT_1}} | {{OPERATIONS_1}} |
-| {{ENTITY_2}} | {{ENDPOINT_2}} | {{OPERATIONS_2}} |
-
-## Testing Strategy
-
-### Test Data
-
-{{TEST_DATA_STRATEGY}}
-
-### Database Testing
-
-{{DATABASE_TESTING}}
-
-### Performance Testing
-
-{{PERFORMANCE_TESTING}}
-
-## Monitoring and Observability
-
-### Key Metrics
-
-{{KEY_METRICS}}
-
-### Alerting
-
-{{ALERTING_STRATEGY}}
-
-### Logging
-
-{{LOGGING_STRATEGY}}
-
-## Troubleshooting
-
-### Common Issues
-
-{{COMMON_ISSUES}}
-
-### Diagnostic Queries
-
-```sql
-{{DIAGNOSTIC_QUERIES}}
-```
-
-## References
-
-- [Database Documentation]({{DB_DOCS_LINK}})
-- [ORM Documentation]({{ORM_DOCS_LINK}})
-- [API Documentation]({{API_DOCS_LINK}})
-
-## Appendices
-
-### Appendix A: Full Schema DDL
-
-```sql
-{{FULL_SCHEMA_DDL}}
-```
-
-### Appendix B: Seed Data
-
-```sql
-{{SEED_DATA}}
-```
+*This diagram was generated from database models. Update the models and regenerate to keep this documentation current.*

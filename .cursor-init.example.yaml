@@ -1,106 +1,160 @@
-# cursor-init Configuration Example
-# Copy this file to .cursor-init.yaml in your project root to customize behavior
+# AI-Cursor-Init Configuration
+# Copy this file to .cursor-init.yaml in your project root to customize documentation generation
 
-# Template preferences - choose your preferred style for each document type
+# =============================================================================
+# DOCUMENTATION TYPES - Opt-out configuration (all auto-detected by default)
+# =============================================================================
+
+# Zero-config behavior: All documentation types are auto-detected and generated
+# if they would be useful for your project. Set to 'false' to disable specific types.
+
+documentation:
+  # Core documentation (always useful for any project)
+  core:
+    architecture: true # System architecture overview
+    onboarding: true # Developer onboarding guide
+    adr: true # Architecture Decision Records
+
+  # Data & Database documentation (auto-detected based on database usage)
+  data:
+    data_model: true # Database schema & ER diagrams (if models found)
+    database_ops: true # Performance, migrations, troubleshooting (if database used)
+    data_security: true # Security policies & compliance (if sensitive data detected)
+
+  # Infrastructure & Operations (auto-detected based on deployment configs)
+  infrastructure:
+    deployment: true # CI/CD & infrastructure (if deployment configs found)
+    dependencies: true # External services (if external APIs/services detected)
+    security: true # Security flows (if auth/security patterns found)
+
+  # Development & Process (auto-detected based on project type)
+  development:
+    rfc: true # Request for Comments (useful for larger projects)
+    contributing: true # Contribution guidelines (if open source or team project)
+    api_docs: true # API documentation (if API endpoints detected)
+
+# =============================================================================
+# TEMPLATE VARIANTS - Choose specific template styles
+# =============================================================================
+
 templates:
-  # ADR (Architecture Decision Record) templates
+  # Architecture Decision Records
   adr: "nygard_style" # Options: nygard_style, full, lightweight, madr
 
-  # Architecture documentation templates
+  # Architecture documentation
   architecture: "google_style" # Options: google_style, enterprise, arc42
 
-  # Onboarding guide templates
+  # Onboarding guides
   onboarding: "developer" # Options: developer, contributor, user
 
-  # =====================================================
-  # RFC (Request For Comments) Documentation
-  # =====================================================
-  # Options: minimal, standard, detailed
-  #
-  # - minimal: Simple RFC for quick proposals (~12 lines)
-  # - standard: Standard RFC with structured analysis (~80 lines)
-  # - detailed: Comprehensive RFC with full lifecycle (~300 lines)
-  rfc: "standard"
+  # Data model documentation
+  data_model: "comprehensive" # Options: simple, comprehensive
 
-  # =====================================================
-  # Data Model Documentation
-  # =====================================================
-  # Options: simple, comprehensive
-  #
-  # - simple: Basic ER diagram with entity overview (~44 lines)
-  # - comprehensive: Detailed data model with full database documentation (~263 lines)
-  data_model: "comprehensive"
+  # RFC documents
+  rfc: "standard" # Options: minimal, standard, detailed
 
-# Custom template paths - add your own templates
-custom_template_paths:
-  # Example: Add a custom security ADR template
-  # - name: "security_adr"
-  #   path: ".cursor/templates/custom/security-adr.md"
+# =============================================================================
+# AUTO-DETECTION SETTINGS - Control what triggers documentation generation
+# =============================================================================
 
-  # Example: Add a custom API documentation template
-  # - name: "api_docs"
-  #   path: ".cursor/templates/custom/api-documentation.md"
+auto_detection:
+  # Database documentation triggers
+  database:
+    model_files:
+      ["**/models.py", "**/model.py", "**/*model*.py", "**/*schema*.py"]
+    orm_patterns: ["sqlalchemy", "django.db", "sequelize", "typeorm", "prisma"]
 
-# Framework detection overrides (optional)
-# Uncomment to force specific framework detection
-# framework_overrides:
-#   python_framework: "fastapi"    # Options: fastapi, django, flask
-#   frontend_framework: "react"    # Options: react, nextjs, vue
-#   database_orm: "sqlalchemy"     # Options: sqlalchemy, django_orm
+  # API documentation triggers
+  api:
+    framework_patterns:
+      ["fastapi", "django", "flask", "express", "nestjs", "spring"]
+    route_patterns: ["@app.route", "@router.", "app.get", "app.post", "Route"]
 
-# Documentation generation preferences
+  # Security documentation triggers
+  security:
+    auth_patterns: ["jwt", "oauth", "passport", "auth", "login", "session"]
+    security_files: ["**/auth*.py", "**/security*.py", "**/middleware*.py"]
+
+  # Deployment documentation triggers
+  deployment:
+    config_files:
+      ["Dockerfile", "docker-compose.yml", ".github/workflows", "Jenkinsfile"]
+    infrastructure_files: ["terraform", "cloudformation", "k8s", "kubernetes"]
+
+  # Dependencies documentation triggers
+  dependencies:
+    external_apis: ["requests", "axios", "fetch", "http", "api"]
+    service_configs: ["redis", "mongodb", "postgresql", "elasticsearch"]
+
+# =============================================================================
+# PROJECT SETTINGS - Project-specific customization
+# =============================================================================
+
+project:
+  # Project metadata (auto-detected if empty)
+  name: "" # Auto-detected from directory name
+  description: "" # Auto-detected from package.json/pyproject.toml
+  version: "" # Auto-detected from version files
+
+  # Technology stack (auto-detected if not specified)
+  technologies:
+    languages: [] # e.g., ["Python", "TypeScript"] - auto-detected
+    frameworks: [] # e.g., ["FastAPI", "React"] - auto-detected
+    databases: [] # e.g., ["PostgreSQL", "Redis"] - auto-detected
+    tools: [] # e.g., ["Docker", "Kubernetes"] - auto-detected
+
+# =============================================================================
+# GENERATION SETTINGS - Control how documentation is generated
+# =============================================================================
+
 generation:
-  # Include code examples in generated documentation
-  include_code_examples: true
+  # Analysis depth for codebase scanning
+  analysis_depth: "standard" # Options: basic, standard, comprehensive
 
-  # Generate table of contents for long documents
-  auto_generate_toc: true
+  # Content generation options
+  include_code_examples: true # Include code snippets in documentation
+  auto_generate_toc: true # Automatically generate table of contents
+  include_diagrams: true # Generate Mermaid diagrams where applicable
 
-  # Include file modification timestamps
-  include_timestamps: false
+  # Quality settings
+  quality:
+    min_content_length: 500 # Minimum content length for generated docs
+    max_retries: 3 # Maximum retries for AI generation
+    validate_generation: true # Validate generated content quality
 
-# Custom documentation types (advanced usage)
-custom_document_types:
-  # Example: Add a custom security documentation type
-  # - name: "security"
-  #   description: "Generate security documentation and threat models"
-  #   system_prompt: "You are a security expert..."
+# =============================================================================
+# EXAMPLES OF COMMON CONFIGURATIONS
+# =============================================================================
 
-# Diagram preferences
-diagrams:
-  # ER diagram styling
-  er_diagram:
-    show_relationships: true
-    include_indexes: false
-    group_by_module: true
+# Zero-config (default behavior):
+# - Analyzes your project automatically
+# - Generates all useful documentation based on what's detected
+# - Perfect for most projects - no configuration needed!
 
-  # Architecture diagram preferences
-  architecture_diagram:
-    show_dependencies: true
-    group_components: true
-    include_external_services: false
+# Minimal documentation only:
+# documentation:
+#   core: { architecture: true, onboarding: true, adr: true }
+#   data: { data_model: false, database_ops: false, data_security: false }
+#   infrastructure: { deployment: false, dependencies: false, security: false }
+#   development: { rfc: false, contributing: false, api_docs: false }
 
-# Validation rules for documentation quality
-validation:
-  # Maximum age in days before docs are considered stale
-  max_doc_age_days: 30
+# Documentation-heavy project:
+# documentation:
+#   core: { architecture: true, onboarding: true, adr: true }
+#   data: { data_model: true, database_ops: true, data_security: true }
+#   infrastructure: { deployment: true, dependencies: true, security: true }
+#   development: { rfc: true, contributing: true, api_docs: true }
 
-  # Require specific sections in architecture docs
-  required_architecture_sections:
-    - "Overview"
-    - "Components"
-    - "Data Flow"
+# Open source project:
+# templates:
+#   onboarding: "contributor"  # Contributor-focused onboarding
+# documentation:
+#   development: { contributing: true, rfc: true }
 
-  # Placeholder detection sensitivity
-  strict_placeholder_detection: true
-
-# CI/CD integration settings
-ci:
-  # Fail CI if documentation is stale
-  fail_on_stale_docs: false
-
-  # Auto-generate documentation in CI
-  auto_generate: false
-
-  # Commit generated docs back to repository
-  auto_commit: false
+# Enterprise project:
+# templates:
+#   architecture: "enterprise"
+#   adr: "full"
+# documentation:
+#   data: { data_security: true }
+#   infrastructure: { security: true }

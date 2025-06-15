@@ -4,9 +4,9 @@ globs:
 alwaysApply: true
 ---
 @if(user_message.starts_with("/gen-er-diagram")) {
-  "I will generate an ER diagram from SQLAlchemy models found in your project.
+  "I will generate an ER diagram from database models found in your project.
 
-  1. **Scanning for SQLAlchemy Models:** I will search your codebase for SQLAlchemy model definitions using semantic search and grep patterns to find files containing SQLAlchemy declarative base imports and model classes.
+  1. **Scanning for SQLAlchemy Models:** I will search your codebase for database model definitions using semantic search and grep patterns to find files containing model imports and model classes.
 
   2. **Extracting Schema Information:** I will analyze the found models to extract:
      - Table names and their corresponding classes
@@ -15,14 +15,14 @@ alwaysApply: true
      - Foreign key relationships between tables
 
   3. **Check Template Configuration:** I will read `.cursor-init.yaml` to determine which data model template variant to use:
-     - `simple` (default) - Basic ER diagram with entity overview
-     - `comprehensive` - Detailed data model with full database documentation
+     - `simple` - Basic ER diagram with entity overview
+     - `comprehensive` (default) - Detailed data model with full database documentation
 
   4. **Generating Mermaid ER Diagram:** Based on the extracted schema information, I will create a valid Mermaid `erDiagram` with proper syntax for entities, attributes, and relationships.
 
   5. **Storing the Diagram:** The generated diagram will be saved to `docs/data-model.md` using the configured data model template variant, creating the file if it doesn't exist or overwriting it if it does.
 
-  Let me start by searching for SQLAlchemy models in your project..."
+  Let me start by searching for database models in your project..."
 
   I will use the `codebase_search` and `grep_search` tools to find SQLAlchemy models, then use `read_file` to check template configuration, and `edit_file` to create the ER diagram documentation using the appropriate template variant.
 }

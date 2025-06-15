@@ -21,6 +21,35 @@ This guide will help you get started as a developer on the {{PROJECT_NAME}} proj
 
 ## Quick Start
 
+### Setup Flow
+
+```mermaid
+flowchart TD
+    A[Clone Repository] --> B[Install Dependencies]
+    B --> C[Environment Setup]
+    C --> D[Database Setup]
+    D --> E[Run Tests]
+    E --> F[Start Dev Server]
+    F --> G[Verify Setup]
+    
+    B --> B1{Dependencies OK?}
+    B1 -->|No| B2[Check Prerequisites]
+    B2 --> B
+    B1 -->|Yes| C
+    
+    D --> D1{Database Required?}
+    D1 -->|No| E
+    D1 -->|Yes| D2[Setup Database]
+    D2 --> E
+    
+    E --> E1{Tests Pass?}
+    E1 -->|No| E2[Fix Issues]
+    E2 --> E
+    E1 -->|Yes| F
+    
+    G --> H[Ready to Develop! 🎉]
+```
+
 ### 1. Repository Setup
 
 ```bash
@@ -59,6 +88,37 @@ cp .env.example .env
 ```
 
 ## Development Workflow
+
+### Workflow Diagram
+
+```mermaid
+gitgraph
+    commit id: "Initial"
+    branch develop
+    checkout develop
+    commit id: "Setup"
+    
+    branch feature/new-feature
+    checkout feature/new-feature
+    commit id: "Feature work"
+    commit id: "Tests added"
+    
+    checkout develop
+    merge feature/new-feature
+    commit id: "Feature merged"
+    
+    checkout main
+    merge develop
+    commit id: "Release"
+    
+    branch hotfix/critical-fix
+    checkout hotfix/critical-fix
+    commit id: "Hotfix"
+    
+    checkout main
+    merge hotfix/critical-fix
+    commit id: "Hotfix deployed"
+```
 
 ### Branch Management
 
