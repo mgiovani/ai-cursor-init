@@ -56,6 +56,43 @@ templates:
   adr: "madr"
 ```
 
+### Architecture Documentation
+
+The `/init-docs` and `/update-docs` commands support three architecture template variants:
+
+#### 1. Google Style (Default)
+
+**Template:** `architecture_google.md`
+**Best for:** Teams following Google's documentation standards
+**Sections:** Overview, System Context, Goals/Non-Goals, Design Details, Technology Stack, Security, Performance, Operations
+
+```yaml
+templates:
+  architecture: "google_style"
+```
+
+#### 2. Enterprise Template
+
+**Template:** `architecture_enterprise.md`
+**Best for:** Large organizations requiring comprehensive business and technical documentation
+**Sections:** Executive Summary, Business Architecture, Application Architecture, Data Architecture, Technology Architecture, Governance, Risk Management
+
+```yaml
+templates:
+  architecture: "enterprise"
+```
+
+#### 3. Arc42 Template
+
+**Template:** `architecture_arc.md`
+**Best for:** Teams following the Arc42 documentation standard
+**Sections:** 12 standardized Arc42 sections including Introduction/Goals, Constraints, Context, Solution Strategy, Building Blocks, Runtime View, Deployment, Cross-cutting Concepts
+
+```yaml
+templates:
+  architecture: "arc42"
+```
+
 ## Configuration
 
 ### Global Configuration
@@ -79,6 +116,10 @@ custom_template_paths:
   # Example: Add a custom security ADR template
   - name: "security_adr"
     path: ".cursor/templates/custom/security-adr.md"
+    
+  # Example: Add a custom microservices architecture template
+  - name: "microservices_arch"
+    path: ".cursor/templates/custom/microservices-architecture.md"
 ```
 
 ### Per-Command Selection
@@ -116,7 +157,9 @@ Default templates are stored in:
 │   ├── adr_template_lightweight.md
 │   └── adr_template_madr.md
 ├── architecture/
-│   └── ...
+│   ├── architecture_google.md
+│   ├── architecture_enterprise.md
+│   └── architecture_arc.md
 └── onboarding/
     └── ...
 ```
