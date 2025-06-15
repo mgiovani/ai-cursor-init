@@ -10,7 +10,17 @@ templates:
   architecture: "google_style" # Options: google_style, enterprise, arc42
 
   # Onboarding guide templates
-  onboarding: "general" # Options: general, python, frontend
+  onboarding: "developer" # Options: developer, contributor, user
+
+  # =====================================================
+  # RFC (Request For Comments) Documentation
+  # =====================================================
+  # Options: minimal, standard, detailed
+  #
+  # - minimal: Simple RFC for quick proposals (~12 lines)
+  # - standard: Standard RFC with structured analysis (~80 lines)
+  # - detailed: Comprehensive RFC with full lifecycle (~300 lines)
+  rfc: "standard"
 
 # Custom template paths - add your own templates
 custom_template_paths:

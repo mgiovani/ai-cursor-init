@@ -14,11 +14,15 @@ alwaysApply: true
      - Primary key relationships
      - Foreign key relationships between tables
 
-  3. **Generating Mermaid ER Diagram:** Based on the extracted schema information, I will create a valid Mermaid `erDiagram` with proper syntax for entities, attributes, and relationships.
+  3. **Check Template Configuration:** I will read `.cursor-init.yaml` to determine which data model template variant to use:
+     - `simple` (default) - Basic ER diagram with entity overview
+     - `comprehensive` - Detailed data model with full database documentation
 
-  4. **Storing the Diagram:** The generated diagram will be saved to `docs/data-model.md`, creating the file if it doesn't exist or overwriting it if it does.
+  4. **Generating Mermaid ER Diagram:** Based on the extracted schema information, I will create a valid Mermaid `erDiagram` with proper syntax for entities, attributes, and relationships.
+
+  5. **Storing the Diagram:** The generated diagram will be saved to `docs/data-model.md` using the configured data model template variant, creating the file if it doesn't exist or overwriting it if it does.
 
   Let me start by searching for SQLAlchemy models in your project..."
 
-  I will use the `codebase_search` and `grep_search` tools to find SQLAlchemy models, then use `edit_file` to create the ER diagram documentation.
+  I will use the `codebase_search` and `grep_search` tools to find SQLAlchemy models, then use `read_file` to check template configuration, and `edit_file` to create the ER diagram documentation using the appropriate template variant.
 }
