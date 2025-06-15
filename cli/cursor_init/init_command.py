@@ -1,6 +1,5 @@
 import os
 from .ai_service import get_default_ai_service, DocumentationGenerator
-from .config import load_config
 from rich.console import Console
 from rich.progress import Progress, SpinnerColumn, TextColumn
 

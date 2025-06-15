@@ -1,7 +1,6 @@
 import os
-import sys
 import glob
-from typing import List, Tuple
+from typing import List
 
 
 def check_docs() -> int:

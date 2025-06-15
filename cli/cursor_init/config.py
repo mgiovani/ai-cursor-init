@@ -1,7 +1,6 @@
 import os
 import yaml
 from typing import Dict, Any, List, Optional
-from pathlib import Path
 
 
 class ConfigError(Exception):
