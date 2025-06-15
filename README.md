@@ -3,7 +3,6 @@
 > **Stop writing documentation. Start generating it.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
 **The AI-powered documentation framework that lives inside your IDE.** Generate Architecture Decision Records, system diagrams, and onboarding guides with simple slash commands. No installations, no setup, no excuses.
@@ -97,22 +96,6 @@ documentation:
     rfc: false             # Skip RFC template setup
 ```
 
-### Option 2: AI-Powered CLI for Power Users
-
-```bash
-pip install ai-cursor-init
-
-# Configure AI provider (OpenAI, Anthropic, or Google Gemini)
-ai-cursor-init configure
-
-# Generate intelligent documentation with AI
-ai-cursor-init init  # AI-powered docs generation
-ai-cursor-init adr "Database Migration Strategy"  # Context-aware ADRs
-ai-cursor-init update --apply  # Smart documentation updates
-```
-
-📖 **[Complete AI CLI Documentation →](AI_DOCUMENTATION.md)**
-
 ---
 
 ## 🎯 **What You Get**
@@ -152,7 +135,37 @@ docs/
 
 ---
 
-## 🎨 **Smart Templates & Configuration**
+## 📋 **Available Commands**
+
+### Core Documentation
+
+- `/init-docs` - Set up complete documentation structure
+- `/update-docs` - Refresh documentation with code changes
+- `/check-docs` - Validate documentation quality
+
+### Architecture Decision Records
+
+- `/adr "Decision Title"` - Create new ADR with context
+- Example: `/adr "Choose Database Technology"`
+
+### Diagram Generation
+
+- `/gen-er-diagram` - Database schema diagrams
+- `/gen-arch-diagram` - System architecture diagrams
+- `/gen-onboarding-diagram` - Setup flow diagrams
+- `/gen-dependency-diagram` - External service diagrams
+- `/gen-security-diagram` - Security flow diagrams
+- `/gen-deployment-diagram` - Infrastructure diagrams
+
+### Maintenance
+
+- `/sync-docs` - Sync all documentation
+- `/sync-doc filename.md` - Sync specific document
+- `/list-templates` - Show available templates
+
+---
+
+## 🎨 **Smart Templates & Auto-Detection**
 
 ### **Zero-Config Defaults**
 
@@ -237,14 +250,6 @@ documentation:
 ---
 
 ## 🔧 **Advanced Features**
-
-### CI/CD Integration
-
-```yaml
-# .github/workflows/docs.yml
-- name: Validate Documentation
-  run: cursor-init check-docs --fail-on-stale
-```
 
 ### Custom Templates
 
