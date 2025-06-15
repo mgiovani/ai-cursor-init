@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ai-cursor-init"
-version = "0.2.0"
+version = "0.3.0"
 description = "AI-powered documentation framework with intelligent code analysis, multi-provider AI support (OpenAI, Anthropic, Gemini), and context-aware generation of architecture docs, ADRs, and diagrams"
 readme = "README.md"
 license = "MIT"
