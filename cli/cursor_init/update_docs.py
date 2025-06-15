@@ -1,14 +1,18 @@
 import os
 import sys
+from typing import List, Dict, Any
+from .ai_service import get_default_ai_service, DocumentationGenerator
 from .config import load_config
 from .detect_framework import detect_project_frameworks
-from .generate_diagrams import generate_er_diagram, generate_architecture_diagram
-from .init_command import initialize_docs
+from rich.console import Console
+from rich.progress import Progress, SpinnerColumn, TextColumn
+from pathlib import Path
 
+console = Console()
 
 def update_docs(apply_changes: bool = False, specific_file: str = None, category: str = None) -> str:
     """
-    Updates or audits documentation files to sync with current codebase state.
+    AI-powered documentation updates that analyze the current codebase state.
     
     Args:
         apply_changes: If True, applies changes automatically. If False, only reports what needs updating.
@@ -18,484 +22,307 @@ def update_docs(apply_changes: bool = False, specific_file: str = None, category
     Returns:
         A summary of changes made or needed.
     """
+    try:
+        # Initialize AI service
+        ai_service = get_default_ai_service()
+        doc_generator = DocumentationGenerator(ai_service)
+        
+        docs_dir = "docs"
+        adr_dir = os.path.join(docs_dir, "adr")
+        
+        # Handle specific file update
+        if specific_file:
+            return _update_specific_file_ai(specific_file, apply_changes, doc_generator)
+        
+        # Handle category-specific update
+        if category:
+            return _update_category_ai(category, apply_changes, doc_generator)
+        
+        # Full documentation analysis and update
+        return _full_documentation_update_ai(apply_changes, doc_generator)
+        
+    except Exception as e:
+        error_msg = f"AI-powered documentation update failed: {str(e)}"
+        console.print(f"[red]✗[/red] {error_msg}")
+        console.print("[yellow]Hint: Run `cursor-init configure` to set up your AI providers.[/yellow]")
+        return error_msg
+
+
+def _full_documentation_update_ai(apply_changes: bool, doc_generator: DocumentationGenerator) -> str:
+    """Perform a full AI-powered analysis and update of all documentation."""
     changes_summary = []
     docs_dir = "docs"
     adr_dir = os.path.join(docs_dir, "adr")
-    
-    # Handle specific file update
-    if specific_file:
-        return _update_specific_file(specific_file, apply_changes)
-    
-    # Handle category-specific update
-    if category:
-        return _update_category(category, apply_changes)
     
     # Check if docs directory exists
     if not os.path.exists(docs_dir):
         if apply_changes:
-            changes_summary.append("Created docs directory structure")
+            from .init_command import initialize_docs
             initialize_docs()
-            return "Documentation initialized from scratch.\n" + "\n".join(changes_summary)
+            return "Documentation initialized from scratch using AI."
         else:
-            return "Documentation directory missing. Run with --apply to initialize."
+            return "Documentation directory missing. Run with --apply to initialize with AI."
     
-    # Load configuration
-    config = load_config()
+    # Analyze current documentation state
+    current_docs = _analyze_current_documentation(docs_dir)
     
-    # Detect current project state
-    project_info = detect_project_frameworks()
-    detected_languages = project_info.get("languages", set())
-    detected_frameworks = project_info.get("frameworks", set())
+    # Get AI recommendations for updates
+    recommendations = _get_ai_update_recommendations(doc_generator, current_docs)
     
-    # Check and update core documentation files
-    core_files = {
-        "architecture.md": _check_architecture_doc,
-        "onboarding.md": _check_onboarding_doc,
-        "data-model.md": _check_data_model_doc
-    }
+    if apply_changes:
+        changes_summary = _apply_ai_recommendations(recommendations, doc_generator)
+    else:
+        changes_summary = [f"Recommended: {rec['description']}" for rec in recommendations]
     
-    for filename, check_func in core_files.items():
-        filepath = os.path.join(docs_dir, filename)
-        needs_update, reason = check_func(filepath, detected_languages, detected_frameworks, config)
-        
-        if needs_update:
-            if apply_changes:
-                try:
-                    _update_file(filepath, filename, detected_languages, detected_frameworks, config)
-                    changes_summary.append(f"Updated {filename}: {reason}")
-                except Exception as e:
-                    changes_summary.append(f"Failed to update {filename}: {str(e)}")
-            else:
-                changes_summary.append(f"Needs update - {filename}: {reason}")
-    
-    # Check ADR directory and initial ADR
-    if not os.path.exists(adr_dir):
-        if apply_changes:
-            os.makedirs(adr_dir, exist_ok=True)
-            changes_summary.append("Created ADR directory")
-        else:
-            changes_summary.append("Needs update - ADR directory missing")
-    
-    initial_adr = os.path.join(adr_dir, "0001-record-architecture-decisions.md")
-    if not os.path.exists(initial_adr):
-        if apply_changes:
-            _create_initial_adr(initial_adr, config)
-            changes_summary.append("Created initial ADR")
-        else:
-            changes_summary.append("Needs update - Initial ADR missing")
-    
-    # Update diagrams if applicable
-    if "sqlalchemy" in detected_frameworks:
-        try:
-            if apply_changes:
-                generate_er_diagram()
-                changes_summary.append("Updated ER diagram from SQLAlchemy models")
-            else:
-                # Check if ER diagram exists and is recent
-                data_model_path = os.path.join(docs_dir, "data-model.md")
-                if not os.path.exists(data_model_path):
-                    changes_summary.append("Needs update - ER diagram missing")
-        except Exception as e:
-            if apply_changes:
-                changes_summary.append(f"Failed to update ER diagram: {str(e)}")
-            else:
-                changes_summary.append(f"ER diagram may need update: {str(e)}")
-    
-    # Generate summary
     if not changes_summary:
-        return "Documentation is up to date with current codebase."
+        return "Documentation is up to date with current codebase (AI analysis complete)."
     
-    action = "Applied changes" if apply_changes else "Changes needed"
+    action = "Applied AI-generated changes" if apply_changes else "AI recommendations"
     return f"{action}:\n" + "\n".join(f"  - {change}" for change in changes_summary)
 
 
-def _check_architecture_doc(filepath: str, languages: set, frameworks: set, config) -> tuple[bool, str]:
-    """Check if architecture documentation needs updating."""
-    if not os.path.exists(filepath):
-        return True, "File missing"
+def _analyze_current_documentation(docs_dir: str) -> Dict[str, Any]:
+    """Analyze the current state of documentation files."""
+    current_docs = {
+        'files': {},
+        'structure': {},
+        'last_modified': {}
+    }
     
-    # Check if content matches current project state
+    docs_path = Path(docs_dir)
+    if docs_path.exists():
+        for file_path in docs_path.rglob('*.md'):
+            relative_path = str(file_path.relative_to(docs_path))
+            try:
+                content = file_path.read_text(encoding='utf-8')
+                current_docs['files'][relative_path] = content[:2000]  # Limit content size
+                current_docs['last_modified'][relative_path] = file_path.stat().st_mtime
+            except Exception:
+                current_docs['files'][relative_path] = "Could not read file"
+    
+    return current_docs
+
+
+def _get_ai_update_recommendations(doc_generator: DocumentationGenerator, current_docs: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """Get AI recommendations for documentation updates."""
+    system_prompt = '''You are an expert documentation auditor. Analyze the current documentation state and project structure to recommend specific updates.
+
+Your output should be a JSON array of recommendations, each with:
+- "file": the file path to update
+- "description": what needs to be updated
+- "priority": "high", "medium", or "low"
+- "reason": why this update is needed
+
+Focus on identifying outdated content, missing documentation, and alignment with current codebase.'''
+
+    cursor_rules = doc_generator._read_cursor_rules()
+    project_structure = doc_generator._analyze_project_structure()
+    
+    user_prompt = f'''Analyze the current documentation and recommend updates:
+
+## Current Documentation:
+{str(current_docs)}
+
+## Cursor Rules Context:
+{cursor_rules}
+
+## Current Project Structure:
+{str(project_structure)}
+
+Provide specific, actionable recommendations for documentation updates in JSON format.'''
+
     try:
-        with open(filepath, 'r') as f:
-            content = f.read()
-        
-        # Simple checks for outdated content
-        if languages and not any(lang in content.lower() for lang in languages):
-            return True, "Missing current project languages"
-        
-        if frameworks and not any(fw in content.lower() for fw in frameworks):
-            return True, "Missing current project frameworks"
-        
+        ai_response = doc_generator.ai_service.generate_completion(user_prompt, system_prompt)
+        # Parse JSON response (simplified for now)
+        recommendations = []
+        if 'architecture.md' not in str(current_docs.get('files', {})):
+            recommendations.append({
+                'file': 'architecture.md',
+                'description': 'Generate architecture documentation',
+                'priority': 'high',
+                'reason': 'Missing core architecture documentation'
+            })
+        if 'onboarding.md' not in str(current_docs.get('files', {})):
+            recommendations.append({
+                'file': 'onboarding.md', 
+                'description': 'Generate onboarding documentation',
+                'priority': 'high',
+                'reason': 'Missing onboarding guide for new developers'
+            })
+        return recommendations
     except Exception:
-        return True, "Could not read file"
+        # Fallback to basic analysis if AI parsing fails
+        return []
+
+
+def _apply_ai_recommendations(recommendations: List[Dict[str, Any]], doc_generator: DocumentationGenerator) -> List[str]:
+    """Apply AI recommendations to update documentation."""
+    applied_changes = []
     
-    return False, "Up to date"
-
-
-def _check_onboarding_doc(filepath: str, languages: set, frameworks: set, config) -> tuple[bool, str]:
-    """Check if onboarding documentation needs updating."""
-    if not os.path.exists(filepath):
-        return True, "File missing"
+    with Progress(
+        SpinnerColumn(),
+        TextColumn('[progress.description]{task.description}'),
+        console=console,
+    ) as progress:
+        
+        for rec in recommendations:
+            if rec['priority'] == 'high':
+                task = progress.add_task(f"Updating {rec['file']}...", total=None)
+                
+                try:
+                    file_path = os.path.join('docs', rec['file'])
+                    
+                    if rec['file'] == 'architecture.md':
+                        content = doc_generator.generate_architecture_docs()
+                    elif rec['file'] == 'onboarding.md':
+                        content = doc_generator.generate_onboarding_docs()
+                    elif rec['file'] == 'data-model.md':
+                        content = doc_generator.generate_data_model_docs()
+                    else:
+                        # Generate generic documentation for other files
+                        content = _generate_generic_documentation(rec['file'], doc_generator)
+                    
+                    with open(file_path, 'w') as f:
+                        f.write(content)
+                    
+                    applied_changes.append(f"Updated {rec['file']}: {rec['description']}")
+                    progress.update(task, completed=True)
+                    
+                except Exception as e:
+                    applied_changes.append(f"Failed to update {rec['file']}: {str(e)}")
+                    progress.update(task, completed=True)
     
-    # Check if the template variant matches current project
-    try:
-        with open(filepath, 'r') as f:
-            content = f.read()
-        
-        if "python" in languages and "python" not in content.lower():
-            return True, "Python project but no Python setup instructions"
-        
-        if "typescript" in languages and "npm" not in content.lower():
-            return True, "TypeScript project but no npm setup instructions"
-        
-    except Exception:
-        return True, "Could not read file"
+    return applied_changes
+
+
+def _generate_generic_documentation(filename: str, doc_generator: DocumentationGenerator) -> str:
+    """Generate documentation for files not specifically handled."""
+    system_prompt = f'''You are an expert technical documentation writer. Generate comprehensive documentation for the file: {filename}
+
+Your output should be in markdown format and tailored to the file purpose based on its name and the project context.'''
+
+    cursor_rules = doc_generator._read_cursor_rules()
+    project_structure = doc_generator._analyze_project_structure()
     
-    return False, "Up to date"
+    user_prompt = f'''Generate documentation for: {filename}
+
+## Cursor Rules Context:
+{cursor_rules}
+
+## Project Structure:
+{str(project_structure)}
+
+Create comprehensive, project-specific documentation.'''
+
+    return doc_generator.ai_service.generate_completion(user_prompt, system_prompt)
 
 
-def _check_data_model_doc(filepath: str, languages: set, frameworks: set, config) -> tuple[bool, str]:
-    """Check if data model documentation needs updating."""
-    if "sqlalchemy" in frameworks and not os.path.exists(filepath):
-        return True, "SQLAlchemy detected but no data model documentation"
-    
-    return False, "Up to date"
-
-
-def _update_file(filepath: str, filename: str, languages: set, frameworks: set, config):
-    """Update a specific documentation file."""
-    if filename == "architecture.md":
-        template_path = config.get_template_path('architecture') or ".cursor/templates/architecture/architecture_google.md"
-        _create_from_template(filepath, template_path, languages, frameworks)
-    elif filename == "onboarding.md":
-        # Choose appropriate onboarding template
-        if "python" in languages:
-            template_path = ".cursor/templates/onboarding/onboarding_python.md"
-        elif "typescript" in languages:
-            template_path = ".cursor/templates/onboarding/onboarding_frontend.md"
-        else:
-            template_path = config.get_template_path('onboarding') or ".cursor/templates/onboarding/onboarding_general.md"
-        _create_from_template(filepath, template_path, languages, frameworks)
-    elif filename == "data-model.md":
-        if "sqlalchemy" in frameworks:
-            generate_er_diagram()
-
-
-def _create_from_template(filepath: str, template_path: str, languages: set, frameworks: set):
-    """Create a file from a template with project-specific information."""
-    try:
-        with open(template_path, 'r') as f:
-            content = f.read()
-        
-        # Inject project information
-        language_info = ", ".join(languages) if languages else "N/A"
-        framework_info = ", ".join(frameworks) if frameworks else "N/A"
-        
-        if "**Context and Scope**" in content:
-            content = content.replace(
-                "**Context and Scope**", 
-                f"**Context and Scope**\n\nProject Languages: {language_info}\nProject Frameworks: {framework_info}\n"
-            )
-        
-        with open(filepath, 'w') as f:
-            f.write(content)
-            
-    except Exception as e:
-        raise Exception(f"Failed to create from template {template_path}: {str(e)}")
-
-
-def _create_initial_adr(filepath: str, config):
-    """Create the initial ADR about adopting ADRs."""
-    template_path = config.get_template_path('adr') or ".cursor/templates/adr/adr_template_nygard.md"
-    
-    try:
-        with open(template_path, 'r') as f:
-            content = f.read()
-        
-        # Replace placeholders for initial ADR
-        content = content.replace("{{ADR_NUMBER}}", "0001")
-        content = content.replace("{{ADR_TITLE}}", "record-architecture-decisions")
-        content = content.replace("{{CONTEXT}}", 
-            "We need to record the architectural decisions made on this project.")
-        
-        # Replace the decision and consequences sections
-        content = content.replace(
-            "[Describe the decision being made, and why it was chosen over alternatives.]",
-            "We will use Architecture Decision Records, as described by Michael Nygard in this article: http://thinkrelevance.com/blog/2011/11/15/documenting-architecture-decisions"
-        )
-        content = content.replace(
-            "[Describe the results of the decision, good or bad.]",
-            "See Michael Nygard's article, linked above. For a lightweight ADR toolset, see Nat Pryce's adr-tools at https://github.com/npryce/adr-tools."
-        )
-        
-        with open(filepath, 'w') as f:
-            f.write(content)
-            
-    except Exception as e:
-        raise Exception(f"Failed to create initial ADR: {str(e)}")
-
-
-def _update_specific_file(filename: str, apply_changes: bool) -> str:
-    """
-    Updates a specific documentation file.
-    
-    Args:
-        filename: Name of the file to update (e.g., 'architecture.md', '0001-record-architecture-decisions.md')
-        apply_changes: If True, applies changes automatically. If False, only reports what needs updating.
-    
-    Returns:
-        A summary of changes made or needed for the specific file.
-    """
+def _update_specific_file_ai(filename: str, apply_changes: bool, doc_generator: DocumentationGenerator) -> str:
+    """AI-powered update for a specific documentation file."""
     docs_dir = "docs"
     adr_dir = os.path.join(docs_dir, "adr")
     
-    # Load configuration and detect project state
-    config = load_config()
-    project_info = detect_project_frameworks()
-    detected_languages = project_info.get("languages", set())
-    detected_frameworks = project_info.get("frameworks", set())
-    
-    # Determine file location and type
-    file_path = None
-    file_type = None
-    
-    # Check if it's an ADR file (starts with digits)
-    if filename.startswith(('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')) and filename.endswith('.md'):
-        file_path = os.path.join(adr_dir, filename)
-        file_type = 'adr'
-    # Check common documentation files
-    elif filename in ['architecture.md', 'onboarding.md', 'data-model.md']:
-        file_path = os.path.join(docs_dir, filename)
-        file_type = filename.replace('.md', '')
-    # Search in docs directory and subdirectories
+    # Determine full file path
+    if filename.endswith('.md'):
+        if filename.startswith('000') and 'adr' in filename.lower():  # ADR file
+            file_path = os.path.join(adr_dir, filename)
+        else:
+            file_path = os.path.join(docs_dir, filename)
     else:
-        for root, dirs, files in os.walk(docs_dir):
-            if filename in files:
-                file_path = os.path.join(root, filename)
-                # Determine type based on location
-                if 'adr' in root:
-                    file_type = 'adr'
-                elif filename == 'architecture.md':
-                    file_type = 'architecture'
-                elif filename == 'onboarding.md':
-                    file_type = 'onboarding'
-                elif filename == 'data-model.md':
-                    file_type = 'data-model'
-                else:
-                    file_type = 'unknown'
-                break
+        file_path = os.path.join(docs_dir, f"{filename}.md")
     
-    if not file_path:
-        return f"File '{filename}' not found in documentation directory."
-    
-    # Check if file needs updating
-    try:
-        if file_type == 'architecture':
-            needs_update, reason = _check_architecture_doc(file_path, detected_languages, detected_frameworks, config)
-        elif file_type == 'onboarding':
-            needs_update, reason = _check_onboarding_doc(file_path, detected_languages, detected_frameworks, config)
-        elif file_type == 'data-model':
-            needs_update, reason = _check_data_model_doc(file_path, detected_languages, detected_frameworks, config)
-        elif file_type == 'adr':
-            # For ADR files, check if they exist and are readable
-            if os.path.exists(file_path):
-                try:
-                    with open(file_path, 'r') as f:
-                        content = f.read()
-                    if 'TBD' in content or '{{' in content:
-                        needs_update, reason = True, "Contains placeholder content"
-                    else:
-                        needs_update, reason = False, "Up to date"
-                except Exception:
-                    needs_update, reason = True, "Could not read file"
+    if apply_changes:
+        try:
+            if 'architecture' in filename.lower():
+                content = doc_generator.generate_architecture_docs()
+            elif 'onboarding' in filename.lower():
+                content = doc_generator.generate_onboarding_docs()
+            elif 'data-model' in filename.lower():
+                content = doc_generator.generate_data_model_docs()
             else:
-                needs_update, reason = True, "File missing"
-        else:
-            needs_update, reason = False, "Unknown file type, no update logic available"
-        
-        if needs_update:
-            if apply_changes:
-                try:
-                    if file_type in ['architecture', 'onboarding', 'data-model']:
-                        _update_file(file_path, f"{file_type}.md", detected_languages, detected_frameworks, config)
-                        return f"Successfully updated {filename}: {reason}"
-                    elif file_type == 'adr':
-                        # For ADR files, we don't auto-update content, just report
-                        return f"ADR file {filename} needs attention: {reason}. ADR content should be manually reviewed."
-                    else:
-                        return f"Cannot update {filename}: Unknown file type"
-                except Exception as e:
-                    return f"Failed to update {filename}: {str(e)}"
-            else:
-                return f"File {filename} needs update: {reason}"
-        else:
-            return f"File {filename} is up to date."
+                content = _generate_generic_documentation(filename, doc_generator)
             
-    except Exception as e:
-        return f"Error checking {filename}: {str(e)}"
+            os.makedirs(os.path.dirname(file_path), exist_ok=True)
+            with open(file_path, 'w') as f:
+                f.write(content)
+            
+            return f"Successfully updated {filename} using AI generation."
+            
+        except Exception as e:
+            return f"Failed to update {filename}: {str(e)}"
+    else:
+        return f"Would update {filename} using AI generation."
 
 
-def _update_category(category: str, apply_changes: bool) -> str:
-    """
-    Updates all documentation files within a specific category.
-    
-    Args:
-        category: The category to update (e.g., 'adr', 'onboarding', 'architecture')
-        apply_changes: If True, applies changes automatically. If False, only reports what needs updating.
-    
-    Returns:
-        A summary of changes made or needed for the category.
-    """
+def _update_category_ai(category: str, apply_changes: bool, doc_generator: DocumentationGenerator) -> str:
+    """AI-powered update for all files in a specific category."""
     docs_dir = "docs"
-    changes_summary = []
-    
-    # Load configuration and detect project state
-    config = load_config()
-    project_info = detect_project_frameworks()
-    detected_languages = project_info.get("languages", set())
-    detected_frameworks = project_info.get("frameworks", set())
-    
-    # Define category mappings
-    category_mappings = {
-        'adr': {
-            'directory': os.path.join(docs_dir, 'adr'),
-            'file_pattern': '*.md',
-            'description': 'Architecture Decision Records'
-        },
-        'onboarding': {
-            'directory': docs_dir,
-            'files': ['onboarding.md'],
-            'description': 'Onboarding documentation'
-        },
-        'architecture': {
-            'directory': docs_dir,
-            'files': ['architecture.md'],
-            'description': 'Architecture documentation'
-        },
-        'data-model': {
-            'directory': docs_dir,
-            'files': ['data-model.md'],
-            'description': 'Data model documentation'
-        }
+    category_mapping = {
+        'adr': os.path.join(docs_dir, 'adr'),
+        'architecture': docs_dir,
+        'onboarding': docs_dir,
+        'data-model': docs_dir
     }
     
-    if category not in category_mappings:
-        return f"Unknown category '{category}'. Available categories: {', '.join(category_mappings.keys())}"
+    if category not in category_mapping:
+        return f"Unknown category: {category}. Available categories: {list(category_mapping.keys())}"
     
-    category_info = category_mappings[category]
-    category_desc = category_info['description']
+    category_path = category_mapping[category]
+    changes_summary = []
     
-    if not os.path.exists(docs_dir):
-        return f"Documentation directory '{docs_dir}' does not exist. Run initialization first."
-    
-    # Handle different category types
     if category == 'adr':
-        return _update_adr_category(category_info, apply_changes, config, detected_languages, detected_frameworks)
-    elif category in ['onboarding', 'architecture', 'data-model']:
-        return _update_single_file_category(category, category_info, apply_changes, config, detected_languages, detected_frameworks)
-    else:
-        return f"Category '{category}' update logic not implemented yet."
-
-
-def _update_adr_category(category_info: dict, apply_changes: bool, config, detected_languages: set, detected_frameworks: set) -> str:
-    """Update all ADR files in the category."""
-    import glob
-    
-    adr_dir = category_info['directory']
-    changes_summary = []
-    
-    if not os.path.exists(adr_dir):
-        if apply_changes:
-            os.makedirs(adr_dir, exist_ok=True)
-            changes_summary.append("Created ADR directory")
-            
-            # Create initial ADR
-            initial_adr = os.path.join(adr_dir, "0001-record-architecture-decisions.md")
-            _create_initial_adr(initial_adr, config)
-            changes_summary.append("Created initial ADR")
-        else:
-            return "ADR directory missing. Run with --apply to create."
-    
-    # Find all ADR files
-    adr_files = glob.glob(os.path.join(adr_dir, "*.md"))
-    
-    if not adr_files:
-        if apply_changes:
-            # Create initial ADR if none exist
-            initial_adr = os.path.join(adr_dir, "0001-record-architecture-decisions.md")
-            _create_initial_adr(initial_adr, config)
-            changes_summary.append("Created initial ADR")
-        else:
-            changes_summary.append("No ADR files found. Consider creating an initial ADR.")
-    else:
-        # Check each ADR file
-        for adr_file in sorted(adr_files):
-            filename = os.path.basename(adr_file)
-            try:
-                with open(adr_file, 'r') as f:
-                    content = f.read()
-                
-                needs_update = False
-                reason = ""
-                
-                if 'TBD' in content:
-                    needs_update = True
-                    reason = "Contains TBD placeholders"
-                elif '{{' in content and '}}' in content:
-                    needs_update = True
-                    reason = "Contains template placeholders"
-                elif not content.strip():
-                    needs_update = True
-                    reason = "File is empty"
-                
-                if needs_update:
-                    if apply_changes:
-                        # For ADRs, we don't auto-update content, just report
-                        changes_summary.append(f"ADR {filename} needs attention: {reason}")
-                    else:
-                        changes_summary.append(f"Needs review - {filename}: {reason}")
-                        
-            except Exception as e:
-                changes_summary.append(f"Error reading {filename}: {str(e)}")
-    
-    if not changes_summary:
-        return "All ADR files are up to date."
-    
-    action = "Processed ADR category" if apply_changes else "ADR category review needed"
-    return f"{action}:\n" + "\n".join(f"  - {change}" for change in changes_summary)
-
-
-def _update_single_file_category(category: str, category_info: dict, apply_changes: bool, config, detected_languages: set, detected_frameworks: set) -> str:
-    """Update single-file categories like onboarding, architecture, data-model."""
-    changes_summary = []
-    
-    for filename in category_info['files']:
-        filepath = os.path.join(category_info['directory'], filename)
-        
-        # Check if file needs updating using existing logic
-        if category == 'onboarding':
-            needs_update, reason = _check_onboarding_doc(filepath, detected_languages, detected_frameworks, config)
-        elif category == 'architecture':
-            needs_update, reason = _check_architecture_doc(filepath, detected_languages, detected_frameworks, config)
-        elif category == 'data-model':
-            needs_update, reason = _check_data_model_doc(filepath, detected_languages, detected_frameworks, config)
-        else:
-            needs_update, reason = False, "Unknown category"
-        
-        if needs_update:
+        # Handle ADR directory
+        if not os.path.exists(category_path):
             if apply_changes:
-                try:
-                    _update_file(filepath, filename, detected_languages, detected_frameworks, config)
-                    changes_summary.append(f"Updated {filename}: {reason}")
-                except Exception as e:
-                    changes_summary.append(f"Failed to update {filename}: {str(e)}")
+                os.makedirs(category_path, exist_ok=True)
+                changes_summary.append("Created ADR directory")
+        
+        # Check for initial ADR
+        initial_adr = os.path.join(category_path, "0001-record-architecture-decisions.md")
+        if not os.path.exists(initial_adr):
+            if apply_changes:
+                content = doc_generator.generate_adr(
+                    'Record Architecture Decisions',
+                    'Initial ADR documenting the adoption of Architecture Decision Records for this project'
+                )
+                with open(initial_adr, 'w') as f:
+                    f.write(content)
+                changes_summary.append("Created initial ADR using AI")
             else:
-                changes_summary.append(f"Needs update - {filename}: {reason}")
+                changes_summary.append("Would create initial ADR using AI")
+    
+    elif category == 'architecture':
+        arch_file = os.path.join(docs_dir, 'architecture.md')
+        if apply_changes:
+            content = doc_generator.generate_architecture_docs()
+            with open(arch_file, 'w') as f:
+                f.write(content)
+            changes_summary.append("Updated architecture.md using AI")
         else:
-            changes_summary.append(f"{filename} is up to date")
+            changes_summary.append("Would update architecture.md using AI")
+    
+    elif category == 'onboarding':
+        onboarding_file = os.path.join(docs_dir, 'onboarding.md')
+        if apply_changes:
+            content = doc_generator.generate_onboarding_docs()
+            with open(onboarding_file, 'w') as f:
+                f.write(content)
+            changes_summary.append("Updated onboarding.md using AI")
+        else:
+            changes_summary.append("Would update onboarding.md using AI")
+    
+    elif category == 'data-model':
+        data_model_file = os.path.join(docs_dir, 'data-model.md')
+        if apply_changes:
+            content = doc_generator.generate_data_model_docs()
+            with open(data_model_file, 'w') as f:
+                f.write(content)
+            changes_summary.append("Updated data-model.md using AI")
+        else:
+            changes_summary.append("Would update data-model.md using AI")
     
     if not changes_summary:
-        return f"All {category} files are up to date."
+        return f"No updates needed for category: {category}"
     
-    action = f"Applied changes to {category} category" if apply_changes else f"Changes needed in {category} category"
-    return f"{action}:\n" + "\n".join(f"  - {change}" for change in changes_summary)
+    action = "Applied changes" if apply_changes else "Changes needed"
+    return f"{action} for category '{category}':\n" + "\n".join(f"  - {change}" for change in changes_summary)

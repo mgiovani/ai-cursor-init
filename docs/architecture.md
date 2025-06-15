@@ -4,29 +4,57 @@ The `ai-cursor-init` project is an AI-powered documentation framework designed t
 
 ### High-Level Architecture
 
+```markdown
+# AI Cursor Init Architecture Diagram
+
+This document presents a comprehensive architecture diagram for the AI Cursor Init project. The diagram visualizes the main components of the system, their relationships, data flow, external dependencies, and technology stack.
+
 ```mermaid
 graph TD
-    A[Cursor IDE Integration] --> B[Slash Commands]
-    B --> C[AI Service Layer]
-    C --> D[Template Engine]
-    C --> E[Framework Detection]
-    C --> F[Diagram Generation]
+    A[AI Cursor Init] -->|Uses| B[CLI]
+    A -->|Depends on| C[Requirements]
+    A -->|Includes| D[Documentation]
+    A -->|Utilizes| E[External APIs]
+    A -->|Configured by| F[Configuration Files]
     
-    G[CLI Tool] --> C
+    B -->|Executes| G[Main Script]
+    B -->|Interacts with| E
     
-    D --> H[Documentation Files]
-    E --> I[Project Analysis]
-    F --> J[Mermaid Diagrams]
+    C -->|Contains| H[PyYAML]
+    C -->|Contains| I[OpenAI API]
+    C -->|Contains| J[Anthropic API]
+    C -->|Contains| K[Google Generative AI]
+    C -->|Contains| L[Python Dotenv]
+    C -->|Contains| M[Rich]
+    C -->|Contains| N[TikToken]
     
-    C --> K[Multi-Provider AI]
-    K --> L[OpenAI]
-    K --> M[Anthropic]
-    K --> N[Gemini]
+    F -->|Includes| O[pyproject.toml]
+    F -->|Includes| P[requirements.txt]
+    F -->|Includes| Q[.cursor-init.yaml]
     
-    H --> O[Architecture Docs]
-    H --> P[ADRs]
-    H --> Q[Onboarding Guides]
-    H --> R[ER Diagrams]
+    D -->|Contains| R[README.md]
+    D -->|Contains| S[CHANGELOG.md]
+    D -->|Contains| T[CONTRIBUTING.md]
+    D -->|Contains| U[AI_DOCUMENTATION.md]
+    D -->|Contains| V[SECURITY.md]
+    D -->|Contains| W[Architecture Docs]
+    D -->|Contains| X[Data Model Docs]
+    D -->|Contains| Y[Onboarding Docs]
+
+    E -->|Provides| Z[AI Services]
+    E -->|Includes| AA[OpenAI]
+    E -->|Includes| AB[Anthropic]
+    E -->|Includes| AC[Google Generative AI]
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bbf,stroke:#333,stroke-width:2px
+    style D fill:#bbf,stroke:#333,stroke-width:2px
+    style E fill:#bbf,stroke:#333,stroke-width:2px
+    style F fill:#bbf,stroke:#333,stroke-width:2px
+```
+
+This diagram illustrates the architecture of the AI Cursor Init project, highlighting the key components such as the CLI, external APIs, configuration files, and documentation. Each component is connected to show how they interact and depend on each other, providing a clear overview of the system's structure and functionality.
 ```
 
 ### Core Components

@@ -62,29 +62,8 @@ class Config:
         return self._config_data.get('custom_template_paths', [])
     
     def get_template_path(self, doc_type: str) -> Optional[str]:
-        variant = self.get_template_variant(doc_type)
-        
-        template_mappings = {
-            'adr': {
-                'nygard_style': '.cursor/templates/adr/adr_template_nygard.md',
-                'full': '.cursor/templates/adr/adr_template_full.md',
-                'lightweight': '.cursor/templates/adr/adr_template_lightweight.md'
-            },
-            'architecture': {
-                'google_style': '.cursor/templates/architecture/architecture_google.md',
-                'enterprise': '.cursor/templates/architecture/architecture_enterprise.md',
-                'arc42': '.cursor/templates/architecture/architecture_arc.md'
-            },
-            'onboarding': {
-                'general': '.cursor/templates/onboarding/onboarding_general.md',
-                'python': '.cursor/templates/onboarding/onboarding_python.md',
-                'frontend': '.cursor/templates/onboarding/onboarding_frontend.md'
-            }
-        }
-        
-        if doc_type in template_mappings and variant in template_mappings[doc_type]:
-            return template_mappings[doc_type][variant]
-        
+        # Since we're now AI-powered, template paths are deprecated
+        # but we keep this method for backward compatibility
         return None
     
     def add_custom_template(self, name: str, path: str) -> bool:
