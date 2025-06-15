@@ -4,94 +4,85 @@
 **Version:** {{VERSION}}  
 **Maintainer:** {{MAINTAINER}}
 
+## Overview
+
+{{OVERVIEW}}
+
+This document describes the data model and database design for {{PROJECT_NAME}}.
+
 ## Database Information
 
-| Field | Value |
-|-------|-------|
+| Property | Value |
+|----------|-------|
 | **Database Type** | {{DATABASE_TYPE}} |
 | **Version** | {{DATABASE_VERSION}} |
-| **Environment** | {{ENVIRONMENT}} |
-| **Charset** | {{CHARSET}} |
-| **Collation** | {{COLLATION}} |
+| **Schema Version** | {{SCHEMA_VERSION}} |
+| **Last Migration** | {{LAST_MIGRATION}} |
 
 ## Entity Relationship Diagram
 
 ```mermaid
-{{ER_DIAGRAM}}
+erDiagram
+{{ER_DIAGRAM_CONTENT}}
 ```
 
 ## Entity Definitions
 
 ### {{ENTITY_1}}
 
-**Table:** `{{TABLE_1}}`  
-**Purpose:** {{PURPOSE_1}}
+{{ENTITY_1_DESCRIPTION}}
+
+#### Attributes
 
 | Column | Type | Constraints | Description |
 |--------|------|-------------|-------------|
-| {{COLUMN_1_1}} | {{TYPE_1_1}} | {{CONSTRAINTS_1_1}} | {{DESC_1_1}} |
-| {{COLUMN_1_2}} | {{TYPE_1_2}} | {{CONSTRAINTS_1_2}} | {{DESC_1_2}} |
-| {{COLUMN_1_3}} | {{TYPE_1_3}} | {{CONSTRAINTS_1_3}} | {{DESC_1_3}} |
+| {{ENTITY_1_ATTR_1}} | {{TYPE_1}} | {{CONSTRAINTS_1}} | {{DESC_1}} |
+| {{ENTITY_1_ATTR_2}} | {{TYPE_2}} | {{CONSTRAINTS_2}} | {{DESC_2}} |
+| {{ENTITY_1_ATTR_3}} | {{TYPE_3}} | {{CONSTRAINTS_3}} | {{DESC_3}} |
 
-**Indexes:**
+#### Relationships
 
-- {{INDEX_1_1}}
-- {{INDEX_1_2}}
+- {{RELATIONSHIP_1}}
+- {{RELATIONSHIP_2}}
+
+#### Business Rules
+
+- {{BUSINESS_RULE_1}}
+- {{BUSINESS_RULE_2}}
+
+#### Indexes
+
+```sql
+{{ENTITY_1_INDEXES}}
+```
 
 ### {{ENTITY_2}}
 
-**Table:** `{{TABLE_2}}`  
-**Purpose:** {{PURPOSE_2}}
+{{ENTITY_2_DESCRIPTION}}
+
+#### Attributes
 
 | Column | Type | Constraints | Description |
 |--------|------|-------------|-------------|
-| {{COLUMN_2_1}} | {{TYPE_2_1}} | {{CONSTRAINTS_2_1}} | {{DESC_2_1}} |
-| {{COLUMN_2_2}} | {{TYPE_2_2}} | {{CONSTRAINTS_2_2}} | {{DESC_2_2}} |
-| {{COLUMN_2_3}} | {{TYPE_2_3}} | {{CONSTRAINTS_2_3}} | {{DESC_2_3}} |
+| {{ENTITY_2_ATTR_1}} | {{TYPE_1}} | {{CONSTRAINTS_1}} | {{DESC_1}} |
+| {{ENTITY_2_ATTR_2}} | {{TYPE_2}} | {{CONSTRAINTS_2}} | {{DESC_2}} |
+| {{ENTITY_2_ATTR_3}} | {{TYPE_3}} | {{CONSTRAINTS_3}} | {{DESC_3}} |
 
-**Indexes:**
+#### Relationships
 
-- {{INDEX_2_1}}
-- {{INDEX_2_2}}
+- {{RELATIONSHIP_1}}
+- {{RELATIONSHIP_2}}
 
-### {{ENTITY_3}}
+#### Business Rules
 
-**Table:** `{{TABLE_3}}`  
-**Purpose:** {{PURPOSE_3}}
+- {{BUSINESS_RULE_1}}
+- {{BUSINESS_RULE_2}}
 
-| Column | Type | Constraints | Description |
-|--------|------|-------------|-------------|
-| {{COLUMN_3_1}} | {{TYPE_3_1}} | {{CONSTRAINTS_3_1}} | {{DESC_3_1}} |
-| {{COLUMN_3_2}} | {{TYPE_3_2}} | {{CONSTRAINTS_3_2}} | {{DESC_3_2}} |
-| {{COLUMN_3_3}} | {{TYPE_3_3}} | {{CONSTRAINTS_3_3}} | {{DESC_3_3}} |
+#### Indexes
 
-**Indexes:**
-
-- {{INDEX_3_1}}
-- {{INDEX_3_2}}
-
-## Relationships
-
-### {{RELATIONSHIP_1}}
-
-- **Type:** {{REL_TYPE_1}}
-- **From:** {{FROM_TABLE_1}} ({{FROM_COLUMN_1}})
-- **To:** {{TO_TABLE_1}} ({{TO_COLUMN_1}})
-- **Description:** {{REL_DESC_1}}
-
-### {{RELATIONSHIP_2}}
-
-- **Type:** {{REL_TYPE_2}}
-- **From:** {{FROM_TABLE_2}} ({{FROM_COLUMN_2}})
-- **To:** {{TO_TABLE_2}} ({{TO_COLUMN_2}})
-- **Description:** {{REL_DESC_2}}
-
-### {{RELATIONSHIP_3}}
-
-- **Type:** {{REL_TYPE_3}}
-- **From:** {{FROM_TABLE_3}} ({{FROM_COLUMN_3}})
-- **To:** {{TO_TABLE_3}} ({{TO_COLUMN_3}})
-- **Description:** {{REL_DESC_3}}
+```sql
+{{ENTITY_2_INDEXES}}
+```
 
 ## Domain Models
 
@@ -99,38 +90,42 @@
 
 {{DOMAIN_1_DESCRIPTION}}
 
-**Entities Involved:**
-
-- {{DOMAIN_1_ENTITY_1}}
-- {{DOMAIN_1_ENTITY_2}}
-- {{DOMAIN_1_ENTITY_3}}
+**Entities:** {{DOMAIN_1_ENTITIES}}  
+**Key Relationships:** {{DOMAIN_1_RELATIONSHIPS}}
 
 ### {{DOMAIN_2}}
 
 {{DOMAIN_2_DESCRIPTION}}
 
-**Entities Involved:**
+**Entities:** {{DOMAIN_2_ENTITIES}}  
+**Key Relationships:** {{DOMAIN_2_RELATIONSHIPS}}
 
-- {{DOMAIN_2_ENTITY_1}}
-- {{DOMAIN_2_ENTITY_2}}
-- {{DOMAIN_2_ENTITY_3}}
+## Data Types
 
-## Data Types and Conventions
+### Custom Types
 
-### Standard Types
+| Type | Definition | Usage |
+|------|------------|-------|
+| {{CUSTOM_TYPE_1}} | {{DEFINITION_1}} | {{USAGE_1}} |
+| {{CUSTOM_TYPE_2}} | {{DEFINITION_2}} | {{USAGE_2}} |
 
-| Type | Description | Usage |
-|------|-------------|-------|
-| {{TYPE_1}} | {{TYPE_1_DESC}} | {{TYPE_1_USAGE}} |
-| {{TYPE_2}} | {{TYPE_2_DESC}} | {{TYPE_2_USAGE}} |
-| {{TYPE_3}} | {{TYPE_3_DESC}} | {{TYPE_3_USAGE}} |
+### Enumerations
 
-### Naming Conventions
+```sql
+{{ENUMS}}
+```
 
-- **Tables:** {{TABLE_NAMING_CONVENTION}}
-- **Columns:** {{COLUMN_NAMING_CONVENTION}}
-- **Indexes:** {{INDEX_NAMING_CONVENTION}}
-- **Foreign Keys:** {{FK_NAMING_CONVENTION}}
+## Constraints and Validations
+
+### Database Constraints
+
+```sql
+{{DATABASE_CONSTRAINTS}}
+```
+
+### Application-Level Validations
+
+{{APPLICATION_VALIDATIONS}}
 
 ## Performance Considerations
 
@@ -146,137 +141,123 @@
 
 {{PARTITIONING_STRATEGY}}
 
-### Caching
+## Security and Access Control
 
-{{CACHING_STRATEGY}}
+### Data Classification
 
-## Security
+| Entity | Classification | Access Control |
+|--------|----------------|----------------|
+| {{ENTITY_1}} | {{CLASSIFICATION_1}} | {{ACCESS_1}} |
+| {{ENTITY_2}} | {{CLASSIFICATION_2}} | {{ACCESS_2}} |
 
-### Access Control
+### Encryption
 
-{{ACCESS_CONTROL}}
-
-### Data Encryption
-
-{{DATA_ENCRYPTION}}
+{{ENCRYPTION_STRATEGY}}
 
 ### Audit Trail
 
-{{AUDIT_TRAIL}}
+{{AUDIT_STRATEGY}}
 
-### Data Privacy
+## Migration and Versioning
 
-{{DATA_PRIVACY}}
+### Migration Strategy
 
-## Migration Strategy
+{{MIGRATION_STRATEGY}}
 
-### Version Control
+### Version History
 
-{{VERSION_CONTROL_STRATEGY}}
-
-### Migration Process
-
-{{MIGRATION_PROCESS}}
+| Version | Date | Changes | Migration Script |
+|---------|------|---------|------------------|
+| {{VERSION_1}} | {{DATE_1}} | {{CHANGES_1}} | {{SCRIPT_1}} |
+| {{VERSION_2}} | {{DATE_2}} | {{CHANGES_2}} | {{SCRIPT_2}} |
 
 ### Rollback Procedures
 
 {{ROLLBACK_PROCEDURES}}
 
-### Data Seeding
-
-{{DATA_SEEDING}}
-
-## API Integration
-
-### ORM Configuration
-
-{{ORM_CONFIGURATION}}
-
-### Model Relationships
-
-{{MODEL_RELATIONSHIPS}}
-
-### Serialization
-
-{{SERIALIZATION_STRATEGY}}
-
-### Validation Rules
-
-{{VALIDATION_RULES}}
-
-## Testing
-
-### Unit Tests
-
-{{UNIT_TESTING_STRATEGY}}
-
-### Integration Tests
-
-{{INTEGRATION_TESTING}}
-
-### Data Fixtures
-
-{{DATA_FIXTURES}}
-
-### Performance Tests
-
-{{PERFORMANCE_TESTING}}
-
-## Monitoring
-
-### Performance Metrics
-
-{{PERFORMANCE_METRICS}}
-
-### Query Analysis
-
-{{QUERY_ANALYSIS}}
-
-### Health Checks
-
-{{HEALTH_CHECKS}}
-
-### Alerting
-
-{{ALERTING_STRATEGY}}
-
-## Backup and Recovery
-
-### Backup Strategy
-
-{{BACKUP_STRATEGY}}
-
-### Recovery Procedures
-
-{{RECOVERY_PROCEDURES}}
-
-### Disaster Recovery
-
-{{DISASTER_RECOVERY}}
+## Data Lifecycle
 
 ### Data Retention
 
 {{DATA_RETENTION_POLICY}}
 
-## Change Log
+### Archival Strategy
 
-| Version | Date | Author | Changes |
-|---------|------|--------|---------|
-| {{CHANGE_VERSION_1}} | {{CHANGE_DATE_1}} | {{CHANGE_AUTHOR_1}} | {{CHANGE_DESC_1}} |
-| {{CHANGE_VERSION_2}} | {{CHANGE_DATE_2}} | {{CHANGE_AUTHOR_2}} | {{CHANGE_DESC_2}} |
+{{ARCHIVAL_STRATEGY}}
+
+### Backup and Recovery
+
+{{BACKUP_STRATEGY}}
+
+## API Integration
+
+### ORM Mapping
+
+{{ORM_MAPPING}}
+
+### API Endpoints
+
+| Entity | Endpoint | Operations |
+|--------|----------|------------|
+| {{ENTITY_1}} | {{ENDPOINT_1}} | {{OPERATIONS_1}} |
+| {{ENTITY_2}} | {{ENDPOINT_2}} | {{OPERATIONS_2}} |
+
+## Testing Strategy
+
+### Test Data
+
+{{TEST_DATA_STRATEGY}}
+
+### Database Testing
+
+{{DATABASE_TESTING}}
+
+### Performance Testing
+
+{{PERFORMANCE_TESTING}}
+
+## Monitoring and Observability
+
+### Key Metrics
+
+{{KEY_METRICS}}
+
+### Alerting
+
+{{ALERTING_STRATEGY}}
+
+### Logging
+
+{{LOGGING_STRATEGY}}
+
+## Troubleshooting
+
+### Common Issues
+
+{{COMMON_ISSUES}}
+
+### Diagnostic Queries
+
+```sql
+{{DIAGNOSTIC_QUERIES}}
+```
 
 ## References
 
-- {{REFERENCE_1}}
-- {{REFERENCE_2}}
-- {{REFERENCE_3}}
+- [Database Documentation]({{DB_DOCS_LINK}})
+- [ORM Documentation]({{ORM_DOCS_LINK}})
+- [API Documentation]({{API_DOCS_LINK}})
 
 ## Appendices
 
-### Appendix A: {{APPENDIX_A_TITLE}}
+### Appendix A: Full Schema DDL
 
-{{APPENDIX_A_CONTENT}}
+```sql
+{{FULL_SCHEMA_DDL}}
+```
 
-### Appendix B: {{APPENDIX_B_TITLE}}
+### Appendix B: Seed Data
 
-{{APPENDIX_B_CONTENT}}
+```sql
+{{SEED_DATA}}
+```

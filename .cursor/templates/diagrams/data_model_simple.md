@@ -9,16 +9,35 @@
 ## Entity Relationship Diagram
 
 ```mermaid
-{{ER_DIAGRAM}}
+erDiagram
+{{ER_DIAGRAM_CONTENT}}
 ```
 
 ## Entities
 
-{{ENTITIES}}
+### {{ENTITY_1}}
+
+{{ENTITY_1_DESCRIPTION}}
+
+**Key Attributes:**
+
+- {{ENTITY_1_KEY_ATTR_1}}
+- {{ENTITY_1_KEY_ATTR_2}}
+- {{ENTITY_1_KEY_ATTR_3}}
+
+### {{ENTITY_2}}
+
+{{ENTITY_2_DESCRIPTION}}
+
+**Key Attributes:**
+
+- {{ENTITY_2_KEY_ATTR_1}}
+- {{ENTITY_2_KEY_ATTR_2}}
+- {{ENTITY_2_KEY_ATTR_3}}
 
 ## Relationships
 
-{{RELATIONSHIPS}}
+{{RELATIONSHIPS_DESCRIPTION}}
 
 ## Notes
 
