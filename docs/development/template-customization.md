@@ -1,296 +1,87 @@
-### Template Customization Guide
+# Template Customization Guide
 
-This guide explains how to customize documentation templates used by cursor-init slash commands.
-
-## Overview
-
-cursor-init supports multiple template variants for different documentation types, allowing you to choose the style that best fits your team's needs. Templates can be configured globally via `.cursor-init.yaml` or selected per command.
-
-## Available Template Types
-
-### Architecture Decision Records (ADRs)
-
-The `/adr` command supports four template variants:
-
-#### 1. Nygard Style (Default)
-
-**Template:** `adr_template_nygard.md`
-**Best for:** Classic Michael Nygard style ADRs
-**Sections:** Context, Decision, Consequences
-
-```yaml
-templates:
-  adr: "nygard_style"
-```
-
-#### 2. Full Template
-
-**Template:** `adr_template_full.md`
-**Best for:** Complex architectural decisions requiring thorough analysis
-**Sections:** Problem Statement, Context, Assumptions, Options Analysis, Implementation Plan, Success Metrics, Risk Assessment
-
-```yaml
-templates:
-  adr: "full"
-```
-
-#### 3. Lightweight Template
-
-**Template:** `adr_template_lightweight.md`
-**Best for:** Simple decisions that don't require extensive documentation
-**Sections:** Problem, Decision, Alternatives, Consequences
-
-```yaml
-templates:
-  adr: "lightweight"
-```
-
-#### 4. MADR Template
-
-**Template:** `adr_template_madr.md`
-**Best for:** Teams following MADR (Markdown ADR) conventions
-**Sections:** Context and Problem Statement, Decision Drivers, Considered Options, Decision Outcome, Pros/Cons Analysis
-
-```yaml
-templates:
-  adr: "madr"
-```
+The cursor-init framework provides multiple template variants for RFC (Request For Comments) documentation, allowing you to customize the documentation style to match your project's needs.
 
 ## Configuration
 
-### Global Configuration
-
-Create a `.cursor-init.yaml` file in your project root to set default templates:
+Create a `.cursor-init.yaml` file in your project root to configure template variants:
 
 ```yaml
-# Template preferences - choose your preferred style for each document type
 templates:
-  # ADR (Architecture Decision Record) templates
-  adr: "nygard_style" # Options: nygard_style, full, lightweight, madr
-
-  # Architecture documentation templates
-  architecture: "google_style" # Options: google_style, enterprise, arc42
-
-  # Onboarding guide templates
-  onboarding: "general" # Options: general, python, frontend
-
-# Custom template paths - add your own templates
-custom_template_paths:
-  # Example: Add a custom security ADR template
-  - name: "security_adr"
-    path: ".cursor/templates/custom/security-adr.md"
+  # RFC Templates
+  rfc: "standard"              # Options: minimal, standard, detailed
 ```
 
-### Per-Command Selection
+## RFC Templates
 
-Some commands allow you to specify the template variant directly:
+### `minimal`
 
-```bash
-# CLI examples (when available)
-cursor-init adr --template=full "Choose database technology"
-cursor-init adr --template=lightweight "Update logging format"
-```
+- **Description**: Simple RFC for quick proposals
+- **Best For**: Informal proposals or brainstorming
+- **Length**: ~12 lines
+- **Sections**: Problem, Proposed Solution, Discussion
+
+### `standard` (Default)
+
+- **Description**: Standard RFC with structured analysis
+- **Best For**: Most RFC scenarios requiring structured evaluation
+- **Length**: ~80 lines
+- **Sections**: Summary, Problem Statement, Proposed Solution, Implementation Details, Alternatives, Risks, Success Metrics
+
+### `detailed`
+
+- **Description**: Comprehensive RFC with full lifecycle management
+- **Best For**: Complex proposals requiring formal approval process
+- **Length**: ~300 lines
+- **Sections**: Abstract, Motivation, Background, Detailed Design, Implementation Plan, Alternatives, Risk Assessment, Resource Requirements, Testing Strategy, Rollout Plan, Approval Process
 
 ## Template Structure
 
-### Placeholder System
-
 All templates use a consistent placeholder system:
 
-- `{{ADR_NUMBER}}` - Auto-numbered sequentially (0001, 0002, etc.)
-- `{{ADR_TITLE}}` - Sanitized from user input
-- `{{CONTEXT}}` - Pre-filled from codebase search
-- `{{DATE}}` - Current date in ISO format
-- `{{AUTHORS}}` - Project contributors (when available)
-- `{{STAKEHOLDERS}}` - Key decision stakeholders
+### Common Placeholders
 
-### Template Locations
+- `{{RFC_TITLE}}` - RFC title
+- `{{DATE}}` - Current date
+- `{{AUTHOR}}` - Document author
 
-Default templates are stored in:
+### RFC-Specific Placeholders
 
-```
-.cursor/templates/
-├── adr/
-│   ├── adr_template_nygard.md
-│   ├── adr_template_full.md
-│   ├── adr_template_lightweight.md
-│   └── adr_template_madr.md
-├── architecture/
-│   └── ...
-└── onboarding/
-    └── ...
-```
+- `{{RFC_NUMBER}}` - RFC number (detailed template)
+- `{{STATUS}}` - RFC status
+- `{{PROBLEM_STATEMENT}}` - Problem description
+- `{{PROPOSED_SOLUTION}}` - Solution details
 
-## Creating Custom Templates
+## Command Integration
 
-### 1. Create Template File
+The `/rfc "Title"` command respects RFC template configuration and will use the configured variant when creating new RFCs.
 
-Create your custom template in `.cursor/templates/custom/`:
+### Automatic Template Selection
 
-```markdown
-### {{ADR_NUMBER}}-{{ADR_TITLE}}
+If no `.cursor-init.yaml` exists, commands use the default template: `standard`
 
-**Status:** Proposed
-**Security Level:** {{SECURITY_LEVEL}}
-**Compliance:** {{COMPLIANCE_REQUIREMENTS}}
+## Best Practices
 
-## Security Context
+### Template Selection
 
-{{SECURITY_CONTEXT}}
-[Describe security implications and requirements]
+- **Start Simple**: Begin with minimal for quick ideas, upgrade to standard/detailed as needed
+- **Match Complexity**: Choose template complexity based on proposal scope
+- **Team Consistency**: Use same templates across team proposals
 
-## Threat Analysis
+### Customization
 
-{{THREAT_ANALYSIS}}
-[Identify potential security threats]
+- **Placeholder Values**: Populate placeholders with meaningful content
+- **Section Relevance**: Remove irrelevant sections for your proposal
+- **Team Input**: Get team feedback on template choices
 
-## Decision
+## Contributing
 
-{{DECISION}}
-[Security-focused decision with risk mitigation]
+### Adding New Templates
 
-## Security Consequences
+1. Create template file with appropriate placeholders
+2. Add to RFC template directory
+3. Update configuration options
+4. Document template purpose and usage
+5. Test with different proposal scenarios
 
-{{SECURITY_CONSEQUENCES}}
-[Security implications of this decision]
-```
-
-### 2. Register Custom Template
-
-Add to your `.cursor-init.yaml`:
-
-```yaml
-custom_template_paths:
-  - name: "security_adr"
-    path: ".cursor/templates/custom/security-adr.md"
-```
-
-### 3. Use Custom Template
-
-Reference in configuration:
-
-```yaml
-templates:
-  adr: "security_adr"  # Use your custom template
-```
-
-## Template Development Guidelines
-
-### 1. Placeholder Conventions
-
-- Use `{{UPPERCASE_WITH_UNDERSCORES}}` for placeholders
-- Provide descriptive inline guidance: `[Describe what goes here]`
-- Include examples where helpful
-
-### 2. Section Structure
-
-- Use consistent markdown heading levels
-- Bold important metadata: `**Status:** Proposed`
-- Group related information logically
-
-### 3. Content Guidance
-
-- Provide clear instructions for each section
-- Include examples of good content
-- Explain the purpose of each section
-
-### 4. Template Validation
-
-Test your templates by:
-
-1. Creating a test ADR: `/adr "Test Decision"`
-2. Checking placeholder replacement works correctly
-3. Verifying the generated markdown is well-formatted
-4. Ensuring all sections have appropriate guidance
-
-## Advanced Customization
-
-### Framework-Specific Templates
-
-Templates can be customized based on detected frameworks:
-
-```yaml
-templates:
-  adr: "nygard_style"
-
-# Override for specific frameworks
-framework_overrides:
-  python_framework: "fastapi"
-  
-# Framework-specific template variants
-framework_templates:
-  fastapi:
-    adr: "api_focused_adr"
-```
-
-### Conditional Sections
-
-Templates can include conditional content:
-
-```markdown
-## API Impact
-{{#IF_API_CHANGE}}
-{{API_IMPACT}}
-[Describe impact on API contracts and versioning]
-{{/IF_API_CHANGE}}
-```
-
-### Template Inheritance
-
-Extend existing templates:
-
-```yaml
-custom_template_paths:
-  - name: "enhanced_nygard"
-    path: ".cursor/templates/custom/enhanced-nygard.md"
-    extends: "nygard_style"  # Inherit from base template
-```
-
-## Troubleshooting
-
-### Common Issues
-
-1. **Template not found**: Check file path and spelling in `.cursor-init.yaml`
-2. **Placeholders not replaced**: Ensure proper `{{PLACEHOLDER}}` format
-3. **Configuration ignored**: Verify `.cursor-init.yaml` is valid YAML
-
-### Debug Template Selection
-
-Use the `/list-templates` command to see available templates and current configuration:
-
-```
-/list-templates
-```
-
-This will show:
-
-- Available default templates
-- Configured custom templates  
-- Current template preferences
-- Template file locations
-
-## Contributing Templates
-
-To contribute new templates to the project:
-
-1. **Create Template**: Follow the guidelines above
-2. **Add Documentation**: Update this guide with your template details
-3. **Update Configuration**: Add to default options
-4. **Test Thoroughly**: Ensure placeholders work correctly
-5. **Submit PR**: Include template file, documentation updates, and tests
-
-### Template Contribution Checklist
-
-- [ ] Template follows placeholder conventions
-- [ ] Includes clear section guidance
-- [ ] Tested with `/adr` command
-- [ ] Documentation updated
-- [ ] Configuration files updated
-- [ ] Added to available options lists
-
-## Resources
-
-- **Template Examples**: [.cursor/templates/](../.cursor/templates/)
-- **Configuration Reference**: [.cursor-init.example.yaml](../.cursor-init.example.yaml)
-- **ADR Best Practices**: [adr/0001-record-architecture-decisions.md](../adr/0001-record-architecture-decisions.md)
-- **Contributing Guide**: [CONTRIBUTING.md](../../CONTRIBUTING.md)
+The cursor-init template system is designed to be flexible and extensible. Choose the templates that best fit your project's documentation needs and customize them as required.
