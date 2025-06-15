@@ -105,25 +105,29 @@ This guide provides essential information for contributors to the AI-Cursor-Init
 
 ### AI Integration
 
-- Multi-provider support with fallback mechanisms
+* Multi-provider support with fallback mechanisms
+
 * Context-aware documentation generation
 * Intelligent framework detection and content customization
 
 ### Template System
 
-- Framework-specific templates (Python/FastAPI, TypeScript/React)
+* Framework-specific templates (Python/FastAPI, TypeScript/React)
+
 * Multiple variants per document type
-* Custom template support via configuration
+* Custom template support via configuration (see [Template Customization Guide](development/template-customization.md))
 
 ### Cursor IDE Integration
 
-- Slash commands for in-IDE documentation workflow
+* Slash commands for in-IDE documentation workflow
+
 * Zero-installation setup through Cursor rules
 * Seamless integration with existing project workflows
 
 ### Diagram Generation
 
-- Mermaid-based diagrams stored as version-controlled text
+* Mermaid-based diagrams stored as version-controlled text
+
 * ER diagrams from SQLAlchemy model analysis
 * Architecture diagrams from project structure analysis
 

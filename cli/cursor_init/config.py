@@ -33,7 +33,7 @@ class Config:
     def _get_default_config(self) -> Dict[str, Any]:
         return {
             'templates': {
-                'adr': 'nygard_style',
+                'adr': 'nygard_style',  # Options: nygard_style, full, lightweight, madr
                 'architecture': 'google_style',
                 'onboarding': 'general'
             },
