@@ -1,9 +1,6 @@
 import os
-import sys
 from typing import List, Dict, Any
 from .ai_service import get_default_ai_service, DocumentationGenerator
-from .config import load_config
-from .detect_framework import detect_project_frameworks
 from rich.console import Console
 from rich.progress import Progress, SpinnerColumn, TextColumn
 from pathlib import Path

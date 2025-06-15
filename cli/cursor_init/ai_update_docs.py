@@ -1,6 +1,5 @@
-import os
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, Optional
 from .ai_service import get_default_ai_service, DocumentationGenerator
 from rich.console import Console
 from rich.progress import Progress, SpinnerColumn, TextColumn
