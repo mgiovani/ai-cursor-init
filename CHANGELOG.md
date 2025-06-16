@@ -2,6 +2,46 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.7.0] - 2025-06-16
+
+### Added
+
+- **AI-Driven Documentation Generation**: Intelligent analysis of project structure to determine relevant documentation types
+- **True Opt-Out Configuration**: Zero-config operation with ability to disable specific documentation types
+- **Template System Integration**: Proper template loading from `.cursor/templates/` with variant support
+- **Custom Template Paths**: Support for user-defined template locations and custom templates
+- **Placeholder Replacement System**: Dynamic content replacement using `{{PLACEHOLDER}}` syntax
+- **Comprehensive Configuration Examples**: Updated `.cursor-init.example.yaml` with all documentation types and usage examples
+
+### Changed
+
+- **Token Optimization**: Reduced token usage by ~90% by converting 20+ rules from always-applied to agent-requestable
+- **Rule Loading**: Only 2 essential rules remain always-applied, others loaded on-demand based on context
+- **Documentation Behavior**: Changed from "opt-in" to "opt-out" - AI determines relevance, users can disable
+- **Template Loading**: RFC and ADR commands now use proper template system instead of hardcoded content
+- **Configuration Structure**: Enhanced YAML structure with clear categorization (core, data, infrastructure, development)
+- **Command Behavior**: All slash commands now respect `.cursor-init.yaml` configuration settings
+
+### Fixed
+
+- **Template System**: RFC and ADR commands now properly load templates with variants
+- **Configuration Respect**: All commands now check configuration before generating documentation
+- **Copy Command**: Fixed incorrect copy command in README (`cp -r path/to/ai-cursor-init/.cursor/ your-project/.cursor/`)
+- **Consistent Language**: Unified "opt-out" terminology across all rules and documentation
+
+### Performance
+
+- **Memory Usage**: Reduced memory footprint through on-demand rule loading
+- **Load Time**: Faster rule processing and template loading
+- **Token Efficiency**: Massive reduction in token consumption while maintaining full functionality
+
+### Documentation
+
+- **Rule Descriptions**: Added YAML frontmatter with clear descriptions for when each rule should be used
+- **Template Variants**: Documented all available template options and customization paths
+- **AI Behavior**: Clear explanation of AI-driven relevance detection and opt-out semantics
+- **Migration Guide**: Comprehensive guidance for existing users (no breaking changes)
+
 ## [0.6.0] - 2025-06-15
 
 ### Removed
