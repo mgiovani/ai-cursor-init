@@ -1,5 +1,5 @@
 ---
-description: When the user types `/gen-security-diagram`
+description: When the user types `/gen-security-diagram` to generate diagrams using the codebase security-related features
 globs: 
 alwaysApply: false
 ---

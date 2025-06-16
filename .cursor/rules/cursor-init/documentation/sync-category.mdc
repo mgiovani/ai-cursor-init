@@ -1,35 +1,39 @@
 ---
-description: 
+description: When the user types `/sync-category [category]` to sync all files in a documentation category
 globs: 
-alwaysApply: true
+alwaysApply: false
 ---
-@if(user_message.starts_with("/sync-category")) {
-  "I will sync all documentation files within the specified category.
+# Sync Documentation Category
+
+I will sync documentation files within the specified category, respecting your configuration settings.
 
   1. **Parse Category Name:** I will extract the category from your message (format: `/sync-category [category]`).
 
-  2. **Identify Category Files:** I will locate all files within the specified category directory.
+  2. **Check Configuration:** I will read `.cursor-init.yaml` to verify if the requested category is enabled before proceeding.
 
-  3. **Analyze Category State:** I will check if files within the category need updating based on current project state.
+  3. **Identify Category Files:** I will locate files within the specified category directory only if the category is enabled.
 
-  4. **Apply Updates:** I will update all files in the category using appropriate templates and current project information.
+  4. **Analyze Category State:** I will check if enabled files within the category need updating based on current project state.
 
-  5. **Provide Summary:** I will report the outcome of the synchronization for the entire category.
+  5. **Apply Updates:** I will update files only if the category is enabled in configuration.
+
+  6. **Provide Summary:** I will report the outcome, including any skipped categories due to configuration.
 
   Please provide the category name in the format: `/sync-category [category]`
   
-  **Available Categories:**
-  - `adr` - Architecture Decision Records
-  - `onboarding` - Onboarding documentation  
-  - `architecture` - Architecture documentation
-  - `data-model` - Data model documentation
+  **Available Categories (based on .cursor-init.yaml):**
+  - `core` - Core documentation (architecture, onboarding, adr)
+  - `data` - Data documentation (data_model, database_ops, data_security)
+  - `infrastructure` - Infrastructure documentation (deployment, dependencies, security)
+  - `development` - Development documentation (rfc, contributing, api_docs)
 
   **Examples:**
-  - `/sync-category adr` - Updates all ADR files
-  - `/sync-category onboarding` - Updates onboarding documentation
-  - `/sync-category architecture` - Updates architecture documentation
+  - `/sync-category core` - Updates enabled core documentation files
+  - `/sync-category data` - Updates enabled data documentation files
+  - `/sync-category infrastructure` - Updates enabled infrastructure documentation files
 
-  Let me process your request..."
+  **Note:** Only enabled documentation types within each category will be processed.
 
-  I will parse the user's message to extract the category name, then use the `list_dir`, `codebase_search`, `read_file`, and `edit_file` tools to locate all files within the specified category, analyze their current state against the codebase, and apply necessary updates using appropriate templates to keep the entire category synchronized.
-}
+  Let me process your request...
+
+  I will parse the user's message to extract the category name, check `.cursor-init.yaml` configuration first, then use the `read_file`, `list_dir`, `codebase_search`, and `edit_file` tools to locate enabled files within the specified category, analyze their current state against the codebase, and apply necessary updates using appropriate templates to keep only the enabled documentation types synchronized.

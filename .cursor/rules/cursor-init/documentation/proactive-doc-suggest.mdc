@@ -1,10 +1,11 @@
 ---
-description: 
+description: When the user mentions completion of work (done, finished, completed) or when recent changes need documentation review
 globs: 
-alwaysApply: true
+alwaysApply: false
 ---
-@if(context.includes("@RecentChanges") || user_message.includes("done") || user_message.includes("finished") || user_message.includes("completed")) {
-  "I notice there have been recent changes to your codebase. Let me check if any documentation might need updating based on these changes.
+# Proactive Documentation Suggestions
+
+I notice there have been recent changes to your codebase. Let me check if any documentation might need updating based on these changes.
 
   **Analyzing Recent Changes for Documentation Impact:**
 
@@ -21,7 +22,6 @@ alwaysApply: true
   - 'I noticed changes in your API routes or core modules. Perhaps the architecture documentation needs an update? You can use `/update-docs`.'
   - 'I see you've added new dependencies or changed the project structure. Consider updating the onboarding documentation.'
 
-  I will only make suggestions when relevant changes are detected and will phrase them as helpful reminders rather than intrusive notifications. If no documentation-relevant changes are detected, I will not make any suggestions."
+  I will only make suggestions when relevant changes are detected and will phrase them as helpful reminders rather than intrusive notifications. If no documentation-relevant changes are detected, I will not make any suggestions.
 
   I will use the `grep_search` and `codebase_search` tools to analyze recent changes and determine if documentation updates are needed, then provide specific, actionable suggestions.
-}

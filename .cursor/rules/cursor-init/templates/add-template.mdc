@@ -1,10 +1,11 @@
 ---
-description: 
+description: When the user types `/add-template` to add custom documentation templates
 globs: 
-alwaysApply: true
+alwaysApply: false
 ---
-@if(user_message.starts_with("/add-template")) {
-  "I will add a custom documentation template to your local cursor-init configuration.
+# Add Custom Template
+
+I will add a custom documentation template to your local cursor-init configuration.
 
   1. **Parse Template Information:** I will extract the template name and path from your message (format: `/add-template TemplateName path/to/template.md`).
 
@@ -20,7 +21,6 @@ alwaysApply: true
 
   Please provide the template name and path in the format: `/add-template TemplateName path/to/template.md`
 
-  Let me process your request..."
+  Let me process your request...
 
   I will parse the user's message to extract the template name and path, validate the template file exists, read the current configuration, check for duplicates, and update the `.cursor-init.yaml` file with the new custom template entry using proper YAML formatting.
-}

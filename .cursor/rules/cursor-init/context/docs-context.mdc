@@ -3,6 +3,8 @@ description:
 globs: 
 alwaysApply: true
 ---
+# Documentation Framework Context
+
 When the user asks about documentation, available commands, or the cursor-init framework, I should provide context about:
 
 **Available Slash Commands:**
@@ -26,10 +28,17 @@ When the user asks about documentation, available commands, or the cursor-init f
 
 **Framework Features:**
 - Template-based generation with multiple variants per document type
+- Custom template support via `.cursor-init.yaml` configuration
+- Default templates available in `.cursor/templates/` directory
 - Mermaid diagram integration for version-controlled visuals
-- Language/framework detection (Python/FastAPI, TypeScript/React)
-- CI integration for documentation freshness checks
+- Language/framework agnostic
 - Zero-installation setup via Cursor rules and templates
+
+**Template System:**
+- **Default Templates**: Located in `.cursor/templates/[type]/` with template variants
+- **Custom Templates**: Configure custom paths in `.cursor-init.yaml` under `templates.custom_template_paths`
+- **Template Selection**: Choose variants via `templates.[type]` configuration (e.g., `templates.rfc: "detailed"`)
+- **Placeholder System**: Templates use `{{PLACEHOLDER}}` syntax for dynamic content replacement
 
 **Philosophy:**
 - Documentation as code - stored in version control alongside source

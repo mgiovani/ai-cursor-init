@@ -1,8 +1,10 @@
 ---
-description: 
+description: When the user asks about ADRs, architecture decisions, or decision documentation
 globs: 
-alwaysApply: true
+alwaysApply: false
 ---
+# ADR Context and Best Practices
+
 When the user asks about ADRs, architecture decisions, or decision documentation, I should provide context about:
 
 **ADR Concept:**

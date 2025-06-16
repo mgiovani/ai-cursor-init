@@ -1,5 +1,5 @@
 ---
-description: When the user types `/gen-dependency-diagram`
+description: When the user types `/gen-dependency-diagram` to generate diagrams showing external dependencies and service integrations
 globs: 
 alwaysApply: false
 ---

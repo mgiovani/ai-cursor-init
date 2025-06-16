@@ -1,12 +1,13 @@
 ---
-description: 
+description: When the user types `/check-docs` to validate documentation freshness and completeness
 globs: 
-alwaysApply: true
+alwaysApply: false
 ---
-@if(user_message.starts_with("/check-docs")) {
-  "I will check your documentation for freshness and completeness issues.
+# Check Documentation
 
-  **Running documentation validation...**
+I will check your documentation for freshness and completeness issues.
+
+**Running documentation validation...**
 
   I will:
   1. **Scan Documentation**: Search all `.md` files in the `docs/` directory for placeholder text
@@ -29,4 +30,3 @@ alwaysApply: true
   - `docs/adr/0001-record-architecture-decisions.md`
 
   Then I will provide a comprehensive report of any issues found or confirm that documentation is up-to-date.
-}
