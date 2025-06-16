@@ -1,116 +1,323 @@
-# Contributing to cursor-init
+# Contributing to AI-Cursor-Init
 
-Thank you for your interest in contributing to `cursor-init`! This guide will help you get started with adding templates, slash commands, and extending the framework.
+Thank you for your interest in contributing to the AI-Cursor-Init framework! This guide will help you understand how to contribute effectively to this documentation generation system.
 
-## Quick Start
+## 🎯 **Project Overview**
 
-1. **Fork the repository** and create a feature branch
-2. **Make your changes** following the guidelines below
-3. **Test your changes** manually and with the test suite
-4. **Submit a pull request** with a clear description
+AI-Cursor-Init is a template-driven documentation framework that integrates with Cursor IDE to provide intelligent, contextual documentation generation through slash commands.
 
-## Understanding the Architecture
+**Core Components:**
 
-`cursor-init` is built around three main components:
+- **Cursor Rules**: Define slash command behavior and AI prompts
+- **Templates**: Markdown templates with placeholders for content generation
+- **Framework Detection**: AI-powered analysis of project structures
+- **Documentation Generation**: Context-aware content creation
 
-1. **AI-Powered Documentation Generation**: All documentation is now generated using AI that analyzes your codebase
-2. **Cursor Rules**: Slash commands that provide in-IDE functionality
-3. **CLI Tool**: Command-line interface for CI integration and offline usage
+## 🚀 **Quick Start for Contributors**
 
-## Adding New Documentation Types
+### Prerequisites
 
-Since all documentation is AI-generated, adding new document types is simpler:
+- **Cursor IDE** (required for testing framework functionality)
+- **Git** for version control
+- **Markdown knowledge** for template development
+- **Understanding of:**
+  - Cursor IDE rules and templates
+  - Mermaid diagram syntax  
+  - YAML configuration
 
-### 1. Add AI Generation Logic
+### Setup Steps
 
-Create generation methods in `cli/cursor_init/ai_service.py`:
+1. **Fork and Clone:**
 
-```python
-def generate_security_docs(self, project_root: str = '.') -> str:
-    cursor_rules = self._read_cursor_rules(project_root)
-    project_structure = self._analyze_project_structure(project_root)
-    
-    system_prompt = '''You are an expert in security documentation. Generate comprehensive security documentation based on the project analysis.'''
-    
-    user_prompt = f'''Generate security documentation for this project:
+   ```bash
+   git clone https://github.com/your-username/ai-cursor-init.git
+   cd ai-cursor-init
+   ```
 
-Project Structure: {json.dumps(project_structure, indent=2)}
-Cursor Rules: {cursor_rules}
+2. **Create Development Branch:**
 
-Include security best practices, threat modeling, and security architecture relevant to this specific technology stack.'''
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
 
-    return self.ai_service.generate_content(system_prompt, user_prompt)
+3. **Test the Framework:**
+
+   ```bash
+   # Copy framework to a test project
+   cp -r .cursor/ ../test-project/.cursor/
+   
+   # Open test project in Cursor and try:
+   # /init-docs
+   # /gen-arch-diagram
+   # /adr "Test Decision"
+   ```
+
+## 🛠️ **Contributing Areas**
+
+### 1. **Template Development**
+
+Add new documentation templates or improve existing ones:
+
+**Template Structure:**
+
+```
+.cursor/templates/
+├── architecture/
+│   ├── google_style.md      # Google's architecture template
+│   ├── enterprise.md        # Enterprise architecture template
+│   └── arc42.md            # Arc42 architecture template
+├── adr/
+│   ├── nygard_style.md     # Michael Nygard's ADR format
+│   ├── madr.md             # Markdown ADRs
+│   └── lightweight.md      # Simplified ADR format
+└── onboarding/
+    ├── developer.md        # Developer-focused onboarding
+    ├── contributor.md      # Contributor onboarding
+    └── user.md            # End-user onboarding
 ```
 
-### 2. Add CLI Command
+**Adding a New Template:**
 
-Add the command to your main CLI in `cli/cursor_init/__main__.py`:
+1. Create template file in appropriate category
+2. Use `{{PLACEHOLDER}}` syntax for dynamic content
+3. Include Mermaid diagrams where beneficial
+4. Test with multiple project types
 
-```python
-security_parser = subparsers.add_parser('security', help='Generate security documentation')
-security_parser.set_defaults(func=lambda args: generate_security_docs())
+**Example Template:**
+
+````markdown
+# {{PROJECT_NAME}} - Custom Documentation
+
+**Last Updated:** {{DATE}}
+**Version:** {{VERSION}}
+
+## Overview
+
+{{PROJECT_DESCRIPTION}}
+
+## Architecture
+
+```mermaid
+graph TD
+    {{ARCHITECTURE_DIAGRAM}}
 ```
 
-### 3. Create Cursor Rule
+## Implementation Details
 
-Add `.cursor/rules/cursor-init/security.mdc`:
+{{IMPLEMENTATION_DETAILS}}
+
+````
+
+### 2. **Cursor Rules Enhancement**
+
+Improve slash command functionality by enhancing Cursor rules:
+
+**Rule Structure:**
 
 ```markdown
 ---
-description: "Generate comprehensive security documentation"
-alwaysApply: true
+description: When the user types `/command-name` to perform specific action
+globs: 
+alwaysApply: false
 ---
+# Rule Title
 
-@if(user_message.starts_with("/security")) {
-  "I will generate comprehensive security documentation by analyzing your project's technology stack, architecture, and security requirements.
-  
-  This will include:
-  1. **Security Architecture**: How security is implemented in your system
-  2. **Threat Model**: Potential security risks and mitigations
-  3. **Best Practices**: Security guidelines specific to your tech stack
-  4. **Compliance**: Relevant security standards and requirements
-  
-  Let me analyze your project and generate tailored security documentation..."
-}
+Detailed instructions for the AI agent on how to handle this command.
+
+1. **Analysis Phase:** What to analyze in the project
+2. **Processing Phase:** How to process the information  
+3. **Generation Phase:** What content to generate
+4. **Integration Phase:** How to integrate with existing docs
+
+Let me [specific action]...
+
+I will use the [tool_name] tool to [specific functionality].
 ```
 
-## Extending Detection Logic
+**Key Areas for Rule Enhancement:**
 
-Framework detection is primarily used to provide **context to AI** rather than selecting specific templates.
+- **Framework Detection**: Improve technology stack identification
+- **Content Generation**: Enhance AI prompts for better output
+- **Integration Logic**: Better handling of existing documentation
+- **Error Handling**: Graceful degradation and helpful error messages
 
-### Current Detection Strategy
+### 3. **Framework Detection**
 
-The AI-powered analysis automatically detects and adapts to any project structure, automatically identifying:
+Improve the AI's ability to detect and adapt to different project types:
 
-- **Programming Languages**: Through intelligent code analysis
-- **Frameworks and Libraries**: Via dependency and import analysis  
-- **Database Systems**: Through model and schema detection
-- **Project Architecture**: Based on file structure and patterns
+**Detection Categories:**
 
-### Adding New Technology Detection
+- **Language Detection**: Python, TypeScript, Go, Rust, etc.
+- **Framework Detection**: FastAPI, Next.js, React, Django, etc.
+- **Database Detection**: PostgreSQL, MongoDB, SQLite, etc.
+- **Infrastructure Detection**: Docker, Kubernetes, AWS, etc.
 
-To improve AI context for new technologies:
+**Enhancement Areas:**
 
-1. **Update `_detect_technologies()` in `ai_service.py`**:
+- Pattern recognition for new frameworks
+- Configuration file parsing improvements
+- Dependency analysis enhancements
+- Project structure classification
 
-```python
-# Add new framework detection
-if 'spring-boot' in content_lower:
-    technologies['frameworks'].add('Spring Boot')
-if 'kubernetes' in content_lower or 'k8s' in content_lower:
-    technologies['tools'].add('Kubernetes')
+### 4. **Documentation Improvements**
+
+Help improve project documentation:
+
+- **README Updates**: Keep installation and usage instructions current
+- **Template Documentation**: Document template variants and customization
+- **Rule Documentation**: Explain slash command functionality
+- **Configuration Guide**: Improve `.cursor-init.yaml` documentation
+
+## 📋 **Contribution Guidelines**
+
+### Code Quality Standards
+
+- **Template Consistency**: Follow established placeholder patterns
+- **Mermaid Syntax**: Ensure all diagrams use valid Mermaid syntax
+- **Markdown Quality**: Use consistent formatting and structure
+- **Testing**: Test templates with multiple project types
+
+### Pull Request Process
+
+1. **Fork** the repository
+2. **Create** a feature branch from `main`
+3. **Make** your changes with clear, focused commits
+4. **Test** your changes manually with different project types
+5. **Update** documentation if needed
+6. **Submit** pull request with clear description
+
+### PR Template
+
+Use this template for pull requests:
+
+```markdown
+## Description
+Brief description of changes made
+
+## Type of Change
+- [ ] New template variant
+- [ ] Rule enhancement  
+- [ ] Framework detection improvement
+- [ ] Documentation update
+- [ ] Bug fix
+
+## Testing Done
+- [ ] Tested with Python project
+- [ ] Tested with TypeScript project
+- [ ] Tested with database models
+- [ ] Tested slash commands
+- [ ] Validated Mermaid diagrams
+
+## Documentation Impact
+- [ ] Updated README
+- [ ] Updated template documentation
+- [ ] Added example usage
+- [ ] Updated configuration guide
 ```
 
-2. **Update `_analyze_imports()` for new languages**:
+### Commit Message Format
 
-```python
-elif file_path.endswith('.go'):
-    # Extract Go imports
-    go_imports = re.findall(r'import\s+["\']([^"\']+)', content)
-    for imp in go_imports:
-        if not imp.startswith('.'):
-            imports['go'].append(imp.split('/')[0])
+Use conventional commit format:
+
 ```
+type(scope): description
+
+feat(templates): add comprehensive security template
+fix(rules): improve database model detection
+docs(readme): update installation instructions
+```
+
+## 🧪 **Testing Your Contributions**
+
+### Manual Testing Process
+
+1. **Template Testing:**
+
+   ```bash
+   # Test template with different project types
+   cp -r .cursor/ ../python-project/.cursor/
+   cp -r .cursor/ ../react-project/.cursor/  
+   cp -r .cursor/ ../api-project/.cursor/
+   
+   # In each project, test relevant commands
+   ```
+
+2. **Rule Testing:**
+   - Test slash commands in different project contexts
+   - Verify AI prompts generate appropriate content
+   - Check error handling with missing dependencies
+
+3. **Integration Testing:**
+   - Test with existing documentation
+   - Verify template selection logic
+   - Check placeholder replacement accuracy
+
+### Quality Checklist
+
+Before submitting PR:
+
+- [ ] **Template Syntax**: All placeholders follow `{{PLACEHOLDER}}` format
+- [ ] **Mermaid Diagrams**: Valid syntax, renders correctly
+- [ ] **Markdown Quality**: Proper formatting, no broken links
+- [ ] **Multi-Project Testing**: Works with different project types
+- [ ] **Documentation**: Changes are documented appropriately
+
+## 🎨 **Design Principles**
+
+### Template Design
+
+- **Placeholder-Driven**: Use placeholders for all dynamic content
+- **Framework-Agnostic**: Templates adapt to any technology stack
+- **Professional Quality**: Output should match industry standards
+- **Maintainable**: Clear structure, easy to understand and modify
+
+### Rule Design
+
+- **Context-Aware**: Analyze project before generating content
+- **Intelligent Defaults**: Smart choices without user configuration
+- **Graceful Degradation**: Handle missing information elegantly
+- **User-Friendly**: Clear instructions and helpful error messages
+
+### AI Integration
+
+- **Rich Context**: Provide comprehensive project analysis to AI
+- **Specific Prompts**: Clear, detailed instructions for content generation
+- **Quality Control**: Validation and error handling for AI output
+- **Template Integration**: Seamless integration with template system
+
+## 🏆 **Recognition**
+
+Contributors are recognized in:
+
+- **CHANGELOG.md**: All contributions documented
+- **README.md**: Major contributors highlighted
+- **Git History**: All commits properly attributed
+- **GitHub**: Contributor graphs and statistics
+
+## 💬 **Getting Help**
+
+- **GitHub Issues**: For bug reports and feature requests
+- **GitHub Discussions**: For questions and community discussion
+- **Code Review**: Detailed feedback on pull requests
+- **Documentation**: Comprehensive guides and examples
+
+## 📚 **Resources**
+
+### Learning Resources
+
+- **Cursor IDE Documentation**: Understanding the platform
+- **Mermaid Documentation**: Diagram syntax and examples
+- **Template Examples**: Study existing templates for patterns
+- **AI Prompt Engineering**: Best practices for AI instructions
+
+### Development Tools
+
+- **Cursor IDE**: Primary development and testing environment
+- **Markdown Editors**: For template development
+- **Git**: Version control and collaboration
+- **Mermaid Live Editor**: For diagram testing
+
+## 🔧 **Technical Implementation Notes**
 
 ### Philosophy: AI-First Approach
 
@@ -119,164 +326,40 @@ elif file_path.endswith('.go'):
 - **Context-Aware**: Detection provides rich context to AI for better generation
 - **Extensible**: Easy to add support for new technologies
 
-## Adding New Slash Commands
+### Framework Architecture
 
-Slash commands provide in-IDE functionality through Cursor rules.
+The AI-powered analysis automatically detects and adapts to any project structure, automatically identifying:
 
-### Creating a New Slash Command
+- **Programming Languages**: Through intelligent code analysis
+- **Frameworks and Libraries**: Via dependency and import analysis  
+- **Database Systems**: Through model and schema detection
+- **Project Architecture**: Based on file structure and patterns
 
-1. **Create the rule file** in `.cursor/rules/cursor-init/[command].mdc`:
+### Security Considerations
 
-```markdown
----
-description: "Creates a new [document type] from AI analysis"
-alwaysApply: true
----
+The framework operates with security-first principles:
 
-@if(user_message.starts_with("/[command]")) {
-  "I will create a new [document type] based on AI analysis of your project.
-  
-  [Detailed instructions for the AI agent about what to analyze and generate]"
-}
-```
+**Static Analysis Only:**
 
-2. **Implement AI generation** in `cli/cursor_init/ai_service.py`:
+- File system analysis (read-only)
+- Configuration file parsing
+- Import statement analysis via AST parsing
+- Directory structure pattern matching
 
-```python
-def generate_[document_type](self, project_root: str = '.') -> str:
-    """Generate [document type] using AI analysis."""
-    cursor_rules = self._read_cursor_rules(project_root)
-    project_structure = self._analyze_project_structure(project_root)
-    
-    system_prompt = '''Expert prompt for generating this document type'''
-    user_prompt = f'''Generate content based on: {project_structure}'''
-    
-    return self.ai_service.generate_content(system_prompt, user_prompt)
-```
+**Prohibited Operations:**
 
-3. **Integrate with CLI** in `cli/cursor_init/__main__.py`:
+- Code execution or dynamic imports
+- Network requests during analysis
+- File modification outside `docs/` directory
+- Access to files outside project directory
 
-```python
-[command]_parser = subparsers.add_parser("[command]", help="Generate [document type].")
-[command]_parser.set_defaults(func=lambda args: generate_[document_type]())
-```
+## 📄 **License**
 
-## Testing Your Contributions
-
-### Manual Testing
-
-1. **Test AI Generation**:
-
-```bash
-cd cli
-python -m cursor_init init
-python -m cursor_init update
-python -m cursor_init gen-er-diagram
-python -m cursor_init gen-arch-diagram
-```
-
-2. **Test in Cursor IDE**:
-   - Try slash commands: `/init-docs`, `/adr "Test Decision"`, `/gen-er-diagram`
-   - Verify AI-generated content is relevant and accurate
-
-3. **Test with Different Project Types**:
-   - Test with various programming languages
-   - Test with different frameworks and architectures
-   - Test with diverse project structures
-
-### Automated Testing
-
-When adding tests (future enhancement):
-
-```python
-def test_ai_generation():
-    # Mock AI service
-    # Test generation functions
-    # Assert content quality and relevance
-    pass
-```
-
-## Code Style and Standards
-
-### Python Code Style
-
-- **Follow PEP 8** for Python code formatting
-- **Use type hints** for function parameters and return values
-- **Keep functions focused** and single-purpose
-- **Use descriptive variable names**
-- **Prefer composition over complex inheritance**
-
-### AI Integration Guidelines
-
-- **Provide Rich Context**: Include project structure, cursor rules, and detected technologies
-- **Use Specific Prompts**: Tailor system prompts for each document type
-- **Handle Errors Gracefully**: Always provide fallback behavior for AI failures
-- **Respect Rate Limits**: Implement appropriate delays and error handling
-
-## Pull Request Guidelines
-
-### Before Submitting
-
-- [ ] Test AI generation with multiple project types
-- [ ] Ensure code follows project style
-- [ ] Update documentation if needed
-- [ ] Verify slash commands work in Cursor IDE
-
-### PR Description Template
-
-```markdown
-## Description
-Brief description of changes
-
-## Type of Change
-- [ ] New AI generation capability
-- [ ] New slash command
-- [ ] Framework detection improvement
-- [ ] Bug fix
-- [ ] Documentation update
-
-## Testing
-- [ ] Manual testing completed with different project types
-- [ ] AI generation produces quality content
-- [ ] Slash commands work correctly
-- [ ] Edge cases considered
-
-## AI Integration
-- [ ] Appropriate system prompts created
-- [ ] Rich project context provided
-- [ ] Error handling implemented
-- [ ] Rate limiting considered
-```
-
-## Philosophy and Design Principles
-
-### AI-First Documentation
-
-- **Smart Generation**: AI analyzes your specific codebase and generates tailored documentation
-- **No Generic Templates**: Every piece of documentation is customized to your project
-- **Technology Agnostic**: Works with any programming language or framework
-- **Context Aware**: Leverages project structure, dependencies, and coding patterns
-
-### Developer Experience
-
-- **Zero Configuration**: Works out of the box with any project
-- **IDE Integration**: Seamless integration through Cursor slash commands
-- **Continuous Improvement**: Documentation stays fresh as code evolves
-- **Extensible**: Easy to add new document types and capabilities
-
-## Getting Help
-
-- **Issues**: Report bugs or request features via GitHub Issues
-- **Discussions**: Ask questions in GitHub Discussions
-- **Documentation**: Check project documentation for implementation details
-
-## License
-
-By contributing to `cursor-init`, you agree that your contributions will be licensed under the MIT License.
+By contributing to AI-Cursor-Init, you agree that your contributions will be licensed under the MIT License.
 
 ---
 
-Thank you for contributing to `cursor-init`! Your contributions help make AI-powered documentation accessible to developers everywhere.
+Thank you for contributing to the AI-Cursor-Init framework! Your contributions help developers worldwide create better documentation more efficiently.
 
 ### What We Support
 
