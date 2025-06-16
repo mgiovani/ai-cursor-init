@@ -176,6 +176,13 @@ Works immediately with smart detection:
 - **SQLAlchemy** → Detailed ER diagrams with relationships
 - **Django** → Model-centric documentation
 
+### **Template Variants**
+
+- **ADRs**: Nygard, MADR, Comprehensive, Lightweight
+- **Architecture**: Google Style, Enterprise, Arc42
+- **Onboarding**: Developer, Contributor, User
+- **Data Model**: Simple, Comprehensive
+
 ### **Optional Configuration**
 
 Choose exactly what documentation you need:
@@ -200,13 +207,6 @@ documentation:
     contributing: false # Contribution guides
     api_docs: false    # API documentation
 ```
-
-### **Template Variants**
-
-- **ADRs**: Nygard, MADR, Comprehensive, Lightweight
-- **Architecture**: Google Style, Enterprise, Arc42
-- **Onboarding**: Developer, Contributor, User
-- **Data Model**: Simple, Comprehensive
 
 ### **Common Configurations**
 

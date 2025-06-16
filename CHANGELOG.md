@@ -19,7 +19,7 @@ All notable changes to this project will be documented in this file.
 
 - **External Dependencies**: Eliminated CLI dependencies for zero-installation setup
 
-## [2.0.0] - 2024-12-19
+## [2.0.0] - 2025-06-15
 
 ### Added
 

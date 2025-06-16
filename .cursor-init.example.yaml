@@ -15,23 +15,9 @@ documentation:
     onboarding: true # Developer onboarding guide
     adr: true # Architecture Decision Records
 
-  # Data & Database documentation (auto-detected based on database usage)
+  # Data documentation (auto-detected based on database models)
   data:
     data_model: true # Database schema & ER diagrams (if models found)
-    database_ops: true # Performance, migrations, troubleshooting (if database used)
-    data_security: true # Security policies & compliance (if sensitive data detected)
-
-  # Infrastructure & Operations (auto-detected based on deployment configs)
-  infrastructure:
-    deployment: true # CI/CD & infrastructure (if deployment configs found)
-    dependencies: true # External services (if external APIs/services detected)
-    security: true # Security flows (if auth/security patterns found)
-
-  # Development & Process (auto-detected based on project type)
-  development:
-    rfc: true # Request for Comments (useful for larger projects)
-    contributing: true # Contribution guidelines (if open source or team project)
-    api_docs: true # API documentation (if API endpoints detected)
 
 # =============================================================================
 # TEMPLATE VARIANTS - Choose specific template styles
@@ -50,41 +36,22 @@ templates:
   # Data model documentation
   data_model: "comprehensive" # Options: simple, comprehensive
 
-  # RFC documents
-  rfc: "standard" # Options: minimal, standard, detailed
-
 # =============================================================================
-# AUTO-DETECTION SETTINGS - Control what triggers documentation generation
+# FRAMEWORK DETECTION SETTINGS - Control what triggers documentation generation
 # =============================================================================
 
-auto_detection:
-  # Database documentation triggers
+framework_detection:
+  # Database model detection
   database:
     model_files:
       ["**/models.py", "**/model.py", "**/*model*.py", "**/*schema*.py"]
-    orm_patterns: ["sqlalchemy", "django.db", "sequelize", "typeorm", "prisma"]
+    orm_patterns: ["sqlalchemy", "django.db", "typeorm", "prisma"]
 
-  # API documentation triggers
-  api:
-    framework_patterns:
-      ["fastapi", "django", "flask", "express", "nestjs", "spring"]
-    route_patterns: ["@app.route", "@router.", "app.get", "app.post", "Route"]
-
-  # Security documentation triggers
-  security:
-    auth_patterns: ["jwt", "oauth", "passport", "auth", "login", "session"]
-    security_files: ["**/auth*.py", "**/security*.py", "**/middleware*.py"]
-
-  # Deployment documentation triggers
-  deployment:
-    config_files:
-      ["Dockerfile", "docker-compose.yml", ".github/workflows", "Jenkinsfile"]
-    infrastructure_files: ["terraform", "cloudformation", "k8s", "kubernetes"]
-
-  # Dependencies documentation triggers
-  dependencies:
-    external_apis: ["requests", "axios", "fetch", "http", "api"]
-    service_configs: ["redis", "mongodb", "postgresql", "elasticsearch"]
+  # Framework detection for appropriate templates
+  frameworks:
+    python: ["fastapi", "django", "flask"]
+    typescript: ["react", "next", "express", "nestjs"]
+    javascript: ["vue", "angular", "node"]
 
 # =============================================================================
 # PROJECT SETTINGS - Project-specific customization
@@ -94,33 +61,21 @@ project:
   # Project metadata (auto-detected if empty)
   name: "" # Auto-detected from directory name
   description: "" # Auto-detected from package.json/pyproject.toml
-  version: "" # Auto-detected from version files
 
-  # Technology stack (auto-detected if not specified)
-  technologies:
-    languages: [] # e.g., ["Python", "TypeScript"] - auto-detected
-    frameworks: [] # e.g., ["FastAPI", "React"] - auto-detected
-    databases: [] # e.g., ["PostgreSQL", "Redis"] - auto-detected
-    tools: [] # e.g., ["Docker", "Kubernetes"] - auto-detected
+  # Technology stack preferences (auto-detected if not specified)
+  preferences:
+    diagram_style: "mermaid" # Diagram format for generated visuals
+    documentation_style: "professional" # Writing style preference
 
 # =============================================================================
-# GENERATION SETTINGS - Control how documentation is generated
+# GENERATION SETTINGS - Control slash command behavior
 # =============================================================================
 
 generation:
-  # Analysis depth for codebase scanning
-  analysis_depth: "standard" # Options: basic, standard, comprehensive
-
-  # Content generation options
+  # Content generation options for slash commands
   include_code_examples: true # Include code snippets in documentation
-  auto_generate_toc: true # Automatically generate table of contents
   include_diagrams: true # Generate Mermaid diagrams where applicable
-
-  # Quality settings
-  quality:
-    min_content_length: 500 # Minimum content length for generated docs
-    max_retries: 3 # Maximum retries for AI generation
-    validate_generation: true # Validate generated content quality
+  auto_generate_toc: true # Automatically generate table of contents
 
 # =============================================================================
 # EXAMPLES OF COMMON CONFIGURATIONS
@@ -128,33 +83,19 @@ generation:
 
 # Zero-config (default behavior):
 # - Analyzes your project automatically
-# - Generates all useful documentation based on what's detected
+# - Generates useful documentation based on what's detected
 # - Perfect for most projects - no configuration needed!
 
 # Minimal documentation only:
 # documentation:
 #   core: { architecture: true, onboarding: true, adr: true }
-#   data: { data_model: false, database_ops: false, data_security: false }
-#   infrastructure: { deployment: false, dependencies: false, security: false }
-#   development: { rfc: false, contributing: false, api_docs: false }
-
-# Documentation-heavy project:
-# documentation:
-#   core: { architecture: true, onboarding: true, adr: true }
-#   data: { data_model: true, database_ops: true, data_security: true }
-#   infrastructure: { deployment: true, dependencies: true, security: true }
-#   development: { rfc: true, contributing: true, api_docs: true }
+#   data: { data_model: false }
 
 # Open source project:
 # templates:
 #   onboarding: "contributor"  # Contributor-focused onboarding
-# documentation:
-#   development: { contributing: true, rfc: true }
 
 # Enterprise project:
 # templates:
 #   architecture: "enterprise"
 #   adr: "full"
-# documentation:
-#   data: { data_security: true }
-#   infrastructure: { security: true }
