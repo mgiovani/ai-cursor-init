@@ -1,8 +1,10 @@
 ---
-description: 
+description: When the user asks about architecture, system design, components, or how the system works
 globs: 
-alwaysApply: true
+alwaysApply: false
 ---
+# Architecture Context Provider
+
 When the user asks about architecture, system design, components, or how the system works, I should:
 
 1. Check if `docs/architecture.md` exists using the `read_file` tool

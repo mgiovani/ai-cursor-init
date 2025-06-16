@@ -1,5 +1,5 @@
 ---
-description: When the user types `/gen-onboarding-diagram`
+description: When the user types `/gen-onboarding-diagram` to create developer onboarding and setup workflow diagrams
 globs: 
 alwaysApply: false
 ---

@@ -8,7 +8,7 @@ This folder contains an intelligent documentation generation system that works s
 
 ```bash
 # Copy the .cursor/ folder to your project
-cp -r path/to/ai-cursor-init/.cursor/ your-project/
+cp -r path/to/ai-cursor-init/.cursor/ your-project/.cursor/
 
 # Open your project in Cursor and type:
 /init-docs

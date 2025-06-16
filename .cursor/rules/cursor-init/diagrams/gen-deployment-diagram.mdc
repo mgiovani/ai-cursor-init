@@ -1,5 +1,5 @@
 ---
-description: When the user types `/gen-deployment-diagram`
+description: When the user types `/gen-deployment-diagram` to generate deployment diagrams using infrastructure components
 globs: 
 alwaysApply: false
 ---

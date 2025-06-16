@@ -1,26 +1,35 @@
 ---
-description: 
+description: When the user types `/update-docs` to analyze and suggest documentation updates
 globs: 
-alwaysApply: true
+alwaysApply: false
 ---
-@if(user_message.starts_with("/update-docs")) {
-  "I will analyze the current codebase and documentation to suggest updates.
+# Update Documentation
 
-  1. **Check Documentation Freshness:** I will examine the existing documentation files and compare them with the current codebase state.
+I will analyze the current codebase and determine which documentation is relevant, then suggest updates unless explicitly disabled in your configuration.
 
-  2. **Data Model Analysis:** I will check if `docs/data-model.md` exists and whether SQLAlchemy models have been modified since the last ER diagram generation. If models have changed or if the file doesn't exist, I will suggest running `/gen-er-diagram` to update the data model documentation.
+  1. **Read Configuration:** I will first check `.cursor-init.yaml` to understand which documentation types are explicitly disabled.
 
-  3. **Architecture Documentation:** I will verify that `docs/architecture.md` reflects the current project structure and technology stack.
+  2. **Analyze Project Relevance:** I will examine the codebase to determine which documentation types are relevant to your project based on detected technologies, frameworks, and project structure.
 
-  4. **ADR Review:** I will check if any new architectural decisions should be documented based on recent code changes.
+  3. **Check Documentation Freshness:** I will examine the relevant documentation files (unless disabled) and compare them with the current codebase state.
 
-  5. **Onboarding Guide:** I will ensure the onboarding documentation is current with the latest setup requirements.
+  4. **Load Current Templates:** For each relevant documentation type (not disabled), read the current template configuration:
+     - Check for custom template paths in `templates.custom_template_paths`
+     - Load default templates from `.cursor/templates/[type]/` if no custom paths
+     - Identify template variants from `templates.[type]` configuration
 
-  6. **Missing Documentation Detection:** I will identify any missing core documentation files that should exist based on the project structure.
+  5. **Conditional Analysis Based on Project Relevance:**
+     - **Data Model Analysis** (if models detected, unless `documentation.data.data_model: false`): Check if `docs/data-model.md` exists and whether database/ORM models have been modified. Suggest `/gen-er-diagram` if needed.
+     - **Architecture Documentation** (unless `documentation.core.architecture: false`): Verify that `docs/architecture.md` reflects current project structure.
+     - **ADR Review** (unless `documentation.core.adr: false`): Check if new architectural decisions should be documented.
+     - **Onboarding Guide** (unless `documentation.core.onboarding: false`): Ensure onboarding documentation is current.
+     - **Infrastructure Docs** (if deployment configs detected, unless disabled): Check deployment, dependencies, security documentation.
+     - **Development Docs** (if collaborative project detected, unless disabled): Review RFC, contributing, API documentation.
 
-  7. **Content Staleness Analysis:** I will analyze whether existing documentation content aligns with the current codebase structure and dependencies.
+  6. **Missing Documentation Detection:** Identify missing documentation files for relevant types (unless disabled).
 
-  Let me analyze your project and provide specific recommendations for documentation updates..."
+  7. **Content Staleness Analysis:** Analyze relevant documentation (unless disabled) for alignment with current codebase.
 
-  I will use the `codebase_search`, `list_dir`, `grep_search`, and `read_file` tools to examine the current state and provide a detailed report with specific recommendations for updates.
-}
+  Let me analyze your project and provide specific recommendations for relevant documentation updates...
+
+  I will use the `read_file` tool to check configuration first, then `codebase_search`, `list_dir`, `grep_search`, and `read_file` tools to examine the current state and provide a detailed report with specific recommendations for updates to all relevant documentation types (unless explicitly disabled).

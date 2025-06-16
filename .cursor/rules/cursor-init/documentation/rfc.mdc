@@ -1,31 +1,31 @@
 ---
-description: 
+description: When the user types `/rfc` followed by a title to create Request For Comments documents
 globs: 
-alwaysApply: true
+alwaysApply: false
 ---
-@if(user_message.starts_with("/rfc")) {
-  "I will create a new RFC (Request For Comments) document based on your input.
+# Create RFC Document
 
-  1. **Extracting and Sanitizing the Title:** I will extract the text after `/rfc`. If no text is provided, I will use `new-rfc` as the default title. I will then sanitize this title to be lowercase and kebab-case for the filename, and also refine it for clarity and conciseness for the document's main title.
+I will create a new RFC (Request For Comments) document based on your input, respecting your configuration.
 
-  2. **Creating the RFC Directory:** I will ensure the `docs/rfc/` directory exists, creating it if necessary.
+  1. **Check Configuration:** I will first read `.cursor-init.yaml` to verify if `documentation.development.rfc` is explicitly disabled. If disabled (`false`), I will inform you that RFC creation is disabled for this project.
 
-  3. **Generating the RFC Content:** I will populate the new file with the following RFC template. I will replace `[Title]` with the refined title from the user input.
+  2. **Extracting and Sanitizing the Title:** If not disabled, I will extract the text after `/rfc`. If no text is provided, I will use `new-rfc` as the default title. I will then sanitize this title to be lowercase and kebab-case for the filename, and also refine it for clarity and conciseness for the document's main title.
 
-      ```
-      ### RFC: [Title]
+  3. **Creating the RFC Directory:** I will ensure the `docs/rfc/` directory exists, creating it if necessary.
 
-      **Problem Statement:**
-      [Describe the problem or opportunity that this RFC addresses.]
+  4. **Select Template:** I will check `.cursor-init.yaml` for the RFC template variant:
+     - `minimal` - Basic RFC with core sections
+     - `standard` (default) - Standard RFC with all common sections
+     - `detailed` - Comprehensive RFC with extensive planning sections
 
-      **Proposed Solution:**
-      [Describe the proposed solution or approach to address the problem.]
+  5. **Load Template:** I will read the appropriate template file from `.cursor/templates/rfc/` or use a custom template path if configured.
 
-      **Discussion:**
-      [Include any additional considerations, alternatives considered, implementation notes, or open questions.]
-      ```
+  6. **Replace Placeholders:** I will populate the template with the user's title and default placeholder values for sections like:
+     - `{{RFC_TITLE}}` - The sanitized title
+     - `{{DATE}}` - Current date
+     - `{{STATUS}}` - Default status (Draft)
+     - Other placeholders as defined in the template
 
-  4. **Creating the File:** Finally, I will create the new RFC file in the `docs/rfc/` directory using the `edit_file` tool. The filename will be constructed using the sanitized title (e.g., `docs/rfc/my-new-feature.md`).
+  7. **Creating the File:** Finally, I will create the new RFC file in the `docs/rfc/` directory using the `edit_file` tool (unless RFC documentation is disabled). The filename will be constructed using the sanitized title (e.g., `docs/rfc/my-new-feature.md`).
 
-  Please provide a brief title for the RFC after `/rfc`. If you provide no title, I will use `new-rfc` as a default."
-}
+  Please provide a brief title for the RFC after `/rfc`. If you provide no title, I will use `new-rfc` as a default.

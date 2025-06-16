@@ -2,11 +2,11 @@
 # Copy this file to .cursor-init.yaml in your project root to customize documentation generation
 
 # =============================================================================
-# DOCUMENTATION TYPES - Opt-out configuration (all auto-detected by default)
+# DOCUMENTATION TYPES - Opt-out configuration (AI determines relevance by default)
 # =============================================================================
 
-# Zero-config behavior: All documentation types are auto-detected and generated
-# if they would be useful for your project. Set to 'false' to disable specific types.
+# Zero-config behavior: AI analyzes your project and generates relevant documentation
+# automatically. Only set to 'false' to explicitly disable specific types.
 
 documentation:
   # Core documentation (always useful for any project)
@@ -15,9 +15,23 @@ documentation:
     onboarding: true # Developer onboarding guide
     adr: true # Architecture Decision Records
 
-  # Data documentation (auto-detected based on database models)
+  # Data documentation (generated if database models detected)
   data:
-    data_model: true # Database schema & ER diagrams (if models found)
+    data_model: true # Database schema & ER diagrams (auto-generated if models found)
+    database_ops: false # Database operations & performance guide (disabled by default)
+    data_security: false # Data security policies & procedures (disabled by default)
+
+  # Infrastructure documentation (generated if deployment configs detected)
+  infrastructure:
+    deployment: false # CI/CD & deployment procedures (disabled by default)
+    dependencies: false # External service dependencies (disabled by default)
+    security: false # Security architecture & authentication flows (disabled by default)
+
+  # Development documentation (generated if collaborative development detected)
+  development:
+    rfc: false # Request For Comments documents (disabled by default)
+    contributing: false # Contributor guidelines (disabled by default)
+    api_docs: false # API documentation (disabled by default)
 
 # =============================================================================
 # TEMPLATE VARIANTS - Choose specific template styles
@@ -35,6 +49,14 @@ templates:
 
   # Data model documentation
   data_model: "comprehensive" # Options: simple, comprehensive
+
+  # Request For Comments
+  rfc: "standard" # Options: minimal, standard, detailed
+
+  # Custom template paths (optional)
+  custom_template_paths:
+    # adr: "path/to/custom/adr-template.md"
+    # rfc: "path/to/custom/rfc-template.md"
 
 # =============================================================================
 # PROJECT SETTINGS - Project-specific customization
@@ -65,20 +87,40 @@ generation:
 # =============================================================================
 
 # Zero-config (default behavior):
-# - Analyzes your project automatically using AI
-# - Generates useful documentation based on what's detected
+# - AI analyzes your project to determine relevant documentation
+# - Generates documentation automatically based on detected technologies
 # - Perfect for most projects - no configuration needed!
+# - Core docs (architecture, onboarding, ADRs) always generated unless disabled
+# - Other docs generated only if relevant technologies detected
 
 # Minimal documentation only:
 # documentation:
 #   core: { architecture: true, onboarding: true, adr: true }
 #   data: { data_model: false }
+#   infrastructure: { deployment: false, dependencies: false, security: false }
+#   development: { rfc: false, contributing: false, api_docs: false }
 
 # Open source project:
+# documentation:
+#   core: { architecture: true, onboarding: true, adr: true }
+#   development: { contributing: true }
 # templates:
 #   onboarding: "contributor"  # Contributor-focused onboarding
 
 # Enterprise project:
+# documentation:
+#   core: { architecture: true, onboarding: true, adr: true }
+#   data: { data_model: true, database_ops: true, data_security: true }
+#   infrastructure: { deployment: true, dependencies: true, security: true }
+#   development: { rfc: true, api_docs: true }
 # templates:
 #   architecture: "enterprise"
 #   adr: "full"
+#   rfc: "detailed"
+
+# Full documentation setup:
+# documentation:
+#   core: { architecture: true, onboarding: true, adr: true }
+#   data: { data_model: true, database_ops: true, data_security: true }
+#   infrastructure: { deployment: true, dependencies: true, security: true }
+#   development: { rfc: true, contributing: true, api_docs: true }
