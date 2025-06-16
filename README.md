@@ -171,10 +171,10 @@ docs/
 
 Works immediately with smart detection:
 
-- **Python/FastAPI** → API-focused architecture docs
-- **TypeScript/React** → Component-based system diagrams  
-- **SQLAlchemy** → Detailed ER diagrams with relationships
-- **Django** → Model-centric documentation
+- **Web APIs** → API-focused architecture docs
+- **Frontend Applications** → Component-based system diagrams  
+- **Database Models** → Detailed ER diagrams with relationships
+- **Any Framework** → Framework-appropriate documentation
 
 ### **Template Variants**
 
@@ -288,7 +288,7 @@ We're building the future of developer documentation. Join us!
 
 - 🏗️ **18 Built-in Templates** across 5 document types
 - 🎯 **8 Slash Commands** for instant documentation
-- 🔧 **3 Framework Integrations** (Python, TypeScript, SQL)
+- 🔧 **Universal Framework Support** via AI detection
 - ⚡ **0 Dependencies** for basic functionality
 - 🛡️ **100% Static Analysis** for security
 

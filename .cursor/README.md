@@ -98,9 +98,9 @@ docs/
 
 ### **Automatic Detection**
 
-- **Languages**: Python, TypeScript, JavaScript, etc.
-- **Frameworks**: FastAPI, Django, React, Next.js, Express, etc.
-- **Databases**: SQLAlchemy models, TypeORM, Prisma
+- **Languages**: Any programming language via AI analysis
+- **Frameworks**: Any web, mobile, or backend framework
+- **Databases**: Any database system with model definitions
 - **Project Structure**: Automatically adapts to your codebase
 
 ### **Context-Aware Generation**

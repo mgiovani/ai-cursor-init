@@ -37,23 +37,6 @@ templates:
   data_model: "comprehensive" # Options: simple, comprehensive
 
 # =============================================================================
-# FRAMEWORK DETECTION SETTINGS - Control what triggers documentation generation
-# =============================================================================
-
-framework_detection:
-  # Database model detection
-  database:
-    model_files:
-      ["**/models.py", "**/model.py", "**/*model*.py", "**/*schema*.py"]
-    orm_patterns: ["sqlalchemy", "django.db", "typeorm", "prisma"]
-
-  # Framework detection for appropriate templates
-  frameworks:
-    python: ["fastapi", "django", "flask"]
-    typescript: ["react", "next", "express", "nestjs"]
-    javascript: ["vue", "angular", "node"]
-
-# =============================================================================
 # PROJECT SETTINGS - Project-specific customization
 # =============================================================================
 
@@ -62,7 +45,7 @@ project:
   name: "" # Auto-detected from directory name
   description: "" # Auto-detected from package.json/pyproject.toml
 
-  # Technology stack preferences (auto-detected if not specified)
+  # Generation preferences
   preferences:
     diagram_style: "mermaid" # Diagram format for generated visuals
     documentation_style: "professional" # Writing style preference
@@ -82,7 +65,7 @@ generation:
 # =============================================================================
 
 # Zero-config (default behavior):
-# - Analyzes your project automatically
+# - Analyzes your project automatically using AI
 # - Generates useful documentation based on what's detected
 # - Perfect for most projects - no configuration needed!
 

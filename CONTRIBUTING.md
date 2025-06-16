@@ -80,12 +80,12 @@ Framework detection is primarily used to provide **context to AI** rather than s
 
 ### Current Detection Strategy
 
-The AI service automatically detects:
+The AI-powered analysis automatically detects and adapts to any project structure, automatically identifying:
 
-- **Languages**: Python, TypeScript, JavaScript, Go, Rust, Java, C++, C, etc.
-- **Frameworks**: FastAPI, Django, Flask, React, Next.js, Vue.js, Spring Boot, etc.
-- **Databases**: PostgreSQL, MySQL, MongoDB, Redis, SQLAlchemy, etc.
-- **Tools**: Docker, Kubernetes, CI/CD systems, etc.
+- **Programming Languages**: Through intelligent code analysis
+- **Frameworks and Libraries**: Via dependency and import analysis  
+- **Database Systems**: Through model and schema detection
+- **Project Architecture**: Based on file structure and patterns
 
 ### Adding New Technology Detection
 
@@ -180,9 +180,9 @@ python -m cursor_init gen-arch-diagram
    - Verify AI-generated content is relevant and accurate
 
 3. **Test with Different Project Types**:
-   - Test with Python/FastAPI projects
-   - Test with TypeScript/React projects
-   - Test with other language combinations
+   - Test with various programming languages
+   - Test with different frameworks and architectures
+   - Test with diverse project structures
 
 ### Automated Testing
 
@@ -277,3 +277,12 @@ By contributing to `cursor-init`, you agree that your contributions will be lice
 ---
 
 Thank you for contributing to `cursor-init`! Your contributions help make AI-powered documentation accessible to developers everywhere.
+
+### What We Support
+
+The framework automatically detects and adapts to any codebase through AI analysis:
+
+- **Languages**: Any programming language with AI-powered analysis
+- **Frameworks**: Universal framework support via intelligent detection
+- **Databases**: Any database system with model or schema definitions
+- **Project Types**: Web apps, mobile apps, APIs, libraries, and more

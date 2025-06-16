@@ -13,7 +13,7 @@ Every template follows this structure:
 ---
 template_variant: "comprehensive"
 last_updated: "2024-01-15"
-framework_support: ["python", "typescript", "generic"]
+framework_support: ["universal"]
 ---
 
 # {{DOCUMENT_TITLE}}
@@ -39,9 +39,9 @@ Templates use double curly braces for dynamic content:
 |-------------|-------------|---------|
 | `{{PROJECT_NAME}}` | Project name from package.json/pyproject.toml | `my-awesome-app` |
 | `{{DATE}}` | Current date in YYYY-MM-DD format | `2024-01-15` |
-| `{{FRAMEWORK}}` | Detected framework | `FastAPI`, `React`, `Django` |
+| `{{FRAMEWORK}}` | Detected framework | `Web API`, `Frontend`, `Backend` |
 | `{{AUTHOR}}` | Git configuration name | `John Doe` |
-| `{{TECH_STACK}}` | Comma-separated technologies | `Python, FastAPI, PostgreSQL` |
+| `{{TECH_STACK}}` | Comma-separated technologies | `Backend API, Database, Frontend` |
 
 ### Custom Placeholders
 
@@ -130,7 +130,7 @@ Include metadata at the top:
 ---
 template_variant: "comprehensive"
 category: "security"
-framework_support: ["python", "typescript", "java"]
+framework_support: ["universal"]
 description: "Comprehensive security documentation template"
 author: "Your Team"
 version: "1.0.0"
@@ -188,12 +188,8 @@ custom_template_paths:
   api_docs: "templates/custom/api-documentation.md"
 
 framework_detection:
-  python:
-    files: ["requirements.txt", "pyproject.toml", "setup.py"]
-    indicators: ["fastapi", "django", "flask"]
-  typescript:
-    files: ["package.json", "tsconfig.json"]
-    indicators: ["react", "next", "express"]
+  # AI-powered detection replaces manual framework configuration
+# Detection is automatic based on project analysis
 ```
 
 ### Per-Project Configuration
@@ -225,17 +221,17 @@ Use conditional blocks for framework-specific content:
 ```markdown
 ## Setup Instructions
 
-{% if FRAMEWORK == "FastAPI" %}
+{% if FRAMEWORK == "Web API" %}
 ```bash
-pip install fastapi uvicorn
-uvicorn main:app --reload
+# Install detected API framework dependencies
+# Start development server
 ```
 
-{% elif FRAMEWORK == "React" %}
+{% elif FRAMEWORK == "Frontend" %}
 
 ```bash
-npm install
-npm start
+# Install detected frontend dependencies
+# Start development server
 ```
 
 {% endif %}
@@ -276,11 +272,11 @@ templates/
 Test your templates with different project types:
 
 ```bash
-# Test template with Python project
-/test-template architecture custom-python
+# Test template with different project types
+/test-template architecture custom-web-api
 
-# Test template with TypeScript project  
-/test-template architecture custom-typescript
+# Test template with frontend project  
+/test-template architecture custom-frontend
 ```
 
 ### Quality Checks
@@ -325,11 +321,11 @@ architecture:
   - name: "Google Style"
     file: "google_style.md"
     description: "Google's technical writing approach"
-    frameworks: ["generic"]
+    frameworks: ["universal"]
   - name: "Your Custom Style"
     file: "custom_style.md"
     description: "Your team's architecture template"
-    frameworks: ["python", "typescript"]
+    frameworks: ["universal"]
 ```
 
 ## Best Practices

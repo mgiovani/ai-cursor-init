@@ -94,7 +94,7 @@ graph TD
 ### Framework Detection
 
 - **Method:** File pattern matching and content analysis
-- **Supported:** Python, TypeScript, frameworks, databases
+- **Supported:** Universal language and framework support via AI analysis
 - **Adaptive:** Template selection based on detected stack
 - **Extensible:** Configurable detection patterns
 

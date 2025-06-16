@@ -20,7 +20,7 @@ A clear and concise description of any alternative solutions or features you've 
 
 - **Template Category**: [e.g. architecture, ADR, onboarding, data-model]
 - **Command Scope**: [e.g. new slash command, template enhancement, existing command improvement]
-- **Framework Support**: [e.g. Python, TypeScript, new framework]
+- **Framework Support**: [e.g. Web Framework, Mobile Framework, New Language]
 - **Who will benefit**: [All users/Specific frameworks/Template authors]
 
 **Additional context**

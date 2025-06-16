@@ -27,7 +27,7 @@ If applicable, add screenshots to help explain your problem.
 
 - **OS**: [e.g. macOS, Windows, Linux]
 - **Cursor Version**: [e.g. 0.42.0]
-- **Project Type**: [e.g. Python/FastAPI, TypeScript/React]
+- **Project Type**: [e.g. Web API, Frontend App, Mobile App, Library]
 
 **Documentation Context:**
 
