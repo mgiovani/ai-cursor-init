@@ -1,145 +1,145 @@
-## System Architecture
+# AI-Cursor-Init Architecture
 
-The `ai-cursor-init` project is an AI-powered documentation framework designed to work seamlessly within Cursor IDE and as a standalone CLI tool.
+**Last Updated:** 2025-06-15  
+**Project Type:** Documentation Framework & Cursor IDE Integration  
+**Current State:** Template-based Documentation Framework
 
-### High-Level Architecture
+## Overview
 
-```markdown
-# AI Cursor Init Architecture Diagram
+The `ai-cursor-init` project is a documentation framework that integrates with Cursor IDE to provide intelligent documentation generation through templates, rules, and AI-powered content creation.
 
-This document presents a comprehensive architecture diagram for the AI Cursor Init project. The diagram visualizes the main components of the system, their relationships, data flow, external dependencies, and technology stack.
+## Current Architecture
 
 ```mermaid
 graph TD
-    A[AI Cursor Init] -->|Uses| B[CLI]
-    A -->|Depends on| C[Requirements]
-    A -->|Includes| D[Documentation]
-    A -->|Utilizes| E[External APIs]
-    A -->|Configured by| F[Configuration Files]
+    A[AI Cursor Init Framework] -->|Contains| B[Cursor Rules]
+    A -->|Contains| C[Template System]
+    A -->|Contains| D[Documentation Examples]
+    A -->|Provides| E[Slash Commands]
     
-    B -->|Executes| G[Main Script]
-    B -->|Interacts with| E
+    B -->|Implements| F["/init-docs"]
+    B -->|Implements| G["/update-docs"]
+    B -->|Implements| H["/adr"]
+    B -->|Implements| I["/gen-er-diagram"]
+    B -->|Implements| J["/gen-arch-diagram"]
+    B -->|Implements| K["/sync-docs"]
     
-    C -->|Contains| H[PyYAML]
-    C -->|Contains| I[OpenAI API]
-    C -->|Contains| J[Anthropic API]
-    C -->|Contains| K[Google Generative AI]
-    C -->|Contains| L[Python Dotenv]
-    C -->|Contains| M[Rich]
-    C -->|Contains| N[TikToken]
+    C -->|Architecture| L[Multiple Variants]
+    C -->|ADR| M[Multiple Styles]
+    C -->|Onboarding| N[Role-based]
+    C -->|Data Model| O[Simple/Comprehensive]
+    C -->|Security| P[Compliance-focused]
+    C -->|Deployment| Q[Infrastructure-aware]
     
-    F -->|Includes| O[pyproject.toml]
-    F -->|Includes| P[requirements.txt]
-    F -->|Includes| Q[.cursor-init.yaml]
+    D -->|Examples| R[Live Documentation]
+    D -->|Shows| S[Best Practices]
     
-    D -->|Contains| R[README.md]
-    D -->|Contains| S[CHANGELOG.md]
-    D -->|Contains| T[CONTRIBUTING.md]
-    D -->|Contains| U[AI_DOCUMENTATION.md]
-    D -->|Contains| V[SECURITY.md]
-    D -->|Contains| W[Architecture Docs]
-    D -->|Contains| X[Data Model Docs]
-    D -->|Contains| Y[Onboarding Docs]
-
-    E -->|Provides| Z[AI Services]
-    E -->|Includes| AA[OpenAI]
-    E -->|Includes| AB[Anthropic]
-    E -->|Includes| AC[Google Generative AI]
+    E -->|Integrates| T[Cursor IDE]
     
     style A fill:#f9f,stroke:#333,stroke-width:2px
     style B fill:#bbf,stroke:#333,stroke-width:2px
     style C fill:#bbf,stroke:#333,stroke-width:2px
-    style D fill:#bbf,stroke:#333,stroke-width:2px
-    style E fill:#bbf,stroke:#333,stroke-width:2px
-    style F fill:#bbf,stroke:#333,stroke-width:2px
+    style E fill:#bfb,stroke:#333,stroke-width:2px
 ```
 
-This diagram illustrates the architecture of the AI Cursor Init project, highlighting the key components such as the CLI, external APIs, configuration files, and documentation. Each component is connected to show how they interact and depend on each other, providing a clear overview of the system's structure and functionality.
-```
+## Core Components
 
-### Core Components
+### 1. **Cursor Rules System**
 
-#### 1. **AI Service Layer**
+- **Location:** `.cursor/rules/`
+- **Purpose:** Defines slash command behavior and AI prompts
+- **Key Features:**
+  - Template-aware command processing
+  - Context gathering from codebase
+  - Framework detection logic
+  - Multi-provider AI integration prompts
 
-- **Purpose:** Centralized AI integration with multiple providers
-- **Key Files:** `cli/cursor_init/ai_service.py`, `cli/cursor_init/ai_config.py`
-- **Responsibilities:**
-  - Multi-provider AI support (OpenAI, Anthropic, Gemini)
-  - Context-aware documentation generation
-  - Intelligent code analysis and content updates
+### 2. **Template Library**
 
-#### 2. **Framework Detection Engine**
+- **Location:** `.cursor/templates/`
+- **Purpose:** Structured documentation templates with variants
+- **Categories:**
+  - **Architecture:** Google Style, Enterprise, Arc42
+  - **ADR:** Nygard, MADR, Comprehensive, Lightweight  
+  - **Onboarding:** Developer, Contributor, User
+  - **Data Model:** Simple, Comprehensive
+  - **Security:** Data Security, Compliance-focused
+  - **Deployment:** Infrastructure-aware templates
 
-- **Purpose:** Automatically detect project technologies and frameworks
-- **Key Files:** `cli/cursor_init/detect_framework.py`
-- **Capabilities:**
-  - Python framework detection (FastAPI, Django, Flask)
-  - JavaScript/TypeScript framework detection (React, Next.js)
-  - SQLAlchemy model detection for ER diagrams
-  - Project structure analysis
+### 3. **Configuration System**
 
-#### 3. **Template System**
-
-- **Purpose:** Flexible, framework-aware documentation templates
-- **Key Files:** Template files in `.cursor/templates/`
+- **File:** `.cursor-init.yaml` (configurable)
+- **Purpose:** Project-specific customization
 - **Features:**
-  - Multiple template variants per document type
-  - Framework-specific customization
-  - AI-powered content generation from templates
+  - Template variant selection
+  - Auto-detection settings
+  - Quality control parameters
+  - Custom template paths
 
-#### 4. **Diagram Generation**
+### 4. **Documentation Examples**
 
-- **Purpose:** Automated visual documentation creation
-- **Key Files:** `cli/cursor_init/generate_diagrams.py`
-- **Outputs:**
-  - ER diagrams from SQLAlchemy models
-  - Architecture diagrams from project structure
-  - Version-controlled Mermaid diagrams
+- **Location:** `docs/`
+- **Purpose:** Living examples of generated documentation
+- **Serves as:** Reference implementation and testing ground
 
-#### 5. **CLI Interface**
+## Integration Architecture
 
-- **Purpose:** Command-line tool for CI/CD integration
-- **Key Files:** `cli/cursor_init/__main__.py`
-- **Commands:**
-  - `init` - Initialize documentation structure
-  - `update` - AI-powered documentation updates
-  - `adr` - Create Architecture Decision Records
-  - `check-docs` - Validate documentation freshness
+### Cursor IDE Integration
 
-#### 6. **Cursor IDE Integration**
+- **Mechanism:** Rule-based slash commands
+- **Context Awareness:** Automatic project analysis
+- **AI Integration:** Multi-provider support through rules
+- **Zero Installation:** Works immediately in Cursor IDE
 
-- **Purpose:** Seamless in-IDE documentation workflow
-- **Key Files:** Rules in `.cursor/rules/`
-- **Slash Commands:**
-  - `/init-docs` - Initialize project documentation
-  - `/update-docs` - Update existing documentation
-  - `/adr "Title"` - Create new ADRs
-  - `/gen-er-diagram` - Generate ER diagrams
-  - `/gen-arch-diagram` - Generate architecture diagrams
+### Framework Detection
 
-### Data Flow
+- **Method:** File pattern matching and content analysis
+- **Supported:** Universal language and framework support via AI analysis
+- **Adaptive:** Template selection based on detected stack
+- **Extensible:** Configurable detection patterns
 
-1. **User Interaction:** Via Cursor slash commands or CLI
-2. **Project Analysis:** Framework detection and code analysis
-3. **AI Processing:** Context-aware content generation
-4. **Template Application:** Framework-specific template selection
-5. **Content Generation:** AI-enhanced documentation creation
-6. **File Management:** Automated file creation and updates
+### Content Generation Flow
 
-### Technology Stack
+1. **User Triggers:** Slash command in Cursor IDE
+2. **Context Analysis:** Project structure and technology detection
+3. **Template Selection:** Based on configuration and detection
+4. **AI Processing:** Context-aware content generation
+5. **File Creation:** Structured markdown output
 
-- **Language:** Python 3.12+
-- **AI Providers:** OpenAI, Anthropic, Google Gemini
-- **Diagram Format:** Mermaid (version-controlled, text-based)
+## Technology Stack
+
+- **Platform:** Cursor IDE Rules & Templates
+- **Language:** Markdown with Mermaid diagrams
 - **Configuration:** YAML-based settings
-- **IDE Integration:** Cursor rules and templates
-- **Package Management:** pip/setuptools with pyproject.toml
+- **AI Integration:** Multi-provider through Cursor's AI system
+- **Version Control:** Git-friendly text-based documentation
 
-### Design Principles
+## Design Principles
 
-- **Documentation as Code:** Version-controlled alongside source code
-- **AI-Enhanced:** Intelligent content generation and updates
-- **Framework-Aware:** Automatic detection and customization
-- **Zero-Installation:** Works out-of-the-box in Cursor IDE
-- **CI-Friendly:** Automated validation and freshness checks
-- **Multi-Provider:** Flexible AI backend support
+- **Template-Driven:** Structured, consistent documentation
+- **AI-Enhanced:** Intelligent content generation
+- **Framework-Aware:** Automatic technology detection
+- **Zero-Installation:** Immediate usability in Cursor IDE
+- **Living Documentation:** Self-updating examples
+- **Industry Standards:** Following documentation best practices
+
+## Current Limitations
+
+- **No CLI Implementation:** Currently Cursor IDE only
+- **Template-Based:** Limited to predefined structures  
+- **AI Dependency:** Requires Cursor's AI integration
+- **Framework Coverage:** Limited to detected patterns
+
+## Future Architecture Considerations
+
+Based on ADRs and development direction:
+
+- Potential standalone CLI implementation
+- Extended framework detection
+- Custom template authoring tools
+- Integration with external documentation systems
+- Enhanced diagram generation capabilities
+
+---
+
+*This architecture reflects the current template-based implementation. See ADR documents for architectural decisions and future directions.*

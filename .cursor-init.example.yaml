@@ -1,106 +1,84 @@
-# cursor-init Configuration Example
-# Copy this file to .cursor-init.yaml in your project root to customize behavior
+# AI-Cursor-Init Configuration
+# Copy this file to .cursor-init.yaml in your project root to customize documentation generation
 
-# Template preferences - choose your preferred style for each document type
+# =============================================================================
+# DOCUMENTATION TYPES - Opt-out configuration (all auto-detected by default)
+# =============================================================================
+
+# Zero-config behavior: All documentation types are auto-detected and generated
+# if they would be useful for your project. Set to 'false' to disable specific types.
+
+documentation:
+  # Core documentation (always useful for any project)
+  core:
+    architecture: true # System architecture overview
+    onboarding: true # Developer onboarding guide
+    adr: true # Architecture Decision Records
+
+  # Data documentation (auto-detected based on database models)
+  data:
+    data_model: true # Database schema & ER diagrams (if models found)
+
+# =============================================================================
+# TEMPLATE VARIANTS - Choose specific template styles
+# =============================================================================
+
 templates:
-  # ADR (Architecture Decision Record) templates
+  # Architecture Decision Records
   adr: "nygard_style" # Options: nygard_style, full, lightweight, madr
 
-  # Architecture documentation templates
+  # Architecture documentation
   architecture: "google_style" # Options: google_style, enterprise, arc42
 
-  # Onboarding guide templates
+  # Onboarding guides
   onboarding: "developer" # Options: developer, contributor, user
 
-  # =====================================================
-  # RFC (Request For Comments) Documentation
-  # =====================================================
-  # Options: minimal, standard, detailed
-  #
-  # - minimal: Simple RFC for quick proposals (~12 lines)
-  # - standard: Standard RFC with structured analysis (~80 lines)
-  # - detailed: Comprehensive RFC with full lifecycle (~300 lines)
-  rfc: "standard"
+  # Data model documentation
+  data_model: "comprehensive" # Options: simple, comprehensive
 
-  # =====================================================
-  # Data Model Documentation
-  # =====================================================
-  # Options: simple, comprehensive
-  #
-  # - simple: Basic ER diagram with entity overview (~44 lines)
-  # - comprehensive: Detailed data model with full database documentation (~263 lines)
-  data_model: "comprehensive"
+# =============================================================================
+# PROJECT SETTINGS - Project-specific customization
+# =============================================================================
 
-# Custom template paths - add your own templates
-custom_template_paths:
-  # Example: Add a custom security ADR template
-  # - name: "security_adr"
-  #   path: ".cursor/templates/custom/security-adr.md"
+project:
+  # Project metadata (auto-detected if empty)
+  name: "" # Auto-detected from directory name
+  description: "" # Auto-detected from package.json/pyproject.toml
 
-  # Example: Add a custom API documentation template
-  # - name: "api_docs"
-  #   path: ".cursor/templates/custom/api-documentation.md"
+  # Generation preferences
+  preferences:
+    diagram_style: "mermaid" # Diagram format for generated visuals
+    documentation_style: "professional" # Writing style preference
 
-# Framework detection overrides (optional)
-# Uncomment to force specific framework detection
-# framework_overrides:
-#   python_framework: "fastapi"    # Options: fastapi, django, flask
-#   frontend_framework: "react"    # Options: react, nextjs, vue
-#   database_orm: "sqlalchemy"     # Options: sqlalchemy, django_orm
+# =============================================================================
+# GENERATION SETTINGS - Control slash command behavior
+# =============================================================================
 
-# Documentation generation preferences
 generation:
-  # Include code examples in generated documentation
-  include_code_examples: true
+  # Content generation options for slash commands
+  include_code_examples: true # Include code snippets in documentation
+  include_diagrams: true # Generate Mermaid diagrams where applicable
+  auto_generate_toc: true # Automatically generate table of contents
 
-  # Generate table of contents for long documents
-  auto_generate_toc: true
+# =============================================================================
+# EXAMPLES OF COMMON CONFIGURATIONS
+# =============================================================================
 
-  # Include file modification timestamps
-  include_timestamps: false
+# Zero-config (default behavior):
+# - Analyzes your project automatically using AI
+# - Generates useful documentation based on what's detected
+# - Perfect for most projects - no configuration needed!
 
-# Custom documentation types (advanced usage)
-custom_document_types:
-  # Example: Add a custom security documentation type
-  # - name: "security"
-  #   description: "Generate security documentation and threat models"
-  #   system_prompt: "You are a security expert..."
+# Minimal documentation only:
+# documentation:
+#   core: { architecture: true, onboarding: true, adr: true }
+#   data: { data_model: false }
 
-# Diagram preferences
-diagrams:
-  # ER diagram styling
-  er_diagram:
-    show_relationships: true
-    include_indexes: false
-    group_by_module: true
+# Open source project:
+# templates:
+#   onboarding: "contributor"  # Contributor-focused onboarding
 
-  # Architecture diagram preferences
-  architecture_diagram:
-    show_dependencies: true
-    group_components: true
-    include_external_services: false
-
-# Validation rules for documentation quality
-validation:
-  # Maximum age in days before docs are considered stale
-  max_doc_age_days: 30
-
-  # Require specific sections in architecture docs
-  required_architecture_sections:
-    - "Overview"
-    - "Components"
-    - "Data Flow"
-
-  # Placeholder detection sensitivity
-  strict_placeholder_detection: true
-
-# CI/CD integration settings
-ci:
-  # Fail CI if documentation is stale
-  fail_on_stale_docs: false
-
-  # Auto-generate documentation in CI
-  auto_generate: false
-
-  # Commit generated docs back to repository
-  auto_commit: false
+# Enterprise project:
+# templates:
+#   architecture: "enterprise"
+#   adr: "full"

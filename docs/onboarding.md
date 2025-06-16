@@ -1,17 +1,21 @@
-# AI-Cursor-Init Project Onboarding Guide
+# AI-Cursor-Init Framework Onboarding Guide
 
-This guide provides essential information for contributors to the AI-Cursor-Init project - an AI-powered documentation framework for Cursor IDE.
+**Last Updated:** 2025-06-15  
+**Project Type:** Cursor IDE Documentation Framework  
+**Current State:** Template & Rule-based System
+
+This guide provides essential information for contributors to the AI-Cursor-Init project - a documentation framework that integrates with Cursor IDE.
 
 ## Overview and Goals
 
 * **Project Name:** AI-Cursor-Init
-* **Purpose:** Provide an AI-powered documentation framework that works seamlessly within Cursor IDE and as a standalone CLI tool
+* **Purpose:** Provide a template-based documentation framework that works seamlessly within Cursor IDE
 * **Key Goals:**
-  * Enable intelligent documentation generation using multiple AI providers (OpenAI, Anthropic, Gemini)
-  * Provide framework-aware documentation templates and content generation
+  * Enable intelligent documentation generation through structured templates
+  * Provide framework-aware documentation templates and content generation  
   * Offer seamless integration with Cursor IDE through slash commands
-  * Support automated diagram generation (ER diagrams, architecture diagrams)
-  * Maintain documentation freshness through CI-friendly validation tools
+  * Support automated diagram generation using Mermaid
+  * Maintain documentation freshness through template-based generation
 
 ## Contacts
 
@@ -22,23 +26,23 @@ This guide provides essential information for contributors to the AI-Cursor-Init
 
 ## Development Philosophy
 
-* **Code Quality:** Follow PEP 8 for Python. Use type hints, single quotes, and avoid unnecessary comments/docstrings
+* **Template-Driven:** Structured, consistent documentation through templates
 * **Version Control:** Use Git with feature branches. All changes go through pull requests
-* **Code Reviews:** All code requires review before merging
-* **Testing:** Write unit tests for critical business logic; ensure tests are isolated and fast
-* **AI Integration:** Responsible AI usage with proper error handling and user consent
+* **Code Reviews:** All template and rule changes require review before merging
+* **Documentation as Code:** Version-controlled alongside templates and rules
+* **AI Integration:** Leverage Cursor's AI capabilities for intelligent content generation
 
 ## Development Environment Setup
 
 ### Prerequisites
 
-* **Python 3.12+** (required for modern typing features)
+* **Cursor IDE** (required for testing the framework)
 * **Git** for version control
-* **Cursor IDE** (recommended for testing slash commands)
-* **AI Provider API Keys** (optional, for testing AI features):
-  * OpenAI API key
-  * Anthropic API key  
-  * Google Gemini API key
+* **Markdown Editor** (optional, for template development)
+* **Understanding of:**
+  * Cursor IDE rules and templates
+  * Mermaid diagram syntax
+  * YAML configuration
 
 ### Setup Steps
 
@@ -49,123 +53,148 @@ This guide provides essential information for contributors to the AI-Cursor-Init
     cd ai-cursor-init
     ```
 
-2. **Set up Python Environment:**
+2. **Open in Cursor IDE:**
 
     ```bash
-    # Create virtual environment
-    python3 -m venv .venv
-    source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-    
-    # Install dependencies
-    pip install -r requirements.txt
-    
-    # Install in development mode
-    pip install -e ./cli
+    cursor .
     ```
 
-3. **Configure AI Providers (Optional):**
+3. **Test the Framework:**
 
-    ```bash
-    # Create .env file with your API keys
-    cp .env.example .env
-    
-    # Edit .env with your API keys:
-    # OPENAI_API_KEY=your_openai_key_here
-    # ANTHROPIC_API_KEY=your_anthropic_key_here
-    # GEMINI_API_KEY=your_gemini_key_here
+    Try the slash commands in Cursor IDE:
+
+    ```
+    /init-docs
+    /adr "Test ADR"
+    /gen-arch-diagram
+    /sync-docs
     ```
 
-4. **Test the Installation:**
+4. **Explore the Structure:**
 
-    ```bash
-    # Test CLI commands
-    ai-cursor-init --version
-    ai-cursor-init init
-    
-    # Test in Cursor IDE by opening the project and trying slash commands like:
-    # /init-docs
-    # /adr "Test ADR"
-    ```
+    * `.cursor/rules/` - Slash command definitions
+    * `.cursor/templates/` - Documentation templates
+    * `docs/` - Example documentation (living examples)
+    * `.cursor-init.example.yaml` - Configuration example
 
 ## Project Structure
 
-* **`/cli`:** Main CLI application source code
-  * `/cli/cursor_init`: Python package with core functionality
-  * `/cli/cursor_init/ai_service.py`: AI provider integration
-  * `/cli/cursor_init/detect_framework.py`: Framework detection logic
-  * `/cli/cursor_init/generate_diagrams.py`: Diagram generation
 * **`/.cursor/rules`:** Cursor IDE integration rules for slash commands
+  * `/cursor-init/` - Framework-specific rules
+  * Command handlers for documentation generation
 * **`/.cursor/templates`:** Documentation templates organized by type
-* **`/docs`:** Project documentation (this serves as an example)
-  * `/docs/adr`: Architecture Decision Records
-  * `/docs/development`: Development guides and patterns
-* **`/tests`:** Test suite (to be expanded)
+  * `/architecture/` - Architecture documentation variants
+  * `/adr/` - Architecture Decision Record templates
+  * `/onboarding/` - Onboarding guide templates
+  * `/diagrams/` - Diagram-focused templates
+  * `/security/` - Security documentation templates
+* **`/docs`:** Project documentation (serves as living examples)
+  * `/adr/` - Architecture Decision Records
+  * `/development/` - Development guides and patterns
+* **Configuration:**
+  * `.cursor-init.example.yaml` - Configuration template
+  * Various `.md` files with project documentation
 
 ## Key Features to Understand
 
-### AI Integration
-
-* Multi-provider support with fallback mechanisms
-
-* Context-aware documentation generation
-* Intelligent framework detection and content customization
-
 ### Template System
 
-* Framework-specific templates (Python/FastAPI, TypeScript/React)
-
-* Multiple variants per document type
-* Custom template support via configuration (see [Template Customization Guide](development/template-customization.md))
+* Framework-specific templates with multiple variants
+* YAML-based configuration for template selection
+* Context-aware placeholder replacement
+* Support for custom templates via configuration
 
 ### Cursor IDE Integration
 
 * Slash commands for in-IDE documentation workflow
-
 * Zero-installation setup through Cursor rules
 * Seamless integration with existing project workflows
+* AI-powered content generation through Cursor's system
 
 ### Diagram Generation
 
 * Mermaid-based diagrams stored as version-controlled text
-
-* ER diagrams from SQLAlchemy model analysis
 * Architecture diagrams from project structure analysis
+* Support for ER diagrams, deployment diagrams, etc.
+* Template-driven diagram generation
+
+### Configuration System
+
+* `.cursor-init.yaml` for project-specific settings
+* Template variant selection
+* Auto-detection configuration
+* Quality control parameters
 
 ## Development Workflow
 
 1. **Create Feature Branch:** `git checkout -b feature/your-feature-name`
-2. **Make Changes:** Follow coding standards and write tests
-3. **Test Thoroughly:** Test both CLI and Cursor IDE integration
-4. **Update Documentation:** Update relevant docs if needed
+2. **Make Changes:** Edit templates, rules, or documentation
+3. **Test in Cursor:** Verify slash commands work correctly
+4. **Update Examples:** Update `docs/` if needed to reflect changes
 5. **Submit PR:** Create pull request with clear description
-6. **Address Review:** Respond to code review feedback
+6. **Address Review:** Respond to feedback on templates/rules
 7. **Merge:** Maintainer will merge approved changes
 
 ## Testing Guidelines
 
-* **Unit Tests:** Test individual functions and classes
-* **Integration Tests:** Test AI provider integrations (with mocking)
-* **End-to-End Tests:** Test complete workflows (CLI commands, slash commands)
-* **Documentation Tests:** Verify generated documentation is valid
+* **Template Testing:** Test template rendering with various project types
+* **Rule Testing:** Verify slash commands work correctly in Cursor IDE  
+* **Integration Testing:** Test complete workflows (init → update → sync)
+* **Documentation Testing:** Verify generated documentation is valid and useful
+
+## Template Development
+
+### Template Structure
+
+* Use `{{PLACEHOLDER}}` syntax for variable substitution
+* Follow consistent markdown formatting
+* Include Mermaid diagrams where appropriate
+* Provide multiple variants for different use cases
+
+### Template Categories
+
+* **Architecture:** System design documentation
+* **ADR:** Architecture Decision Records
+* **Onboarding:** Developer setup guides
+* **Data Model:** Database and schema documentation
+* **Security:** Security policies and compliance
+* **Deployment:** Infrastructure and deployment guides
+
+### Rule Development
+
+* Rules are defined in `.cursor/rules/` directory
+* Use Markdown Control (MDC) format
+* Include clear command descriptions and examples
+* Test with various project configurations
 
 ## Resources and Links
 
 * **GitHub Repository:** [https://github.com/mgiovani/ai-cursor-init](https://github.com/mgiovani/ai-cursor-init)
-* **PyPI Package:** [https://pypi.org/project/ai-cursor-init/](https://pypi.org/project/ai-cursor-init/)
 * **Architecture Overview:** [docs/architecture.md](./architecture.md)
 * **ADR Log:** [docs/adr/](./adr/)
 * **Development Patterns:** [docs/development/](./development/)
+* **Template Examples:** [.cursor/templates/](./.cursor/templates/)
 * **Issue Templates:** [GitHub Issues](https://github.com/mgiovani/ai-cursor-init/issues)
 
 ## Contributing
 
 We welcome contributions! Please:
 
-1. **Read the Code:** Understand the existing patterns and architecture
-2. **Start Small:** Begin with bug fixes or small feature additions
+1. **Understand the Framework:** Learn how templates and rules work together
+2. **Start Small:** Begin with template improvements or new variants
 3. **Ask Questions:** Use GitHub Issues for clarification
-4. **Follow Standards:** Maintain code quality and test coverage
-5. **Document Changes:** Update relevant documentation
+4. **Follow Standards:** Maintain template quality and consistency
+5. **Document Changes:** Update relevant documentation and examples
+
+## Current Project Status
+
+This project is currently in **template-based framework** state:
+
+* ✅ Template system with multiple variants
+* ✅ Cursor IDE integration via rules
+* ✅ Configuration system
+* ✅ Living documentation examples
+* ⚠️ Limited to Cursor IDE environment
 
 ---
 

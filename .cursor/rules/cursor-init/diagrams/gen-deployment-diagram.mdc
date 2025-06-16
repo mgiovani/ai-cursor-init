@@ -1,0 +1,97 @@
+---
+description: When the user types `/gen-deployment-diagram`
+globs: 
+alwaysApply: false
+---
+# Generate Deployment Diagram
+
+When the user types `/gen-deployment-diagram`, create a Mermaid diagram showing deployment architecture and infrastructure components.
+
+## Process
+
+1. **Analyze Deployment Configuration**: Search for Docker, Kubernetes, CI/CD, and infrastructure files
+2. **Identify Infrastructure Components**: Map servers, containers, databases, load balancers
+3. **Map Data Flow**: Show how requests flow through the system
+4. **Generate Diagram**: Create a Mermaid diagram showing deployment topology
+
+## Infrastructure Detection
+
+Search for these patterns:
+- **Containerization**: Dockerfile, docker-compose.yml
+- **Orchestration**: Kubernetes manifests, Helm charts
+- **CI/CD**: GitHub Actions, Jenkins, GitLab CI files
+- **Cloud Services**: AWS, GCP, Azure configurations
+- **Reverse Proxies**: Nginx, Apache configurations
+
+## Diagram Template
+
+```mermaid
+graph TB
+    subgraph "Users"
+        U[Users/Clients]
+    end
+    
+    subgraph "CDN/Load Balancer"
+        LB[Load Balancer<br/>Nginx/ALB]
+    end
+    
+    subgraph "Application Tier"
+        A1[App Instance 1<br/>Docker Container]
+        A2[App Instance 2<br/>Docker Container]
+        A3[App Instance 3<br/>Docker Container]
+    end
+    
+    subgraph "Database Tier"
+        DB[(Primary Database<br/>PostgreSQL)]
+        CACHE[(Cache<br/>Redis)]
+    end
+    
+    subgraph "External Services"
+        EXT[External APIs<br/>Third Party Services]
+    end
+    
+    U --> LB
+    LB --> A1
+    LB --> A2
+    LB --> A3
+    
+    A1 --> DB
+    A2 --> DB
+    A3 --> DB
+    
+    A1 --> CACHE
+    A2 --> CACHE
+    A3 --> CACHE
+    
+    A1 --> EXT
+    A2 --> EXT
+    A3 --> EXT
+    
+    classDef user fill:#e3f2fd
+    classDef infra fill:#fff3e0
+    classDef app fill:#e8f5e8
+    classDef data fill:#fce4ec
+    classDef external fill:#f1f8e9
+    
+    class U user
+    class LB infra
+    class A1,A2,A3 app
+    class DB,CACHE data
+    class EXT external
+```
+
+## Environment Detection
+
+Automatically adapt diagram based on detected deployment patterns:
+- **Development**: Local Docker setup
+- **Staging**: Single server deployment
+- **Production**: Multi-instance, load-balanced setup
+- **Cloud**: Cloud provider specific services
+
+## Documentation Update
+
+After generating the diagram, update or create `docs/deployment.md` with:
+- Environment setup instructions
+- Scaling considerations
+- Security configurations
+- Monitoring and logging setup

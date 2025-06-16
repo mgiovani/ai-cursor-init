@@ -3,36 +3,24 @@ description:
 globs: 
 alwaysApply: true
 ---
-@if(user_message.starts_with("/adr")) {
-  "I will create a new Architecture Decision Record based on your input.
+# ADR Creation Command
 
-  1. **Extracting and Sanitizing the Title:** I will extract the text after `/adr`. If no text is provided, I will use `untitled-adr` as the default title. I will then sanitize this title to be lowercase and kebab-case for the filename, and also refine it for clarity and conciseness for the document's main title.
+When user types `/adr` followed by a title, create a new Architecture Decision Record:
 
-  2. **Determining the Next ADR Number:** I will use the `list_dir` tool to list the contents of the `docs/adr/` directory. From the filenames, I will identify the highest existing ADR number and increment it by one. If no ADRs are found, I will start with `0001`.
+## Process
+1. **Extract Title**: Get text after `/adr` or use `untitled-adr` as default
+2. **Determine Number**: Check `docs/adr/` directory for highest existing ADR number and increment
+3. **Select Template**: Check `.cursor-init.yaml` for template variant (nygard_style, full, lightweight, madr)
+4. **Gather Context**: Use codebase search to find relevant information for the ADR topic
+5. **Create File**: Generate ADR in `docs/adr/` with format `000X-sanitized-title.md`
 
-  3. **Template Selection:** I will check for a `.cursor-init.yaml` configuration file to determine which ADR template variant to use. Available options are:
-     - `nygard_style` (default) - Classic Nygard template with Context, Decision, Consequences
-     - `full` - Comprehensive template with Problem Statement, Assumptions, Options Analysis, Implementation Plan
-     - `lightweight` - Minimal template for simple decisions
-     - `madr` - MADR-style template with Decision Drivers and structured options analysis
+## Template Configuration
+```yaml
+templates:
+  adr: "nygard_style"  # Options: nygard_style, full, lightweight, madr
+```
 
-  4. **Gathering Context:** I will use the `codebase_search` tool with the extracted ADR title to find relevant information from the project's codebase. This context will be used to pre-fill the appropriate sections of the selected template.
-
-  5. **Reading Template:** I will read the selected template file from `.cursor/templates/adr/adr_template_[variant].md` and populate it with:
-     - `{{ADR_NUMBER}}` - The determined sequential number
-     - `{{ADR_TITLE}}` - The refined title  
-     - `{{CONTEXT}}` - Relevant codebase context from search results
-     - `{{DATE}}` - Current date
-     - Other template-specific placeholders based on the selected variant
-
-  6. **Creating the ADR File:** Finally, I will create the new ADR file in the `docs/adr/` directory using the populated template content. The filename will be constructed using the determined ADR number and the sanitized title (e.g., `docs/adr/000X-sanitized-title.md`).
-
-  **Template Configuration:**
-  To customize the ADR template used, create a `.cursor-init.yaml` file in your project root with:
-  ```yaml
-  templates:
-    adr: \"nygard_style\"  # Options: nygard_style, full, lightweight, madr
-  ```
-
-  Please provide a brief title for the ADR after `/adr`. If you provide no title, I will use `untitled-adr` as a default."
-}
+## Example Usage
+- `/adr "Database Migration Strategy"`
+- `/adr "API Authentication Approach"`
+- `/adr "Frontend Framework Selection"`

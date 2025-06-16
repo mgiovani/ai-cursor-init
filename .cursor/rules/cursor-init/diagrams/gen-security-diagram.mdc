@@ -1,0 +1,124 @@
+---
+description: When the user types `/gen-security-diagram`
+globs: 
+alwaysApply: false
+---
+# Generate Security Diagram
+
+When the user types `/gen-security-diagram`, create a Mermaid diagram showing security architecture, authentication flows, and data protection mechanisms.
+
+## Process
+
+1. **Analyze Security Implementation**: Search for authentication, authorization, and security patterns
+2. **Identify Security Components**: Map auth providers, middleware, encryption, access controls
+3. **Map Security Flow**: Show how users authenticate and access protected resources
+4. **Generate Diagram**: Create a Mermaid sequence or flowchart showing security architecture
+
+## Security Pattern Detection
+
+Search for these patterns:
+- **Authentication**: JWT, OAuth, session management, login flows
+- **Authorization**: Role-based access control (RBAC), permissions, middleware
+- **Encryption**: TLS/SSL, password hashing, data encryption
+- **Security Headers**: CORS, CSP, security middleware
+- **API Security**: Rate limiting, API keys, token validation
+
+## Diagram Template
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant C as Client App
+    participant Auth as Auth Service
+    participant API as API Server
+    participant DB as Database
+    
+    Note over U,DB: Authentication Flow
+    
+    U->>C: Login Request
+    C->>Auth: Authenticate (email/password)
+    Auth->>Auth: Validate Credentials
+    Auth->>Auth: Generate JWT Token
+    Auth->>C: Return JWT Token
+    C->>C: Store Token (secure storage)
+    
+    Note over U,DB: Protected Resource Access
+    
+    U->>C: Request Protected Resource
+    C->>API: API Request + JWT Token
+    API->>API: Validate JWT Token
+    API->>API: Check User Permissions
+    
+    alt Valid Token & Permissions
+        API->>DB: Query Data
+        DB->>API: Return Data
+        API->>C: Return Protected Data
+        C->>U: Display Data
+    else Invalid Token/Permissions
+        API->>C: 401/403 Error
+        C->>U: Redirect to Login
+    end
+    
+    Note over U,DB: Security Layers
+    Note right of API: • Rate Limiting<br/>• Input Validation<br/>• SQL Injection Protection<br/>• XSS Prevention
+    Note right of DB: • Encrypted at Rest<br/>• Access Logs<br/>• Backup Encryption
+```
+
+## Alternative Flow Diagram
+
+For simpler security overviews, generate a flow diagram:
+
+```mermaid
+flowchart TD
+    User[User] --> Login[Login Page]
+    Login --> Auth{Authentication}
+    
+    Auth -->|Success| JWT[Generate JWT]
+    Auth -->|Failure| LoginFail[Login Failed]
+    LoginFail --> Login
+    
+    JWT --> Protected[Access Protected Routes]
+    Protected --> Validate{Validate Token}
+    
+    Validate -->|Valid| CheckPerms{Check Permissions}
+    Validate -->|Invalid| Unauthorized[401 Unauthorized]
+    
+    CheckPerms -->|Authorized| AccessData[Access Data]
+    CheckPerms -->|Forbidden| Forbidden[403 Forbidden]
+    
+    AccessData --> SecureDB[(Encrypted Database)]
+    
+    subgraph "Security Layers"
+        HTTPS[HTTPS/TLS]
+        RateLimit[Rate Limiting]
+        CORS[CORS Policy]
+        Helmet[Security Headers]
+    end
+    
+    classDef security fill:#ffebee
+    classDef success fill:#e8f5e8
+    classDef error fill:#fff3e0
+    classDef data fill:#e3f2fd
+    
+    class HTTPS,RateLimit,CORS,Helmet security
+    class JWT,AccessData,SecureDB success
+    class LoginFail,Unauthorized,Forbidden error
+    class User,Protected data
+```
+
+## Framework-Specific Adaptations
+
+Automatically customize based on detected security patterns:
+- **Express.js**: Passport.js, helmet, express-rate-limit
+- **FastAPI**: OAuth2, JWT, security dependencies
+- **Django**: Django Auth, middleware, permissions
+- **React**: Protected routes, auth context, token storage
+
+## Documentation Update
+
+After generating the diagram, update or create `docs/security.md` with:
+- Security architecture overview
+- Authentication and authorization flows
+- Security best practices implemented
+- Threat model and mitigations
+- Security testing procedures

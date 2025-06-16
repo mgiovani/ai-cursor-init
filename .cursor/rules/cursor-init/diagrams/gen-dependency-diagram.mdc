@@ -1,0 +1,62 @@
+---
+description: When the user types `/gen-dependency-diagram`
+globs: 
+alwaysApply: false
+---
+# Generate Dependency Diagram
+
+When the user types `/gen-dependency-diagram`, create a Mermaid diagram showing external dependencies and service integrations.
+
+## Process
+
+1. **Analyze Project Dependencies**: Search for configuration files, imports, and API calls to identify external services
+2. **Identify Service Types**: Classify dependencies (databases, APIs, message queues, caches, etc.)
+3. **Map Relationships**: Determine how your application interacts with each service
+4. **Generate Diagram**: Create a Mermaid graph showing service relationships
+
+## Dependency Detection
+
+Search for these patterns:
+- **Database connections**: PostgreSQL, MongoDB, Redis configurations
+- **External APIs**: HTTP clients, SDK imports, API endpoints
+- **Message queues**: RabbitMQ, Kafka, SQS configurations
+- **Authentication**: OAuth providers, JWT services
+- **Monitoring**: Analytics, logging, APM services
+
+## Diagram Template
+
+```mermaid
+graph TD
+    A["Your Application"] --> B["PostgreSQL<br/>Primary Database"]
+    A --> C["Redis<br/>Cache & Sessions"]
+    A --> D["External API<br/>Payment Service"]
+    A --> E["Message Queue<br/>Background Jobs"]
+    
+    subgraph "Third Party Services"
+        F["Auth0<br/>Authentication"]
+        G["Stripe<br/>Payments"]
+        H["SendGrid<br/>Email"]
+    end
+    
+    A --> F
+    D --> G
+    A --> H
+    
+    classDef database fill:#e1f5fe
+    classDef cache fill:#f3e5f5
+    classDef external fill:#fff3e0
+    classDef queue fill:#e8f5e8
+    
+    class B database
+    class C cache
+    class D,F,G,H external
+    class E queue
+```
+
+## Documentation Update
+
+After generating the diagram, update or create `docs/dependencies.md` with:
+- Service descriptions and purposes
+- Connection details and configuration
+- Health check and monitoring information
+- Fallback strategies for service failures

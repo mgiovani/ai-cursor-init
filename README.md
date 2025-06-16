@@ -3,7 +3,6 @@
 > **Stop writing documentation. Start generating it.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python 3.12+](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
 **The AI-powered documentation framework that lives inside your IDE.** Generate Architecture Decision Records, system diagrams, and onboarding guides with simple slash commands. No installations, no setup, no excuses.
@@ -60,7 +59,7 @@ Professional ER diagrams and database schema documentation:
 
 ## 🚀 **Quick Start** *(2 minutes to awesome docs)*
 
-### Option 1: Zero Installation *(Recommended)*
+### Zero Configuration *(Recommended)*
 
 ```bash
 # 1. Clone this repo
@@ -69,30 +68,33 @@ git clone https://github.com/mgiovani/ai-cursor-init.git
 # 2. Copy to your project (ONLY ONE FOLDER!)
 cp -r ai-cursor-init/.cursor/ your-project/
 
-# 3. (Optional) Customize configuration
-cp ai-cursor-init/.cursor-init.example.yaml your-project/.cursor-init.yaml
-
-# 4. Open your project in Cursor and type:
+# 3. Open your project in Cursor and type:
 /init-docs
 ```
 
-**That's it.** No pip install, no dependencies, just ONE folder to copy!
+**That's it!** The framework analyzes your project and generates all useful documentation automatically:
 
-### Option 2: AI-Powered CLI for Power Users
+- **Always**: Architecture overview, onboarding guide, ADRs
+- **If database models found**: ER diagrams, database operations guide  
+- **If API endpoints found**: API documentation, security flows
+- **If deployment configs found**: Infrastructure and deployment docs
+- **If open source/team project**: Contributing guidelines, RFC templates
 
-```bash
-pip install ai-cursor-init
+### Opt-Out Configuration *(Optional)*
 
-# Configure AI provider (OpenAI, Anthropic, or Google Gemini)
-ai-cursor-init configure
+Don't want certain documentation? Create `.cursor-init.yaml` to disable specific types:
 
-# Generate intelligent documentation with AI
-ai-cursor-init init  # AI-powered docs generation
-ai-cursor-init adr "Database Migration Strategy"  # Context-aware ADRs
-ai-cursor-init update --apply  # Smart documentation updates
+```yaml
+# .cursor-init.yaml (optional - only to disable unwanted docs)
+documentation:
+  data:
+    database_ops: false     # Skip database operations guide
+  infrastructure:
+    deployment: false       # Skip deployment documentation
+    security: false         # Skip security flow diagrams
+  development:
+    rfc: false             # Skip RFC template setup
 ```
-
-📖 **[Complete AI CLI Documentation →](AI_DOCUMENTATION.md)**
 
 ---
 
@@ -118,10 +120,13 @@ docs/
 ├── 📋 architecture.md          # System overview & components
 ├── 🚀 onboarding.md           # Setup guide for new developers  
 ├── 🗂️ data-model.md           # ER diagrams & database schema
-└── adr/                       # Architecture Decision Records
-    ├── 0001-record-architecture-decisions.md
-    ├── 0002-choose-database-technology.md
-    └── 0003-api-authentication-strategy.md
+├── adr/                       # Architecture Decision Records
+│   ├── 0001-record-architecture-decisions.md
+│   ├── 0002-choose-database-technology.md
+│   └── 0003-api-authentication-strategy.md
+└── rfc/                       # Request for Comments
+    ├── new-feature-proposal.md
+    └── api-versioning-strategy.md
 ```
 
 **Every file is:**
@@ -133,34 +138,104 @@ docs/
 
 ---
 
-## 🎨 **Smart Templates**
+## 📋 **Available Commands**
 
-### Framework-Aware Generation
+### Core Documentation
 
-- **Python/FastAPI** → API-focused architecture docs
-- **TypeScript/React** → Component-based system diagrams  
-- **SQLAlchemy** → Detailed ER diagrams with relationships
-- **Django** → Model-centric documentation
+- `/init-docs` - Set up complete documentation structure
+- `/update-docs` - Refresh documentation with code changes
+- `/check-docs` - Validate documentation quality
 
-### Multiple Template Styles
+### Architecture Decision Records
 
-- **ADRs**: Nygard, MADR, Comprehensive formats
-- **Architecture**: Google, Enterprise, Arc42 styles
-- **Onboarding**: General, Python, Frontend variants
+- `/adr "Decision Title"` - Create new ADR with context
+- `/rfc "RFC Title"` - Create new Request for Comments document
+- Example: `/adr "Choose Database Technology"`
 
-### Customizable Everything
+### Diagram Generation
+
+- `/gen-er-diagram` - Database schema diagrams
+- `/gen-arch-diagram` - System architecture diagrams
+- `/gen-onboarding-diagram` - Setup flow diagrams
+- `/gen-dependency-diagram` - External service diagrams
+- `/gen-security-diagram` - Security flow diagrams
+- `/gen-deployment-diagram` - Infrastructure diagrams
+
+### Template Management
+
+- `/add-template TemplateName path/to/template.md` - Add custom template
+- `/list-templates` - Show available templates
+
+### Maintenance
+
+- `/sync-docs` - Sync all documentation
+- `/sync-doc filename.md` - Sync specific document
+- `/sync-category category` - Sync specific category (adr, architecture, etc.)
+
+---
+
+## 🎨 **Smart Templates & Auto-Detection**
+
+### **Zero-Config Defaults**
+
+Works immediately with smart detection:
+
+- **Web APIs** → API-focused architecture docs
+- **Frontend Applications** → Component-based system diagrams  
+- **Database Models** → Detailed ER diagrams with relationships
+- **Any Framework** → Framework-appropriate documentation
+
+### **Template Variants**
+
+- **ADRs**: Nygard, MADR, Comprehensive, Lightweight
+- **Architecture**: Google Style, Enterprise, Arc42
+- **Onboarding**: Developer, Contributor, User
+- **Data Model**: Simple, Comprehensive
+
+### **Optional Configuration**
+
+Choose exactly what documentation you need:
 
 ```yaml
-# .cursor-init.yaml (copy from .cursor-init.example.yaml)
-templates:
-  adr: "nygard_style"           # Your preferred ADR format
-  architecture: "google_style"  # Documentation style
-  onboarding: "python"          # Framework-specific guides
+# .cursor-init.yaml (optional customization)
+documentation:
+  core:
+    architecture: true    # System overview
+    onboarding: true     # Developer setup guide
+    adr: true           # Architecture decisions
+  data:
+    data_model: true    # Database schema
+    database_ops: false # Performance & operations
+    data_security: false # Security policies
+  infrastructure:
+    deployment: false   # CI/CD & infrastructure
+    dependencies: false # External services
+    security: false    # Security flows
+  development:
+    rfc: false         # Request for Comments
+    contributing: false # Contribution guides
+    api_docs: false    # API documentation
+```
 
-# Add your own templates
-custom_template_paths:
-  - name: "security_adr"
-    path: ".cursor/templates/custom/security-adr.md"
+### **Common Configurations**
+
+**Startup/Small Team:**
+
+```yaml
+documentation:
+  core: { architecture: true, onboarding: true, adr: true }
+  data: { data_model: true }
+  development: { contributing: true }
+```
+
+**Enterprise/Large Team:**
+
+```yaml
+documentation:
+  core: { architecture: true, onboarding: true, adr: true }
+  data: { data_model: true, database_ops: true, data_security: true }
+  infrastructure: { deployment: true, dependencies: true, security: true }
+  development: { rfc: true, contributing: true, api_docs: true }
 ```
 
 ---
@@ -184,14 +259,6 @@ custom_template_paths:
 ---
 
 ## 🔧 **Advanced Features**
-
-### CI/CD Integration
-
-```yaml
-# .github/workflows/docs.yml
-- name: Validate Documentation
-  run: cursor-init check-docs --fail-on-stale
-```
 
 ### Custom Templates
 
@@ -228,9 +295,9 @@ We're building the future of developer documentation. Join us!
 
 ## 📊 **Project Stats**
 
-- 🏗️ **18 Built-in Templates** across 5 document types
-- 🎯 **8 Slash Commands** for instant documentation
-- 🔧 **3 Framework Integrations** (Python, TypeScript, SQL)
+- 🏗️ **21 Built-in Templates** across 6 document types
+- 🎯 **16 Slash Commands** for instant documentation
+- 🔧 **Universal Framework Support** via AI detection
 - ⚡ **0 Dependencies** for basic functionality
 - 🛡️ **100% Static Analysis** for security
 

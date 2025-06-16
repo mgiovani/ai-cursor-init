@@ -64,7 +64,7 @@ def analyze_models_dynamic(file_path: str) -> List[ModelInfo]:
 
 ## Implementation Guidelines
 
-### SQLAlchemy Model Analysis
+### Database/ORM Model Analysis
 
 **Primary Method: AST Parsing**
 
@@ -91,18 +91,18 @@ def analyze_models_dynamic(file_path: str) -> List[ModelInfo]:
 
 ```python
 # Safe: File-based detection
-def detect_fastapi() -> bool:
+def detect_web_framework() -> bool:
     return any([
-        'fastapi' in read_requirements(),
-        'FastAPI' in ast_scan_imports(),
-        os.path.exists('app.py') and 'fastapi' in read_file('app.py')
+        check_dependencies_for_web_frameworks(),
+        'web_framework' in ast_scan_imports(),
+        os.path.exists('app.py') and has_web_patterns('app.py')
     ])
 
 # Unsafe: Dynamic import
-def detect_fastapi_unsafe() -> bool:
+def detect_framework_unsafe() -> bool:
     try:
-        import app  # DON'T DO THIS
-        return hasattr(app, 'FastAPI')
+        import app  # DON'T DO THIS - Never import user code
+        return hasattr(app, 'web_framework')
     except ImportError:
         return False
 ```

@@ -1,83 +1,183 @@
-# Documentation Linter Strategy
+# Documentation Linting Strategy
 
-## Purpose
+This document outlines the approach for validating documentation quality and ensuring content freshness in the AI-Cursor-Init framework.
 
-The Documentation Linter ensures documentation quality and completeness by identifying placeholders, stale content, and other issues that may impact the usefulness and accuracy of project documentation.
+## Overview
 
-## Linting Rules
+Documentation linting helps maintain high-quality, up-to-date documentation by automatically detecting:
 
-### Placeholder Detection
+1. **Placeholder content** that needs completion
+2. **Outdated information** that needs updating
+3. **Missing sections** in documentation templates
+4. **Format inconsistencies** across documents
 
-The linter identifies the following placeholder patterns (case-insensitive):
+## Placeholder Detection Patterns
+
+### Primary Markers
+
+The system searches for these common placeholder indicators:
 
 1. **`TBD`** - To Be Determined
 2. **`TODO`** - To Do items
 3. **`FIXME`** - Items that need fixing
 4. **`XXX`** - Generic attention markers
 5. **`[TODO]`** and **`[TBD]`** - Bracketed variants
-6. **`{{}}`** - Template placeholders
+6. **`{{...}}`** - Template placeholders that weren't replaced
 7. **`To be determined`** and **`To be decided`** - Full phrases
 8. **`Coming soon`** and **`Under construction`** - Work-in-progress indicators
 
-### Content Quality Checks
+### Secondary Indicators
 
-1. **Empty Files**: Files with no content or only whitespace
-2. **Minimal Content**: Files with less than 50 characters (may be incomplete)
-3. **Header-Only Files**: Files with only headers and no substantial content (less than 3 non-header lines)
+Additional patterns that suggest incomplete content:
 
-### Future Enhancement: Stale Content Detection
+- **Short sections** with minimal content
+- **Empty code blocks** without implementation
+- **Missing dates** in documentation headers
+- **Default template values** that weren't customized
 
-For future implementation, the linter may include:
+## Quality Validation
 
-- **Date-based staleness**: Check front-matter dates against current date
-- **Last-modified tracking**: Compare file modification times with code changes
-- **Version-specific references**: Detect outdated version numbers or deprecated references
+### Content Completeness
 
-## Target Scope
+The linter checks for:
 
-### Included Files
+- **Minimum content length** per section
+- **Required sections** based on document type
+- **Proper markdown structure** with appropriate headers
+- **Valid Mermaid diagrams** with correct syntax
 
-- All `.md` files in the `docs/` directory and its subdirectories
-- Recursive scanning to catch documentation in nested folders
+### Template Conformance
 
-### Core Documentation Files
+Validates that documents follow template structure:
 
-The linter specifically checks for the presence of:
+- **Expected sections** are present
+- **Placeholder replacement** is complete
+- **Consistent formatting** across similar documents
+- **Proper metadata** in document headers
 
-- `docs/architecture.md` - System architecture overview
-- `docs/onboarding.md` - Project onboarding guide  
-- `docs/adr/0001-record-architecture-decisions.md` - Initial ADR
+## Freshness Checks
 
-## Implementation Approach
+### Automated Detection
 
-### CLI Integration
+The system identifies documents that may need updates:
 
-- Command: `cursor-init check-docs`
-- Exit codes: `0` for success (no issues), `1` for issues found
-- Optional flags: `--file` for single file check, `--category` for category-specific checks
+- **Modified dates** compared to recent code changes
+- **Technology references** that may be outdated
+- **Dependency versions** mentioned in documentation
+- **API changes** that affect documented interfaces
 
-### Output Format
+### Manual Review Triggers
 
-- Clear, actionable error messages with file paths and line numbers
-- Summary of total issues found
-- CI-friendly output for automated pipelines
+Flags documents for manual review when:
 
-### Performance Considerations
+- **Major framework changes** are detected
+- **New dependencies** are added to the project
+- **Significant architecture changes** occur
+- **Long periods** since last documentation update
 
-- File scanning optimized for repositories up to 50,000 lines of code
-- Execution target: under 5 seconds for typical codebases under 100 files
-- Memory-efficient processing of large documentation sets
+## Implementation Strategy
 
-## Integration Points
+### Template-Based Validation
+
+Each template type has specific validation rules:
+
+**Architecture Documents:**
+
+- Must include system overview
+- Should have component diagrams
+- Technology stack must be current
+
+**ADR Documents:**
+
+- Must have decision, context, and consequences
+- Should include alternatives considered
+- Status must be valid (Proposed, Accepted, Deprecated)
+
+**Onboarding Documents:**
+
+- Setup instructions must be testable
+- Prerequisites must be current
+- Examples must work with current codebase
 
 ### Cursor IDE Integration
 
-- Slash command: `/check-docs`
-- Real-time feedback during documentation editing
-- Integration with existing documentation workflow
+Validation runs through slash commands:
 
-### CI/CD Integration
+- **`/check-docs`** - Comprehensive documentation validation
+- **`/check-docs --file filename.md`** - Single file validation
+- **`/check-docs --category adr`** - Category-specific validation
 
-- Non-zero exit codes for pipeline failures
-- Structured output for issue reporting
-- Compatible with GitHub Actions and other CI systems
+## Reporting
+
+### Validation Output
+
+The linter provides detailed reports:
+
+```
+📋 Documentation Validation Report
+
+✅ PASSED (3 files)
+- docs/architecture.md
+- docs/onboarding.md  
+- docs/adr/0001-record-architecture-decisions.md
+
+⚠️  WARNINGS (1 file)
+- docs/data-model.md: Contains placeholder text "TBD"
+
+❌ FAILED (1 file)
+- docs/adr/0002-database-choice.md: Missing consequences section
+```
+
+### Integration with Development Workflow
+
+Validation can be integrated into:
+
+- **Pre-commit hooks** for quality gates
+- **Code review process** for documentation changes
+- **Regular maintenance** schedules for freshness checks
+- **Template development** for ensuring quality
+
+## Best Practices
+
+### For Template Authors
+
+- **Include validation hints** in template comments
+- **Provide clear placeholder instructions**
+- **Test templates** with validation tools
+- **Document template-specific requirements**
+
+### For Documentation Writers
+
+- **Run validation** before submitting documentation
+- **Replace all placeholders** with actual content
+- **Follow template structure** for consistency
+- **Update dates** when making changes
+
+### For Project Maintainers
+
+- **Set up regular validation** schedules
+- **Monitor validation reports** for trends
+- **Update validation rules** as templates evolve
+- **Train team members** on validation tools
+
+## Future Enhancements
+
+### Advanced Validation
+
+Planned improvements include:
+
+- **Semantic analysis** of content relevance
+- **Cross-reference validation** between documents
+- **Link checking** for internal and external references
+- **Style guide enforcement** for writing consistency
+
+### Automation
+
+Additional automation opportunities:
+
+- **Automatic placeholder detection** in new templates
+- **Smart suggestions** for content updates
+- **Integration with version control** for change tracking
+- **Custom validation rules** per project type
+
+This linting strategy ensures that generated documentation maintains high quality and stays current with the evolving codebase.

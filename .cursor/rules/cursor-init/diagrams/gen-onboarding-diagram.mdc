@@ -1,0 +1,84 @@
+---
+description: When the user types `/gen-onboarding-diagram`
+globs: 
+alwaysApply: false
+---
+# Generate Onboarding Diagram
+
+When the user types `/gen-onboarding-diagram`, create a Mermaid flowchart showing the developer onboarding process and setup workflow.
+
+## Process
+
+1. **Analyze Project Setup**: Identify required tools, dependencies, and configuration steps
+2. **Map Workflow**: Determine the logical flow from initial setup to first contribution
+3. **Identify Checkpoints**: Find verification steps and potential bottlenecks
+4. **Generate Diagram**: Create a Mermaid flowchart showing the complete onboarding journey
+
+## Setup Detection
+
+Search for these patterns:
+- **Package Managers**: package.json, requirements.txt, pyproject.toml, Gemfile
+- **Environment Setup**: .env.example, config files, Docker setup
+- **Development Tools**: Makefile, scripts/, IDE configurations
+- **Testing**: Test frameworks, CI configuration
+- **Documentation**: README, CONTRIBUTING, setup guides
+
+## Diagram Template
+
+```mermaid
+flowchart TD
+    Start([New Developer Joins]) --> Clone[Clone Repository]
+    Clone --> EnvCheck{Prerequisites<br/>Installed?}
+    
+    EnvCheck -->|No| InstallTools[Install Required Tools<br/>• Node.js/Python<br/>• Package Manager<br/>• IDE/Editor]
+    EnvCheck -->|Yes| Install[Install Dependencies]
+    InstallTools --> Install
+    
+    Install --> EnvSetup[Environment Setup<br/>• Copy .env.example<br/>• Configure database<br/>• Set API keys]
+    
+    EnvSetup --> FirstRun[First Run<br/>npm start / python main.py]
+    FirstRun --> RunSuccess{App Runs<br/>Successfully?}
+    
+    RunSuccess -->|No| Debug[Troubleshoot Issues<br/>• Check logs<br/>• Verify config<br/>• Ask for help]
+    Debug --> FirstRun
+    
+    RunSuccess -->|Yes| Tests[Run Tests<br/>npm test / pytest]
+    Tests --> TestSuccess{Tests Pass?}
+    
+    TestSuccess -->|No| FixTests[Fix Test Issues<br/>• Check dependencies<br/>• Update config<br/>• Run specific tests]
+    FixTests --> Tests
+    
+    TestSuccess -->|Yes| DevWorkflow[Learn Development Workflow<br/>• Git branching<br/>• Code standards<br/>• Review process]
+    
+    DevWorkflow --> FirstTask[Pick First Task<br/>• Good first issue<br/>• Small bug fix<br/>• Documentation improvement]
+    
+    FirstTask --> Contribute[Start Contributing!<br/>• Write code<br/>• Submit PR<br/>• Get feedback]
+    
+    classDef start fill:#e1f5fe
+    classDef setup fill:#f3e5f5
+    classDef check fill:#fff3e0
+    classDef success fill:#e8f5e8
+    classDef issue fill:#ffebee
+    
+    class Start start
+    class Clone,Install,EnvSetup,DevWorkflow setup
+    class EnvCheck,RunSuccess,TestSuccess check
+    class FirstRun,Tests,Contribute success
+    class Debug,FixTests issue
+```
+
+## Framework-Specific Adaptations
+
+Automatically customize based on detected technology:
+- **Python**: Virtual environments, pip/poetry, pytest
+- **Node.js**: npm/yarn, package.json scripts, jest
+- **Docker**: Container setup, docker-compose
+- **Database**: Database setup, migrations, seed data
+
+## Documentation Integration
+
+After generating the diagram, enhance `docs/onboarding.md` with:
+- Step-by-step setup instructions
+- Common troubleshooting scenarios
+- Links to additional resources
+- Contact information for help

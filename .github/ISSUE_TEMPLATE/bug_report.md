@@ -1,62 +1,39 @@
 ---
 name: Bug report
 about: Create a report to help us improve
-title: '[BUG] '
-labels: 'bug'
+title: ''
+labels: bug
 assignees: ''
+
 ---
 
-## 🐛 Bug Description
-
+**Describe the bug**
 A clear and concise description of what the bug is.
 
-## 🔄 Steps to Reproduce
+**To Reproduce**
+Steps to reproduce the behavior:
 
 1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+2. Type '/...'
+3. See error
 
-## ✅ Expected Behavior
-
+**Expected behavior**
 A clear and concise description of what you expected to happen.
 
-## ❌ Actual Behavior
-
-A clear and concise description of what actually happened.
-
-## 📸 Screenshots
-
+**Screenshots**
 If applicable, add screenshots to help explain your problem.
 
-## 🖥️ Environment
+**Environment (please complete the following information):**
 
-- **OS**: [e.g. macOS 13.0, Windows 11, Ubuntu 22.04]
+- **OS**: [e.g. macOS, Windows, Linux]
 - **Cursor Version**: [e.g. 0.42.0]
-- **cursor-init Version**: [e.g. 0.1.0]
-- **Python Version**: [e.g. 3.9.0]
+- **Project Type**: [e.g. Web API, Frontend App, Mobile App, Library]
 
-## 📁 Project Context
+**Documentation Context:**
 
-- **Framework**: [e.g. FastAPI, React, Django]
-- **Project Type**: [e.g. Web API, Full-stack app]
-- **Using CLI or Slash Commands**: [CLI/Slash Commands/Both]
+- **Template Used**: [e.g. architecture, ADR, onboarding]
+- **Command Used**: [e.g. /init-docs, /adr "Title", /gen-er-diagram]
+- **Usage Method**: [Slash Commands in Cursor IDE]
 
-## 📋 Additional Context
-
+**Additional context**
 Add any other context about the problem here.
-
-## 🔍 Error Logs
-
-If applicable, paste any error messages or logs:
-
-```
-Paste error logs here
-```
-
-## ✅ Checklist
-
-- [ ] I have searched existing issues to ensure this is not a duplicate
-- [ ] I have provided all the requested information
-- [ ] I can reproduce this issue consistently
-- [ ] I have tried the latest version of cursor-init
