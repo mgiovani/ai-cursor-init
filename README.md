@@ -120,10 +120,13 @@ docs/
 ├── 📋 architecture.md          # System overview & components
 ├── 🚀 onboarding.md           # Setup guide for new developers  
 ├── 🗂️ data-model.md           # ER diagrams & database schema
-└── adr/                       # Architecture Decision Records
-    ├── 0001-record-architecture-decisions.md
-    ├── 0002-choose-database-technology.md
-    └── 0003-api-authentication-strategy.md
+├── adr/                       # Architecture Decision Records
+│   ├── 0001-record-architecture-decisions.md
+│   ├── 0002-choose-database-technology.md
+│   └── 0003-api-authentication-strategy.md
+└── rfc/                       # Request for Comments
+    ├── new-feature-proposal.md
+    └── api-versioning-strategy.md
 ```
 
 **Every file is:**
@@ -146,6 +149,7 @@ docs/
 ### Architecture Decision Records
 
 - `/adr "Decision Title"` - Create new ADR with context
+- `/rfc "RFC Title"` - Create new Request for Comments document
 - Example: `/adr "Choose Database Technology"`
 
 ### Diagram Generation
@@ -157,11 +161,16 @@ docs/
 - `/gen-security-diagram` - Security flow diagrams
 - `/gen-deployment-diagram` - Infrastructure diagrams
 
+### Template Management
+
+- `/add-template TemplateName path/to/template.md` - Add custom template
+- `/list-templates` - Show available templates
+
 ### Maintenance
 
 - `/sync-docs` - Sync all documentation
 - `/sync-doc filename.md` - Sync specific document
-- `/list-templates` - Show available templates
+- `/sync-category category` - Sync specific category (adr, architecture, etc.)
 
 ---
 
@@ -286,8 +295,8 @@ We're building the future of developer documentation. Join us!
 
 ## 📊 **Project Stats**
 
-- 🏗️ **18 Built-in Templates** across 5 document types
-- 🎯 **8 Slash Commands** for instant documentation
+- 🏗️ **21 Built-in Templates** across 6 document types
+- 🎯 **16 Slash Commands** for instant documentation
 - 🔧 **Universal Framework Support** via AI detection
 - ⚡ **0 Dependencies** for basic functionality
 - 🛡️ **100% Static Analysis** for security

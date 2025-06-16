@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.6.0] - 2025-06-15
+
+### Removed
+
+- **CLI Interface**: Completely removed command-line interface to focus on pure Cursor IDE integration
+- **Python Dependencies**: Eliminated all Python CLI modules, setup files, and external dependencies
+- **Framework-Specific References**: Removed hardcoded framework mentions (Python, TypeScript, FastAPI, React, etc.)
+
+### Changed
+
+- **Universal Framework Support**: Made project completely language/framework agnostic through AI-powered detection
+- **Documentation**: Updated all documentation to reflect AI-powered universal detection instead of specific frameworks
+- **Configuration**: Made all configuration examples generic and framework-neutral
+- **Issue Templates**: Updated to be language-agnostic
+
+### Added
+
+- **ADR-0004**: Architecture Decision Record documenting CLI removal rationale
+- **Pure Cursor IDE Workflow**: Streamlined to slash-commands-only approach
+- **Zero-Dependency Operation**: True zero-installation setup with no external requirements
+
 ## [0.5.0] - 2025-06-15
 
 ### Added

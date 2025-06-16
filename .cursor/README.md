@@ -31,18 +31,28 @@ cp -r path/to/ai-cursor-init/.cursor/ your-project/
 ### Architecture Decision Records
 
 - `/adr "Decision Title"` - Create new ADR with context
+- `/rfc "RFC Title"` - Create new Request for Comments document
 - Example: `/adr "Choose Database Technology"`
 
 ### Diagram Generation
 
 - `/gen-er-diagram` - Database schema diagrams
 - `/gen-arch-diagram` - System architecture diagrams
+- `/gen-onboarding-diagram` - Setup flow diagrams
+- `/gen-dependency-diagram` - External service diagrams
+- `/gen-security-diagram` - Security flow diagrams
+- `/gen-deployment-diagram` - Infrastructure diagrams
+
+### Template Management
+
+- `/add-template TemplateName path/to/template.md` - Add custom template
+- `/list-templates` - Show available templates
 
 ### Maintenance
 
 - `/sync-docs` - Sync all documentation
 - `/sync-doc filename.md` - Sync specific document
-- `/list-templates` - Show available templates
+- `/sync-category category` - Sync specific category (adr, architecture, etc.)
 
 ## ⚙️ **Opt-Out Configuration (Optional)**
 
@@ -88,10 +98,13 @@ docs/
 ├── 📋 architecture.md              # System overview & components
 ├── 🚀 onboarding.md               # Setup guide for developers
 ├── 🗂️ data-model.md               # Database schema & ER diagrams
-└── adr/                           # Architecture Decision Records
-    ├── 0001-record-architecture-decisions.md
-    ├── 0002-choose-database-technology.md
-    └── 0003-api-authentication-strategy.md
+├── adr/                           # Architecture Decision Records
+│   ├── 0001-record-architecture-decisions.md
+│   ├── 0002-choose-database-technology.md
+│   └── 0003-api-authentication-strategy.md
+└── rfc/                           # Request for Comments
+    ├── new-feature-proposal.md
+    └── api-versioning-strategy.md
 ```
 
 ## 🎯 **Smart Features**
