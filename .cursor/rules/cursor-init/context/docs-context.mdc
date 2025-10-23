@@ -8,16 +8,30 @@ alwaysApply: true
 When the user asks about documentation, available commands, or the cursor-init framework, I should provide context about:
 
 **Available Slash Commands:**
-- `/init-docs` - Scaffold initial project documentation
-- `/update-docs` - Update existing documentation to reflect code changes  
-- `/adr "Title"` - Create new Architecture Decision Record
-- `/gen-er-diagram` - Generate ER diagram from SQLAlchemy models
-- `/gen-arch-diagram` - Generate system architecture diagram
-- `/check-docs` - Validate documentation freshness
-- `/list-templates` - List all available documentation templates
+
+Documentation Management:
+- `/init-docs` - Scaffold initial project documentation structure
+- `/update-docs` - Analyze and suggest documentation updates
 - `/sync-docs` - Sync all documentation with current codebase
 - `/sync-doc [name]` - Sync specific documentation file
-- `/sync-category [category]` - Sync documents in specific category
+- `/sync-category [category]` - Sync documentation category (core, data, infrastructure, development)
+- `/check-docs` - Validate documentation quality and freshness
+
+Creation Commands:
+- `/adr "Title"` - Create new Architecture Decision Record
+- `/rfc "Title"` - Create new Request For Comments document
+
+Diagram Generation:
+- `/gen-er-diagram` - Generate entity-relationship diagram from database models
+- `/gen-arch-diagram` - Generate system architecture diagram
+- `/gen-dependency-diagram` - Generate external dependencies diagram
+- `/gen-deployment-diagram` - Generate deployment architecture diagram
+- `/gen-onboarding-diagram` - Generate developer onboarding flowchart
+- `/gen-security-diagram` - Generate security architecture diagram
+
+Template Management:
+- `/list-templates` - Show all available documentation templates and variants
+- `/add-template [type]` - Add custom template variant
 
 **Documentation Types:**
 - **Architecture Overview**: System design and component relationships
@@ -29,16 +43,23 @@ When the user asks about documentation, available commands, or the cursor-init f
 **Framework Features:**
 - Template-based generation with multiple variants per document type
 - Custom template support via `.cursor-init.yaml` configuration
-- Default templates available in `.cursor/templates/` directory
+- Default templates available in `.cursor/cursor-init/templates/` directory
 - Mermaid diagram integration for version-controlled visuals
 - Language/framework agnostic
-- Zero-installation setup via Cursor rules and templates
+- Native Cursor commands integration (no MDC files needed)
+- Proactive documentation suggestions through always-on rules
 
 **Template System:**
-- **Default Templates**: Located in `.cursor/templates/[type]/` with template variants
+- **Default Templates**: Located in `.cursor/cursor-init/templates/[type]/` with template variants
 - **Custom Templates**: Configure custom paths in `.cursor-init.yaml` under `templates.custom_template_paths`
 - **Template Selection**: Choose variants via `templates.[type]` configuration (e.g., `templates.rfc: "detailed"`)
+- **Parameter Override**: Override templates per-command (e.g., `/adr lightweight "Title"`)
 - **Placeholder System**: Templates use `{{PLACEHOLDER}}` syntax for dynamic content replacement
+
+**Architecture:**
+- **Commands**: User-invoked actions in `.cursor/commands/cursor-init/` (plain Markdown)
+- **Rules**: Always-on context and proactive suggestions in `.cursor/rules/cursor-init/`
+- **Templates**: Reusable documentation templates in `.cursor/cursor-init/templates/`
 
 **Philosophy:**
 - Documentation as code - stored in version control alongside source
