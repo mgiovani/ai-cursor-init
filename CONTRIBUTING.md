@@ -1,5 +1,8 @@
 # Contributing to AI-Cursor-Init
 
+**Version:** 1.0.0  
+**Last Updated:** 2025-10-23
+
 Thank you for your interest in contributing to the AI-Cursor-Init framework! This guide will help you understand how to contribute effectively to this documentation generation system.
 
 ## 🎯 **Project Overview**
@@ -8,8 +11,9 @@ AI-Cursor-Init is a template-driven documentation framework that integrates with
 
 **Core Components:**
 
-- **Cursor Rules**: Define slash command behavior and AI prompts
-- **Templates**: Markdown templates with placeholders for content generation
+- **Native Commands**: 16 slash commands appearing in `/` autocomplete menu
+- **Proactive Rules**: 5 always-on rules for context and quality guidance
+- **Templates**: 21 documentation templates with multiple variants
 - **Framework Detection**: AI-powered analysis of project structures
 - **Documentation Generation**: Context-aware content creation
 
@@ -21,9 +25,10 @@ AI-Cursor-Init is a template-driven documentation framework that integrates with
 - **Git** for version control
 - **Markdown knowledge** for template development
 - **Understanding of:**
-  - Cursor IDE rules and templates
+  - Cursor IDE native commands and rules system
   - Mermaid diagram syntax  
   - YAML configuration
+  - Markdown (for commands and templates)
 
 ### Setup Steps
 
@@ -61,19 +66,24 @@ Add new documentation templates or improve existing ones:
 **Template Structure:**
 
 ```
-.cursor/templates/
+.cursor/cursor-init/templates/
 ├── architecture/
-│   ├── google_style.md      # Google's architecture template
-│   ├── enterprise.md        # Enterprise architecture template
-│   └── arc42.md            # Arc42 architecture template
+│   ├── architecture_google.md     # Google's architecture template
+│   ├── architecture_enterprise.md # Enterprise architecture template
+│   └── architecture_arc.md        # Arc42 architecture template
 ├── adr/
-│   ├── nygard_style.md     # Michael Nygard's ADR format
-│   ├── madr.md             # Markdown ADRs
-│   └── lightweight.md      # Simplified ADR format
-└── onboarding/
-    ├── developer.md        # Developer-focused onboarding
-    ├── contributor.md      # Contributor onboarding
-    └── user.md            # End-user onboarding
+│   ├── adr_template_nygard.md     # Michael Nygard's ADR format
+│   ├── adr_template_full.md       # Comprehensive ADR
+│   ├── adr_template_lightweight.md # Simplified ADR format
+│   └── adr_template_madr.md       # Markdown ADRs
+├── onboarding/
+│   ├── onboarding_developer.md    # Developer-focused onboarding
+│   ├── onboarding_contributor.md  # Contributor onboarding
+│   └── onboarding_user.md         # End-user onboarding
+└── rfc/
+    ├── rfc_template_minimal.md    # Minimal RFC
+    ├── rfc_template_standard.md   # Standard RFC
+    └── rfc_template_detailed.md   # Detailed RFC
 ```
 
 **Adding a New Template:**
