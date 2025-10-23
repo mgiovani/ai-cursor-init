@@ -1,8 +1,9 @@
 # AI-Cursor-Init Framework Onboarding Guide
 
-**Last Updated:** 2025-06-15  
+**Last Updated:** 2025-10-23  
 **Project Type:** Cursor IDE Documentation Framework  
-**Current State:** Template & Rule-based System
+**Current State:** Native Commands & Proactive Rules System  
+**Version:** 1.0.0
 
 This guide provides essential information for contributors to the AI-Cursor-Init project - a documentation framework that integrates with Cursor IDE.
 
@@ -72,27 +73,36 @@ This guide provides essential information for contributors to the AI-Cursor-Init
 
 4. **Explore the Structure:**
 
-    * `.cursor/rules/` - Slash command definitions
-    * `.cursor/templates/` - Documentation templates
+    * `.cursor/commands/cursor-init/` - Native slash command definitions (16 commands)
+    * `.cursor/rules/cursor-init/` - Always-on proactive rules (5 rules)
+    * `.cursor/cursor-init/templates/` - Documentation templates (21 templates)
     * `docs/` - Example documentation (living examples)
-    * `.cursor-init.example.yaml` - Configuration example
+    * `.cursor-init.yaml` - Configuration file
 
 ## Project Structure
 
-* **`/.cursor/rules`:** Cursor IDE integration rules for slash commands
-  * `/cursor-init/` - Framework-specific rules
-  * Command handlers for documentation generation
-* **`/.cursor/templates`:** Documentation templates organized by type
-  * `/architecture/` - Architecture documentation variants
-  * `/adr/` - Architecture Decision Record templates
-  * `/onboarding/` - Onboarding guide templates
-  * `/diagrams/` - Diagram-focused templates
-  * `/security/` - Security documentation templates
+* **`/.cursor/commands/cursor-init/`:** Native Cursor slash commands (16 total)
+  * Documentation Management: init-docs, update-docs, sync-docs, sync-doc, sync-category, check-docs
+  * Creation Commands: adr, rfc
+  * Diagram Generation: gen-er-diagram, gen-arch-diagram, gen-dependency-diagram, gen-deployment-diagram, gen-onboarding-diagram, gen-security-diagram
+  * Template Management: list-templates, add-template
+* **`/.cursor/rules/cursor-init/`:** Always-on proactive rules (5 total)
+  * Context rules: docs-context, adr-context, architecture-context
+  * Quality rules: code-quality
+  * Proactive rules: proactive-doc-suggest
+* **`/.cursor/cursor-init/templates/`:** Documentation templates (21 total)
+  * `/architecture/` - Architecture documentation variants (3 variants)
+  * `/adr/` - Architecture Decision Record templates (4 variants)
+  * `/onboarding/` - Onboarding guide templates (3 variants)
+  * `/rfc/` - Request For Comments templates (3 variants)
+  * `/diagrams/` - Diagram-focused templates (4 templates)
+  * `/security/`, `/deployment/`, `/dependencies/`, `/operations/` - Infrastructure templates
 * **`/docs`:** Project documentation (serves as living examples)
-  * `/adr/` - Architecture Decision Records
+  * `/adr/` - Architecture Decision Records (5 ADRs)
   * `/development/` - Development guides and patterns
+  * `/rfc/` - Request For Comments documents
 * **Configuration:**
-  * `.cursor-init.example.yaml` - Configuration template
+  * `.cursor-init.yaml` - Framework configuration file
   * Various `.md` files with project documentation
 
 ## Key Features to Understand
@@ -106,8 +116,9 @@ This guide provides essential information for contributors to the AI-Cursor-Init
 
 ### Cursor IDE Integration
 
-* Slash commands for in-IDE documentation workflow
-* Zero-installation setup through Cursor rules
+* Native slash commands appearing in `/` autocomplete menu
+* Proactive always-on rules for documentation suggestions
+* Zero-installation setup - copy `.cursor/` folder and start
 * Seamless integration with existing project workflows
 * AI-powered content generation through Cursor's system
 
@@ -160,11 +171,18 @@ This guide provides essential information for contributors to the AI-Cursor-Init
 * **Security:** Security policies and compliance
 * **Deployment:** Infrastructure and deployment guides
 
-### Rule Development
+### Command & Rule Development
 
-* Rules are defined in `.cursor/rules/` directory
-* Use Markdown Control (MDC) format
-* Include clear command descriptions and examples
+**Commands** (`.cursor/commands/cursor-init/`):
+* Plain Markdown files (no frontmatter required)
+* User-invoked actions via `/` menu
+* Include clear instructions and examples
+* Support parameter override (e.g., `/adr lightweight "Title"`)
+
+**Rules** (`.cursor/rules/cursor-init/`):
+* MDC format with frontmatter (`alwaysApply: true`)
+* Always-on proactive guidance
+* Context injection and quality enforcement
 * Test with various project configurations
 
 ## Resources and Links
@@ -188,13 +206,15 @@ We welcome contributions! Please:
 
 ## Current Project Status
 
-This project is currently in **template-based framework** state:
+This project is currently in **native commands framework** state (migrated October 2025):
 
-* ✅ Template system with multiple variants
-* ✅ Cursor IDE integration via rules
-* ✅ Configuration system
-* ✅ Living documentation examples
-* ⚠️ Limited to Cursor IDE environment
+* ✅ 16 native Cursor commands with `/` autocomplete integration
+* ✅ 5 proactive always-on rules for contextual guidance
+* ✅ 21 documentation templates with multiple variants per type
+* ✅ Configuration system via `.cursor-init.yaml`
+* ✅ Living documentation examples (self-documenting)
+* ✅ Zero external dependencies
+* ⚠️ Limited to Cursor IDE environment (by design - see ADR-0004)
 
 ---
 

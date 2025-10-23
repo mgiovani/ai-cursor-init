@@ -1,6 +1,6 @@
 # AI-Cursor-Init API Documentation
 
-**Last Updated:** 2025-01-17  
+**Last Updated:** 2025-10-23  
 **Framework Version:** 1.0.0  
 **Integration:** Cursor IDE Native
 
