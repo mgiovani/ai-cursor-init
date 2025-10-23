@@ -3,6 +3,7 @@
 > **Stop writing documentation. Start generating it.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)](CHANGELOG.md)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
 **The AI-powered documentation framework that lives inside your IDE.** Generate Architecture Decision Records, system diagrams, and onboarding guides with simple slash commands. No installations, no setup, no excuses.
@@ -76,7 +77,7 @@ Professional ER diagrams and database schema documentation:
 # 1. Clone this repo
 git clone https://github.com/mgiovani/ai-cursor-init.git
 
-# 2. Copy to your project (ONLY ONE FOLDER!)
+# 2. Copy framework to your project (ONLY ONE FOLDER!)
 cp -r ai-cursor-init/.cursor/ your-project/
 
 # 3. Open your project in Cursor and type:
@@ -151,37 +152,37 @@ docs/
 
 ## 📋 **Available Commands**
 
-### Core Documentation
+### Documentation Management
 
-- `/init-docs` - Set up complete documentation structure
-- `/update-docs` - Refresh documentation with code changes
-- `/check-docs` - Validate documentation quality
+- `/init-docs` - Scaffold initial project documentation structure
+- `/update-docs` - Analyze and suggest documentation updates
+- `/sync-docs` - Sync all documentation with current codebase
+- `/sync-doc [name]` - Sync specific documentation file
+- `/sync-category [category]` - Sync category (core, data, infrastructure, development)
+- `/check-docs` - Validate documentation quality and freshness
 
-### Architecture Decision Records
+### Creation Commands
 
-- `/adr "Decision Title"` - Create new ADR with context
-- `/rfc "RFC Title"` - Create new Request for Comments document
-- Example: `/adr "Choose Database Technology"`
+- `/adr "Decision Title"` - Create Architecture Decision Record
+- `/rfc "Proposal Title"` - Create Request For Comments document
+- Examples:
+  - `/adr "Choose Database Technology"`
+  - `/adr lightweight "Quick Decision"` (override template variant)
+  - `/rfc "Add GraphQL Support"`
 
 ### Diagram Generation
 
-- `/gen-er-diagram` - Database schema diagrams
-- `/gen-arch-diagram` - System architecture diagrams
-- `/gen-onboarding-diagram` - Setup flow diagrams
-- `/gen-dependency-diagram` - External service diagrams
-- `/gen-security-diagram` - Security flow diagrams
-- `/gen-deployment-diagram` - Infrastructure diagrams
+- `/gen-er-diagram` - Generate ER diagrams from database models
+- `/gen-arch-diagram` - Generate system architecture diagram
+- `/gen-dependency-diagram` - Generate external dependencies diagram
+- `/gen-deployment-diagram` - Generate deployment architecture diagram
+- `/gen-onboarding-diagram` - Generate developer onboarding flowchart
+- `/gen-security-diagram` - Generate security architecture diagram
 
 ### Template Management
 
-- `/add-template TemplateName path/to/template.md` - Add custom template
-- `/list-templates` - Show available templates
-
-### Maintenance
-
-- `/sync-docs` - Sync all documentation
-- `/sync-doc filename.md` - Sync specific document
-- `/sync-category category` - Sync specific category (adr, architecture, etc.)
+- `/list-templates` - Show all available templates and variants
+- `/add-template [type]` - Add custom template variant
 
 ---
 
@@ -307,7 +308,8 @@ We're building the future of developer documentation. Join us!
 ## 📊 **Project Stats**
 
 - 🏗️ **21 Built-in Templates** across 6 document types
-- 🎯 **16 Slash Commands** for instant documentation
+- 🎯 **16 Slash Commands** for instant documentation (native Cursor commands!)
+- 🤖 **5 Proactive Rules** for automatic documentation suggestions
 - 🔧 **Universal Framework Support** via AI detection
 - ⚡ **0 Dependencies** for basic functionality
 - 🛡️ **100% Static Analysis** for security

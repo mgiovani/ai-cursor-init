@@ -1,28 +1,39 @@
 # AI-Cursor-Init Framework Data Model
 
-**Last Updated:** 2025-06-15  
-**Current Architecture:** Template & Rule-based Framework  
-**Integration:** Cursor IDE Native
+**Last Updated:** 2025-10-23  
+**Current Architecture:** Native Commands & Proactive Rules Framework  
+**Integration:** Cursor IDE Native  
+**Version:** 1.0.0
 
 This document describes the data structures and models used by the AI-powered cursor-init framework.
 
 ## Framework Architecture
 
-The ai-cursor-init framework follows a template-driven architecture where documentation is generated through structured templates and Cursor IDE rules, rather than direct AI service integration.
+The ai-cursor-init framework follows a hybrid architecture with native Cursor commands and proactive rules. Documentation is generated through structured templates, with commands providing user-invoked actions and rules providing always-on context and guidance.
 
 ```mermaid
 erDiagram
-    CursorRule {
+    NativeCommand {
         string command_name "slash command identifier"
-        string description "command description"
-        text system_prompt "AI instruction prompt"
-        text user_prompt_template "dynamic prompt template"
-        json conditions "when rule applies"
+        string file_path ".cursor/commands/cursor-init/"
+        string format "plain_markdown"
+        text instructions "command execution instructions"
+        boolean parameter_override "supports template override"
+    }
+    
+    ProactiveRule {
+        string rule_name "rule identifier"
+        string file_path ".cursor/rules/cursor-init/"
+        string format "mdc_with_frontmatter"
+        boolean always_apply "continuously active"
+        text context "contextual guidance"
+        string category "context|quality|proactive"
     }
     
     DocumentTemplate {
         string template_id "unique template identifier"
-        string category "architecture|adr|onboarding|data-model"
+        string file_path ".cursor/cursor-init/templates/"
+        string category "architecture|adr|onboarding|rfc|diagrams"
         string variant "template variant name"
         text template_content "markdown template with placeholders"
         json placeholders "template variable definitions"
@@ -31,14 +42,14 @@ erDiagram
     
     ProjectConfiguration {
         string config_file_path ".cursor-init.yaml"
+        json documentation_types "enabled/disabled doc types"
         json template_preferences "selected template variants"
-        json auto_detection_settings "framework detection config"
-        json quality_settings "generation quality controls"
+        json generation_settings "quality controls and options"
         json custom_template_paths "user-defined templates"
     }
     
     GeneratedDocument {
-        string file_path "output file location"
+        string file_path "docs/ output location"
         string template_used "template that generated this"
         string content_type "document type"
         datetime generated_at "creation timestamp"
@@ -52,19 +63,24 @@ erDiagram
         json detected_frameworks "identified frameworks"
         json file_patterns "detected file structure patterns"
         json dependency_info "package dependencies found"
+        boolean database_detected "ORM models found"
+        boolean deployment_configs_found "infrastructure detected"
     }
     
     DiagramDefinition {
-        string diagram_type "mermaid|architecture|er|deployment"
+        string diagram_type "er|architecture|deployment|security|dependency|onboarding"
         string mermaid_syntax "diagram definition"
         json diagram_data "structured diagram information"
         string related_template "template containing this diagram"
     }
     
-    CursorRule ||--o{ DocumentTemplate : "selects"
+    NativeCommand ||--o{ DocumentTemplate : "selects and uses"
+    ProactiveRule ||--o{ NativeCommand : "suggests"
     ProjectConfiguration ||--o{ DocumentTemplate : "configures"
+    ProjectConfiguration ||--o{ NativeCommand : "controls behavior"
     DocumentTemplate ||--|| GeneratedDocument : "generates"
     FrameworkDetection ||--o{ DocumentTemplate : "influences selection"
+    FrameworkDetection ||--o{ ProjectConfiguration : "determines relevance"
     DocumentTemplate ||--o{ DiagramDefinition : "contains"
     GeneratedDocument ||--o{ DiagramDefinition : "includes"
 ```
@@ -78,12 +94,20 @@ erDiagram
 - **Framework-Aware**: Templates adapt based on detected project technology
 - **Extensible**: Support for custom templates via configuration
 
-### Cursor Rule Integration
+### Native Commands & Rules Integration
 
-- **Slash Commands**: Mapped to specific documentation generation workflows
-- **Context Gathering**: Rules collect project information for AI processing
-- **Dynamic Prompts**: Context-aware prompts sent to Cursor's AI system
-- **Template Selection**: Rules choose appropriate templates based on project state
+**Native Commands** (`.cursor/commands/cursor-init/`):
+- **User-Invoked Actions**: Appear in `/` autocomplete menu (16 commands)
+- **Plain Markdown Format**: No frontmatter required
+- **Parameter Override**: Support template variant override (e.g., `/adr lightweight "Title"`)
+- **Template Selection**: Choose appropriate templates based on configuration
+
+**Proactive Rules** (`.cursor/rules/cursor-init/`):
+- **Always-On Guidance**: Continuous monitoring and suggestions (5 rules)
+- **MDC Format**: Markdown with frontmatter (`alwaysApply: true`)
+- **Context Injection**: Provide framework knowledge on demand
+- **Quality Enforcement**: Enforce code quality standards (DRY, SOLID)
+- **Proactive Suggestions**: Suggest documentation updates after code changes
 
 ### Configuration Management
 
@@ -126,23 +150,24 @@ Generated Content → Template Rendering → File Writing → Documentation Outp
 
 ## Template Categories
 
-### Core Documentation Templates
+### Core Documentation Templates (21 Total)
 
-| Category | Variants | Purpose |
-|----------|----------|---------|
-| **Architecture** | Google Style, Enterprise, Arc42 | System design documentation |
-| **ADR** | Nygard, MADR, Comprehensive, Lightweight | Architecture decisions |
-| **Onboarding** | Developer, Contributor, User | Project setup guides |
-| **Data Model** | Simple, Comprehensive | Database schema documentation |
+| Category | Variants | Count | Purpose |
+|----------|----------|-------|---------|
+| **Architecture** | Google Style, Enterprise, Arc42 | 3 | System design documentation |
+| **ADR** | Nygard, Full, Lightweight, MADR | 4 | Architecture decisions |
+| **Onboarding** | Developer, Contributor, User | 3 | Project setup guides |
+| **RFC** | Minimal, Standard, Detailed | 3 | Feature proposals |
+| **Data Model** | Simple, Comprehensive, ER Diagram, Component Diagram | 4 | Database schema documentation |
 
 ### Specialized Templates
 
-| Category | Variants | Purpose |
-|----------|----------|---------|
-| **Security** | Data Security, Compliance | Security policies |
-| **Deployment** | Infrastructure-focused | Deployment guides |
+| Category | Templates | Purpose |
+|----------|-----------|---------|
+| **Security** | Data Security | Security policies |
+| **Deployment** | Deployment Guide | Infrastructure deployment |
+| **Dependencies** | Dependencies Documentation | External services |
 | **Operations** | Database Operations | Operational procedures |
-| **Development** | Contributing Guidelines | Development workflow |
 
 ## Configuration Schema
 
@@ -152,8 +177,9 @@ Generated Content → Template Rendering → File Writing → Documentation Outp
 templates:
   adr: "nygard_style"           # nygard_style|full|lightweight|madr
   architecture: "google_style"  # google_style|enterprise|arc42
-  onboarding: "developer"       # developer|contributor|user
+  onboarding: "contributor"     # developer|contributor|user
   data_model: "comprehensive"   # simple|comprehensive
+  rfc: "standard"               # minimal|standard|detailed
 ```
 
 ### Generation Settings
@@ -173,13 +199,14 @@ generation:
 
 ## Diagram Integration
 
-### Mermaid Diagram Types
+### Mermaid Diagram Types (6 Commands)
 
-- **Architecture Diagrams**: System component relationships
-- **ER Diagrams**: Database schema visualization  
-- **Deployment Diagrams**: Infrastructure and deployment flows
-- **Security Diagrams**: Authentication and authorization flows
-- **Dependency Diagrams**: External service relationships
+- **Architecture Diagrams** (`/gen-arch-diagram`): System component relationships
+- **ER Diagrams** (`/gen-er-diagram`): Database schema visualization  
+- **Deployment Diagrams** (`/gen-deployment-diagram`): Infrastructure and deployment flows
+- **Security Diagrams** (`/gen-security-diagram`): Authentication and authorization flows
+- **Dependency Diagrams** (`/gen-dependency-diagram`): External service relationships
+- **Onboarding Diagrams** (`/gen-onboarding-diagram`): Developer setup flowcharts
 
 ### Diagram Generation Process
 
@@ -216,4 +243,18 @@ custom_template_paths:
     category: "architecture"
 ```
 
-This template-driven architecture enables consistent, high-quality documentation generation while maintaining flexibility and extensibility for diverse project types.
+## Framework Statistics
+
+- **16 Native Commands**: User-invoked documentation actions
+  - 6 Documentation Management commands
+  - 2 Creation commands (ADR, RFC)
+  - 6 Diagram generation commands
+  - 2 Template management commands
+- **5 Proactive Rules**: Always-on guidance
+  - 3 Context rules (docs, ADR, architecture)
+  - 1 Quality rule (code quality standards)
+  - 1 Proactive rule (documentation suggestions)
+- **21 Templates**: Multiple variants per document type
+- **Zero External Dependencies**: Pure Cursor IDE integration
+
+This hybrid architecture (native commands + proactive rules) enables consistent, high-quality documentation generation while maintaining flexibility and extensibility for diverse project types.

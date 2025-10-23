@@ -2,6 +2,58 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.0] - 2025-10-23
+
+### Major Release: Native Cursor Commands Migration
+
+This release represents a significant architectural evolution, migrating from MDC-based rules to Cursor's official native commands system while maintaining proactive guidance capabilities.
+
+### Added
+
+- **Native Cursor Commands (16)**: Migrated to `.cursor/commands/cursor-init/` using plain Markdown format
+  - Documentation Management (6 commands): init-docs, update-docs, sync-docs, sync-doc, sync-category, check-docs
+  - Creation Commands (2 commands): adr, rfc
+  - Diagram Generation (6 commands): gen-er-diagram, gen-arch-diagram, gen-dependency-diagram, gen-deployment-diagram, gen-onboarding-diagram, gen-security-diagram
+  - Template Management (2 commands): list-templates, add-template
+- **Proactive Rules System (5 rules)**: Always-on MDC rules in `.cursor/rules/cursor-init/`
+  - Context Rules (3): Framework capabilities, ADR context, Architecture context
+  - Quality Rules (1): Code quality guidelines (DRY, SOLID)
+  - Proactive Suggestions (1): Automatic documentation update recommendations
+- **Template Parameter Override**: Support for per-command template variant selection (e.g., `/adr lightweight "Title"`)
+- **Improved Command Discovery**: Commands now appear in Cursor's `/` autocomplete menu automatically
+- **ADR-0005**: Architecture Decision Record documenting the migration rationale
+
+### Changed
+
+- **Architecture**: Two-tier hybrid system (native commands + proactive rules)
+- **Command Format**: Plain Markdown instead of MDC with frontmatter
+- **Template Location**: Moved from `.cursor/templates/` to `.cursor/cursor-init/templates/`
+- **Rule Organization**: Structured into subdirectories (context/, quality/, proactive/)
+- **Documentation**: Complete update of all docs to reflect new architecture
+
+### Improved
+
+- **UX**: Native integration with Cursor's command system
+- **Discoverability**: Commands automatically listed in `/` menu
+- **Maintenance**: Simpler plain Markdown format for commands
+- **Separation of Concerns**: Clear distinction between user actions and proactive guidance
+- **Future-Proofing**: Aligned with Cursor's official command system roadmap
+
+### Migration Notes
+
+- **Backward Compatible**: Existing `/` commands work identically
+- **Configuration**: `.cursor-init.yaml` continues to work without changes
+- **New Feature**: Template override via command parameters
+- **No Breaking Changes**: All slash command syntax remains the same
+
+### Technical Details
+
+- Migrated 16 MDC files to native Markdown commands
+- Retained 5 MDC files as always-on rules for proactive behavior
+- Reorganized directory structure for better clarity
+- Updated all cross-references in documentation
+- See ADR-0005 for complete migration rationale
+
 ## [0.7.0] - 2025-06-16
 
 ### Added

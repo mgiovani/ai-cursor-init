@@ -1,5 +1,8 @@
 # 📚 AI-Powered Documentation Framework
 
+**Version:** 1.0.0  
+**Architecture:** Native Commands + Proactive Rules
+
 This folder contains an intelligent documentation generation system that works seamlessly within Cursor IDE.
 
 ## 🚀 **Quick Start (Zero Configuration)**
@@ -22,37 +25,45 @@ cp -r path/to/ai-cursor-init/.cursor/ your-project/.cursor/
 
 ## 📋 **Available Commands**
 
-### Core Documentation
+The framework provides **16 native Cursor commands** that appear in the `/` autocomplete menu:
+
+### Documentation Management (6 commands)
 
 - `/init-docs` - Set up complete documentation structure
 - `/update-docs` - Refresh documentation with code changes
+- `/sync-docs` - Sync all documentation with current codebase
+- `/sync-doc [filename]` - Sync specific documentation file
+- `/sync-category [category]` - Sync category (core, data, infrastructure, development)
 - `/check-docs` - Validate documentation quality
 
-### Architecture Decision Records
+### Creation Commands (2 commands)
 
 - `/adr "Decision Title"` - Create new ADR with context
+- `/adr [variant] "Decision Title"` - Override template variant (e.g., `/adr lightweight "Title"`)
 - `/rfc "RFC Title"` - Create new Request for Comments document
 - Example: `/adr "Choose Database Technology"`
 
-### Diagram Generation
+### Diagram Generation (6 commands)
 
-- `/gen-er-diagram` - Database schema diagrams
+- `/gen-er-diagram` - Database schema diagrams from ORM models
 - `/gen-arch-diagram` - System architecture diagrams
-- `/gen-onboarding-diagram` - Setup flow diagrams
-- `/gen-dependency-diagram` - External service diagrams
-- `/gen-security-diagram` - Security flow diagrams
-- `/gen-deployment-diagram` - Infrastructure diagrams
+- `/gen-onboarding-diagram` - Developer setup flow diagrams
+- `/gen-dependency-diagram` - External service dependency diagrams
+- `/gen-security-diagram` - Security architecture flow diagrams
+- `/gen-deployment-diagram` - Deployment infrastructure diagrams
 
-### Template Management
+### Template Management (2 commands)
 
-- `/add-template TemplateName path/to/template.md` - Add custom template
-- `/list-templates` - Show available templates
+- `/list-templates` - Show all available templates and variants
+- `/add-template [type]` - Add custom template variant
 
-### Maintenance
+## 🤖 **Proactive Rules (5 always-on)**
 
-- `/sync-docs` - Sync all documentation
-- `/sync-doc filename.md` - Sync specific document
-- `/sync-category category` - Sync specific category (adr, architecture, etc.)
+The framework includes **5 proactive rules** that continuously monitor and suggest:
+
+- **Context Rules (3)**: Provide framework knowledge, ADR context, architecture guidance
+- **Quality Rules (1)**: Enforce code quality standards (DRY, SOLID)
+- **Proactive Suggestions (1)**: Automatically suggest documentation updates after code changes
 
 ## ⚙️ **Opt-Out Configuration (Optional)**
 
@@ -155,11 +166,25 @@ A: Check the template customization guide in the documentation.
 **Q: Documentation seems outdated?**  
 A: Run `/update-docs` or `/sync-docs` to refresh with current code.
 
+## 🏗️ **Framework Architecture**
+
+### Two-Tier System
+
+1. **Native Commands** (`.cursor/commands/cursor-init/`) - 16 plain Markdown files for user actions
+2. **Proactive Rules** (`.cursor/rules/cursor-init/`) - 5 MDC files for always-on guidance
+
+### Template System
+
+- **21 built-in templates** in `.cursor/cursor-init/templates/`
+- Multiple variants per document type
+- Support for custom templates
+
 ## 📚 **Learn More**
 
 - **Full Documentation**: [AI-Cursor-Init Repository](https://github.com/mgiovani/ai-cursor-init)
-- **Template Library**: Browse `.cursor/templates/` for all available templates
+- **Template Library**: Browse `.cursor/cursor-init/templates/` for all 21 available templates
 - **Configuration Reference**: See `.cursor-init.example.yaml` for all options
+- **Architecture Details**: See ADR-0005 for native commands migration rationale
 
 ---
 
